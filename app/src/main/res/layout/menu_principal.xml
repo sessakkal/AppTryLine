@@ -1,0 +1,181 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Fondo con capa negra -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/palos_rugby"
+        android:scaleType="centerCrop" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PERFIL ADMINISTRADOR"
+        android:textSize="16sp"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif"
+        android:textColor="#FFFFFF"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"/>
+
+    <!-- Layout para los botones -->
+    <LinearLayout
+        android:id="@+id/center_buttons_container"
+        android:layout_width="328dp"
+        android:layout_height="336dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/rounded_border"
+        android:orientation="vertical">
+
+        <!-- Primer botón -->
+        <Button
+            android:id="@+id/crearentrenamiento"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_top_rounded"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:text="Crear entrenamiento" />
+
+        <!-- Línea negra -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000" />
+
+        <!-- Segundo botón -->
+        <Button
+            android:id="@+id/crearpartido"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#1630BE"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:text="Crear partido" />
+
+        <!-- Línea negra -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000" />
+
+        <!-- Tercer botón -->
+        <Button
+            android:id="@+id/editarpartido"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#1630BE"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:text="Editar partido" />
+
+        <!-- Línea negra -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000" />
+
+        <!-- Cuarto botón -->
+        <Button
+            android:id="@+id/anadirusuario"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#1630BE"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:text="Añadir usuario" />
+
+        <!-- Línea negra -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000" />
+
+        <!-- Quinto botón -->
+        <Button
+            android:id="@+id/global"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_bottom_rounded"
+            android:textColor="#FFFFFF"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            android:fontFamily="sans-serif"
+            android:text="Conversación global" />
+
+    </LinearLayout>
+
+    <!-- Barra de navegación inferior -->
+    <LinearLayout
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Opción 1 -->
+        <ImageView
+            android:id="@+id/menu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/casita_blanco"
+            android:clickable="true"
+            android:onClick="onOption1Click"
+            android:padding="8dp" />
+
+        <!-- Opción 2 -->
+        <ImageView
+            android:id="@+id/conversaciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/conversacion_gris"
+            android:clickable="true"
+            android:onClick="onOption2Click"
+            android:padding="8dp" />
+
+        <!-- Opción 3 -->
+        <ImageView
+            android:id="@+id/calendario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/calendario_gris"
+            android:clickable="true"
+            android:onClick="onOption3Click"
+            android:padding="8dp" />
+
+        <!-- Opción 4 -->
+        <ImageView
+            android:id="@+id/perfil"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/perfil_gris"
+            android:clickable="true"
+            android:onClick="onOption4Click"
+            android:padding="8dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

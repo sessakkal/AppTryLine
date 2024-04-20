@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="fondo">
+        <item name="android:background">@drawable/degradado</item>
+    </style>
+    <style name="negro">
+        <item name="android:background">@color/black</item>
+    </style>
+
+
+</resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1008395824977",
+    "project_id": "apptryline",
+    "storage_bucket": "apptryline.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1008395824977:android:edcb7fdf6ed42868a32d70",
+        "android_client_info": {
+          "package_name": "com.example.apptryline"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOIKsB2P5Ho_B3Yyt3k8jnV_h4WHOR-34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Fondo con imagen y capa negra -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/touch"
+        android:scaleType="centerCrop" />
+
+    <!-- Icono azul -->
+    <ImageView
+        android:id="@+id/icono_azul"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/icono_azul"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp" />
+
+    <!-- Texto de bienvenida -->
+    <TextView
+        android:id="@+id/texto_bienvenida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/icono_azul"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="¡Bienvenido a TryLine!"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <!-- Texto centrado con borde -->
+    <TextView
+        android:id="@+id/texto_encima"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texto_bienvenida"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="¡Organiza tu equipo de forma digital!"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
+
+    <!-- Texto principal -->
+    <TextView
+        android:id="@+id/texto_principal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texto_encima"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:padding="20dp"
+        android:text="Esta aplicación será tu mejor compañía para gestionar a tu equipo!\n\nSi aún no has creado un equipo, te invitamos a hacerlo ahora mismo. Con nuestra aplicación, podrás formar un equipo en pocos pasos y empezar a invitar a tus compañeros para que se unan a ti.\n\nSi ya eres parte de un equipo, simplemente inicia sesión para acceder a todas las funcionalidades que nuestra aplicación tiene para ofrecerte.\n\nDecide si quieres crear un equipo, unirte a uno existente o simplemente iniciar sesión para comenzar a hacer realidad tus proyectos."
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="20dp" />
+
+    <!-- Botones -->
+    <LinearLayout
+        android:id="@+id/contenedor_botones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/texto_principal"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/boton_crear_equipo"
+            android:layout_width="134dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="10dp"
+            android:background="@color/blue"
+        android:text="CREAR EQUIPO"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/boton_unirse_equipo"
+            android:layout_width="134dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/blue"
+        android:text="UNIRSE A EQUIPO"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Botón Iniciar Sesión -->
+    <Button
+        android:id="@+id/boton_iniciar_sesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contenedor_botones"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#FFFFFF"
+        android:text="INICIAR SESIÓN"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+
+</RelativeLayout>

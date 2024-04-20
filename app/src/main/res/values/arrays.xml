@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="equipos">
+        <item>Equipo A</item>
+        <item>Equipo B</item>
+        <item>Equipo C</item>
+        <item>Equipo D</item>
+    </string-array>
+</resources>
