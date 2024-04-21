@@ -10,9 +10,10 @@
     <color name="gray_800_23">#23534c4c</color>
     <color name="white_A700_72">#72ffffff</color>
     <color name="green_500">#2fc955</color>
+    <color name="green">#4CA633</color>
     <color name="gray_50">#fff6f6</color>
     <color name="black_900_1e">#1e000000</color>
-    <color name="black_900">#000000</color>
+    <color name="negro">#000000</color>
     <color name="black_901">#040000</color>
     <color name="gray_601">#6e6e6e</color>
     <color name="gray_400">#b2b0b0</color>
@@ -28,6 +29,6 @@
     <color name="black_900_aa">#aa000000</color>
     <color name="indigo_900">#24265f</color>
     <color name="white_A701">#fefefe</color>
-    <color name="white_A700">#ffffff</color>
+    <color name="blanco">#ffffff</color>
 
 </resources>

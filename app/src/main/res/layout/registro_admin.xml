@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IniciarSesion">
+    tools:context=".CrearEquipo">
 
     <ImageView
         android:layout_width="match_parent"
@@ -28,16 +28,38 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="32dp"
         android:layout_toEndOf="@id/short_left_button"
-        android:text="INICIAR SESIÓN"
+        android:text="REGISTRO"
         android:textColor="@color/white"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/registrate_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Regístrese gratis para obtener contenido exclusivo!"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/registro_text"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/nombre_equipo_edittext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre Del Equipo"
+        android:layout_below="@id/registrate_text"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/gris_flojo"
+        android:textColor="@color/white"/>
 
     <EditText
         android:id="@+id/email_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Dirección de correo electrónico"
-        android:layout_below="@id/registro_text"
+        android:layout_below="@id/nombre_equipo_edittext"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
@@ -56,6 +78,29 @@
         android:layout_marginTop="20dp"
         android:textColorHint="@color/gris_flojo"
         android:textColor="@color/white"/>
+    <EditText
+        android:id="@+id/repetir_contra"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Repita la contraseña"
+        android:inputType="textPassword"
+        android:layout_below="@id/password_edittext"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/gris_flojo"
+        android:textColor="@color/white"/>
+    <EditText
+        android:id="@+id/nombre_usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de Usuario"
+        android:layout_below="@id/repetir_contra"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:textColorHint="@color/gris_flojo"
+        android:textColor="@color/white"/>
 
 
 
@@ -63,8 +108,8 @@
         android:id="@+id/registro_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Iniciar sesión"
-        android:layout_below="@id/password_edittext"
+        android:text="Registro"
+        android:layout_below="@id/nombre_usuario"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="25dp"/>
@@ -73,10 +118,10 @@
         android:id="@+id/crear_equipo_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¿Has olvidado tu contraseña?"
+        android:text="Crear equipo nuevo"
         android:textColor="@color/white"
         android:layout_below="@id/registro_button"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginStart="16dp"/>
 
 
@@ -105,7 +150,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="¿No tienes cuenta? Registrate" />
+            android:text="Ya tienes cuenta? Inicia sesión" />
 
     </RelativeLayout>
 

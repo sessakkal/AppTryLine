@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IniciarSesion">
+    tools:context=".ContraOlvidada">
 
     <ImageView
         android:layout_width="match_parent"
@@ -28,29 +28,29 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="32dp"
         android:layout_toEndOf="@id/short_left_button"
-        android:text="INICIAR SESIÓN"
+        android:text="OLVIDASTE LA CONTRASEÑA"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/email_edittext"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/registrate_text"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Dirección de correo electrónico"
-        android:layout_below="@id/registro_text"
+        android:text="Ingresa tu e-mail y te enviaremos un link para resetear tu contraseña."
+        android:textColor="@color/white"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="20dp"
-        android:textColorHint="@color/gris_flojo"
-        android:textColor="@color/white"/>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/registro_text"
+        android:layout_marginTop="20dp"/>
+
 
     <EditText
-        android:id="@+id/password_edittext"
+        android:id="@+id/nombre_usuario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:layout_below="@id/email_edittext"
+        android:hint="Nombre de Usuario"
+        android:layout_below="@id/registrate_text"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
@@ -63,31 +63,12 @@
         android:id="@+id/registro_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Iniciar sesión"
-        android:layout_below="@id/password_edittext"
+        android:text="Registro"
+        android:layout_below="@id/nombre_usuario"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="25dp"/>
 
-    <TextView
-        android:id="@+id/crear_equipo_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="¿Has olvidado tu contraseña?"
-        android:textColor="@color/white"
-        android:layout_below="@id/registro_button"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="16dp"/>
-
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSignInButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_below="@id/crear_equipo_text"
-        android:layout_marginTop="25dp" />
 
 
     <RelativeLayout
@@ -97,7 +78,7 @@
         android:background="#59DD38">
 
         <TextView
-            android:id="@+id/yatienes_text"
+            android:id="@+id/notienes_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -105,7 +86,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="¿No tienes cuenta? Registrate" />
+            android:text="No tienes cuenta? Registrate" />
 
     </RelativeLayout>
 

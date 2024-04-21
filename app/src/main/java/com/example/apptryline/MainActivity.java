@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         // Navegar al fragmento MenuIniciarSesionRegistrar
-        navController.navigate(R.id.IniciarSesion);
+        navController.navigate(R.id.InicioRegistro);
     }
 
 

@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".InicioRegistro">
 
-    <!-- Fondo con imagen y capa negra -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/touch"
+        android:src="@drawable/touch_negro"
         android:scaleType="centerCrop" />
 
-    <!-- Icono azul -->
     <ImageView
         android:id="@+id/icono_azul"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/icono_azul"
+        android:src="@drawable/icono_blanco"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp" />
 
-    <!-- Texto de bienvenida -->
     <TextView
         android:id="@+id/texto_bienvenida"
         android:layout_width="wrap_content"
@@ -32,7 +31,6 @@
         android:textColor="#FFFFFF"
         android:textStyle="bold"/>
 
-    <!-- Texto centrado con borde -->
     <TextView
         android:id="@+id/texto_encima"
         android:layout_width="wrap_content"
@@ -46,7 +44,6 @@
         android:textStyle="bold"
         android:layout_marginTop="10dp" />
 
-    <!-- Texto principal -->
     <TextView
         android:id="@+id/texto_principal"
         android:layout_width="wrap_content"
@@ -59,7 +56,6 @@
         android:textColor="#FFFFFF"
         android:layout_marginTop="20dp" />
 
-    <!-- Botones -->
     <LinearLayout
         android:id="@+id/contenedor_botones"
         android:layout_width="match_parent"
@@ -69,38 +65,37 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/boton_crear_equipo"
             android:layout_width="134dp"
             android:layout_height="55dp"
             android:layout_marginEnd="10dp"
-            android:background="@color/blue"
+            android:background="@drawable/boton_verde"
         android:text="CREAR EQUIPO"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textStyle="bold" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/boton_unirse_equipo"
             android:layout_width="134dp"
             android:layout_height="55dp"
             android:layout_marginStart="10dp"
-            android:background="@color/blue"
+            android:background="@drawable/boton_verde"
         android:text="UNIRSE A EQUIPO"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textStyle="bold" />
 
     </LinearLayout>
 
-    <!-- Botón Iniciar Sesión -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/boton_iniciar_sesion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/contenedor_botones"
         android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="#FFFFFF"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/boton_blanco"
         android:text="INICIAR SESIÓN"
         android:textColor="#000000"
         android:textStyle="bold"/>

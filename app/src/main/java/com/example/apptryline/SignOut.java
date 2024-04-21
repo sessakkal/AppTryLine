@@ -35,6 +35,6 @@ public class SignOut extends Fragment {
 
         FirebaseAuth.getInstance().signOut();
 
-        Navigation.findNavController(view).navigate(R.id.IniciarSesion);
+        Navigation.findNavController(view).navigate(R.id.InicioRegistro);
     }
 }

@@ -1,21 +1,24 @@
 package com.example.apptryline;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
-public class InicioRegistro extends Activity {
+import androidx.fragment.app.Fragment;
+
+public class InicioRegistro extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.inicio_registro);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflar el diseño del fragmento
+        View rootView = inflater.inflate(R.layout.inicio_registro, container, false);
 
-        Button botonCrearEquipo = findViewById(R.id.boton_crear_equipo);
-        Button botonUnirseEquipo = findViewById(R.id.boton_unirse_equipo);
-        Button botonIniciarSesion = findViewById(R.id.boton_iniciar_sesion);
+        Button botonCrearEquipo = rootView.findViewById(R.id.boton_crear_equipo);
+        Button botonUnirseEquipo = rootView.findViewById(R.id.boton_unirse_equipo);
+        Button botonIniciarSesion = rootView.findViewById(R.id.boton_iniciar_sesion);
 
         botonCrearEquipo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,24 +40,25 @@ public class InicioRegistro extends Activity {
                 abrirActividadIniciarSesion();
             }
         });
+
+        return rootView;
     }
 
-    // Método para abrir la actividad de creación de equipo
+    // Métodos para abrir las actividades correspondientes
     private void abrirActividadCrearEquipo() {
-        Intent intent = new Intent(InicioRegistro.this, CrearCuenta.class);
+        Intent intent = new Intent(getActivity(), CrearEquipo.class);
         startActivity(intent);
     }
 
-    // Método para abrir la actividad de unirse a equipo
     private void abrirActividadUnirseEquipo() {
-        Intent intent = new Intent(InicioRegistro.this, UnirseEquipo.class);
+        Intent intent = new Intent(getActivity(), UnirseEquipo.class);
         startActivity(intent);
     }
 
-    // Método para abrir la actividad de iniciar sesión
     private void abrirActividadIniciarSesion() {
-        Intent intent = new Intent(InicioRegistro.this, IniciarSesion.class);
+        Intent intent = new Intent(getActivity(), IniciarSesion.class);
         startActivity(intent);
     }
 }
+
 

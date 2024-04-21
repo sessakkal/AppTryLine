@@ -3,19 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/IniciarSesion">
+    app:startDestination="@id/InicioRegistro">
 
     <fragment
         android:id="@+id/Registrar"
-        android:name="com.example.apptryline.Registrar"
+        android:name="com.example.apptryline.Registro"
         android:label="fragment_registrar"
-        tools:layout="@layout/registro_user1" />
+        tools:layout="@layout/registro_user" />
 
     <fragment
-        android:id="@+id/IniciarSesion"
-        android:name="com.example.apptryline.IniciarSesion"
-        android:label="fragment_iniciar_sesion"
-        tools:layout="@layout/iniciar_sesion" />
+        android:id="@+id/EditarPerfil"
+        android:name="com.example.apptryline.EditarPerfil"
+        android:label="fragment_registrar"
+        tools:layout="@layout/editar_perfil" />
+
+    <fragment
+        android:id="@+id/InicioRegistro"
+        android:name="com.example.apptryline.InicioRegistro"
+        android:label="fragment_inicio_registro"
+        tools:layout="@layout/inicio_registro" />
 
     <fragment
         android:id="@+id/MenuPrincipal"
