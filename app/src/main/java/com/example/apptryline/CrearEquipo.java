@@ -51,21 +51,21 @@ public class CrearEquipo extends AppCompatActivity {
     private void registrarUsuario() {
         String nombreEquipo = nombreEquipoEditText.getText().toString().trim();
         String correo = editTextCorreo.getText().toString().trim();
-        String contraseña = editTextContraseña.getText().toString().trim();
-        String repetirContraseña = editTextRepetirContraseña.getText().toString().trim();
+        String password = editTextpassword.getText().toString().trim();
+        String repetirpassword = editTextRepetirpassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(nombreEquipo) || TextUtils.isEmpty(correo) ||
-                TextUtils.isEmpty(contraseña) || TextUtils.isEmpty(repetirContraseña)) {
+                TextUtils.isEmpty(password) || TextUtils.isEmpty(repetirpassword)) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (!contraseña.equals(repetirContraseña)) {
+        if (!password.equals(repetirpassword)) {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(correo, contraseña)
+        mAuth.createUserWithEmailAndPassword(correo, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

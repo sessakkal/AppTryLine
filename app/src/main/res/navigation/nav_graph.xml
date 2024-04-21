@@ -6,10 +6,11 @@
     app:startDestination="@id/InicioRegistro">
 
     <fragment
-        android:id="@+id/Registrar"
-        android:name="com.example.apptryline.Registro"
-        android:label="fragment_registrar"
-        tools:layout="@layout/registro_user" />
+        android:id="@+id/Calendario"
+        android:name="com.example.apptryline.Calendario"
+        android:label="fragment_calendario"
+        tools:layout="@layout/calendario" />
+
 
     <fragment
         android:id="@+id/EditarPerfil"

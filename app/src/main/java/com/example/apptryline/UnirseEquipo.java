@@ -60,7 +60,9 @@ public class UnirseEquipo extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(UnirseEquipo.this, MenuPrincipal.class));
+                            // Aquí se inicia la actividad MenuPrincipal después de un registro exitoso
+                            startActivity(new Intent(UnirseEquipo.this, CalendarioFragment.class));
+                            // Se finaliza esta actividad para evitar volver a ella con el botón "Atrás"
                             finish();
                         } else {
                             Toast.makeText(UnirseEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
