@@ -79,4 +79,7 @@ public class CrearEquipo extends AppCompatActivity {
                     }
                 });
     }
+    public void goBack(View view) {
+        onBackPressed();
+    }
 }

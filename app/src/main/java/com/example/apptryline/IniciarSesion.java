@@ -140,4 +140,7 @@ public class IniciarSesion extends AppCompatActivity {
                     }
                 });
     }
+    public void goBack(View view) {
+        onBackPressed();
+    }
 }

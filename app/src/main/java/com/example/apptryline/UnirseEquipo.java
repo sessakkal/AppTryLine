@@ -3,7 +3,6 @@ package com.example.apptryline;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -69,14 +68,8 @@ public class UnirseEquipo extends AppCompatActivity {
                     }
                 });
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public void goBack(View view) {
+        onBackPressed();
     }
+
 }
