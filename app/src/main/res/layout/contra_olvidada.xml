@@ -22,7 +22,7 @@
         android:onClick="goBack"/>
 
     <TextView
-        android:id="@+id/registro_text"
+        android:id="@+id/olvidada_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/short_left_button"
@@ -34,7 +34,7 @@
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/registrate_text"
+        android:id="@+id/contraolvidada_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ingresa tu e-mail y te enviaremos un link para resetear tu contraseña."
@@ -42,30 +42,32 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/registro_text"
+        android:layout_below="@id/olvidada_text"
         android:layout_marginTop="20dp"/>
 
 
     <EditText
-        android:id="@+id/nombre_usuario"
+        android:id="@+id/correo_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre de Usuario"
-        android:layout_below="@id/registrate_text"
+        android:hint="Correo Electronico"
+        android:layout_below="@id/contraolvidada_text"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
         android:textColorHint="@color/gris_flojo"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green"/>
 
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registro_button"
+        android:id="@+id/enviar_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registro"
-        android:layout_below="@id/nombre_usuario"
+        android:text="Enviar"
+        android:background="@drawable/boton_verde"
+        android:layout_below="@id/correo_edittext"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="25dp"/>

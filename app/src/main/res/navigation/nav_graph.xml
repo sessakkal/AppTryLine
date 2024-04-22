@@ -11,13 +11,6 @@
         android:label="fragment_calendario"
         tools:layout="@layout/calendario" />
 
-
-    <fragment
-        android:id="@+id/EditarPerfil"
-        android:name="com.example.apptryline.EditarPerfil"
-        android:label="fragment_registrar"
-        tools:layout="@layout/editar_perfil" />
-
     <fragment
         android:id="@+id/InicioRegistro"
         android:name="com.example.apptryline.InicioRegistro"

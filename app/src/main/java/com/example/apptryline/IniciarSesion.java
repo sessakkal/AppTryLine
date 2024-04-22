@@ -60,6 +60,15 @@ public class IniciarSesion extends AppCompatActivity {
         });
 
         configureGoogleSignIn();
+
+        TextView crearEquipoText = findViewById(R.id.crear_equipo_text);
+        crearEquipoText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Abrir la actividad ContraOlvidada
+                startActivity(new Intent(IniciarSesion.this, ContraOlvidada.class));
+            }
+        });
     }
 
     private void signInWithEmail() {

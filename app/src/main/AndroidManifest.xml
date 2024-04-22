@@ -13,15 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppTryLine"
         tools:targetApi="31">
+
         <activity
             android:name=".Splash"
-            android:exported="false" />
-        <activity
-            android:name=".Chat"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +23,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <!-- Mueve la etiqueta intent-filter aquí -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".Chat"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".CrearEquipo"
             android:exported="true" />
@@ -40,6 +51,9 @@
             android:exported="true" />
         <activity
             android:name=".Calendario"
+            android:exported="true" />
+        <activity
+            android:name=".ContraOlvidada"
             android:exported="true" />
     </application>
 
