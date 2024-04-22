@@ -2,9 +2,7 @@ package com.example.apptryline;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -12,40 +10,37 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Calendar;
 
-public class Calendario extends Fragment {
+public class Calendario extends AppCompatActivity {
 
     private CalendarView calendarView;
-    NavController navController;
-    ImageView imageArrowLeft;
+    private ImageView imageArrowLeft;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.calendario, container, false);
-        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
-        imageArrowLeft = view.findViewById(R.id.imageArrowleft);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.calendario);
 
         // Busca el CalendarView en el layout
-        calendarView = view.findViewById(R.id.calendarView);
+        calendarView = findViewById(R.id.calendarView);
+        imageArrowLeft = findViewById(R.id.imageArrowleft);
+
+        imageArrowLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed(); // Regresar a la actividad anterior
+            }
+        });
 
         // Configura un listener para detectar cambios en la fecha seleccionada
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 // Aquí puedes manejar la fecha seleccionada, por ejemplo, mostrarla en un Toast
-                Toast.makeText(getActivity(), "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
-            }
-        });
-        imageArrowLeft.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                navController.navigateUp(); // Regresar al fragmento anterior
+                Toast.makeText(Calendario.this, "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -60,11 +55,11 @@ public class Calendario extends Fragment {
                 int day = currentDate.get(Calendar.DAY_OF_MONTH);
 
                 // Crea un DatePickerDialog con la fecha actual
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(Calendario.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         // Aquí puedes manejar la fecha seleccionada, por ejemplo, mostrarla en un Toast
-                        Toast.makeText(getActivity(), "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Calendario.this, "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
                     }
                 }, year, month, day);
 
@@ -72,7 +67,5 @@ public class Calendario extends Fragment {
                 datePickerDialog.show();
             }
         });
-
-        return view;
     }
 }

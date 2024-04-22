@@ -39,7 +39,7 @@
             android:name=".IniciarSesion"
             android:exported="true" />
         <activity
-            android:name=".CalendarioFragment"
+            android:name=".Calendario"
             android:exported="true" />
     </application>
 

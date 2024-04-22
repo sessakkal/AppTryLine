@@ -21,8 +21,8 @@ public class CrearEquipo extends AppCompatActivity {
 
     private EditText nombreEquipoEditText;
     private EditText editTextCorreo;
-    private EditText editTextContraseña;
-    private EditText editTextRepetirContraseña;
+    private EditText editTextPassword;
+    private EditText editTextRepetirPassword;
     private Button buttonRegistrar;
 
     private FirebaseAuth mAuth;
@@ -36,8 +36,8 @@ public class CrearEquipo extends AppCompatActivity {
 
         nombreEquipoEditText = findViewById(R.id.nombre_equipo_edittext);
         editTextCorreo = findViewById(R.id.email_edittext);
-        editTextContraseña = findViewById(R.id.password_edittext);
-        editTextRepetirContraseña = findViewById(R.id.repetir_contra);
+        editTextPassword = findViewById(R.id.password_edittext);
+        editTextRepetirPassword = findViewById(R.id.repetir_contra);
         buttonRegistrar = findViewById(R.id.registro_button);
 
         buttonRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -51,8 +51,8 @@ public class CrearEquipo extends AppCompatActivity {
     private void registrarUsuario() {
         String nombreEquipo = nombreEquipoEditText.getText().toString().trim();
         String correo = editTextCorreo.getText().toString().trim();
-        String password = editTextpassword.getText().toString().trim();
-        String repetirpassword = editTextRepetirpassword.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String repetirpassword = editTextRepetirPassword.getText().toString().trim();
 
         if (TextUtils.isEmpty(nombreEquipo) || TextUtils.isEmpty(correo) ||
                 TextUtils.isEmpty(password) || TextUtils.isEmpty(repetirpassword)) {

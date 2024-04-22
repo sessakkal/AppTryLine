@@ -1,6 +1,5 @@
 package com.example.apptryline;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,7 +20,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -79,7 +77,7 @@ public class IniciarSesion extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(IniciarSesion.this, MenuPrincipal.class));
+                            startActivity(new Intent(IniciarSesion.this, Calendario.class));
                             finish();
                         } else {
                             Toast.makeText(IniciarSesion.this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -132,7 +130,7 @@ public class IniciarSesion extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(IniciarSesion.this, MenuPrincipal.class));
+                            startActivity(new Intent(IniciarSesion.this, Calendario.class));
                             finish();
                         } else {
                             Toast.makeText(IniciarSesion.this, "Error al iniciar sesión con Google: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

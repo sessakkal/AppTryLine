@@ -61,7 +61,7 @@ public class UnirseEquipo extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             // Aquí se inicia la actividad MenuPrincipal después de un registro exitoso
-                            startActivity(new Intent(UnirseEquipo.this, CalendarioFragment.class));
+                            startActivity(new Intent(UnirseEquipo.this, Calendario.class));
                             // Se finaliza esta actividad para evitar volver a ella con el botón "Atrás"
                             finish();
                         } else {
