@@ -67,5 +67,8 @@ public class Calendario extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+
+        // Aplica el estilo personalizado para el texto de los días del calendario
+        calendarView.setDateTextAppearance(R.style.CustomCalendarDateText);
     }
 }

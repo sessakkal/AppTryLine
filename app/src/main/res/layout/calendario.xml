@@ -89,7 +89,7 @@
         android:clipToPadding="false"
         android:datePickerMode="calendar"
         android:firstDayOfWeek="1"
-        android:selectedWeekBackgroundColor="#000000"
+        android:selectedWeekBackgroundColor="#ffffff"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottom_navigation" />
 

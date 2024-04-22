@@ -6,6 +6,9 @@
     <style name="negro">
         <item name="android:background">@color/black</item>
     </style>
+    <style name="CustomCalendarDateText">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 
 
 </resources>
