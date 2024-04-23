@@ -1,32 +1,30 @@
 package com.example.apptryline;
 
-import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CalendarView;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Calendario extends AppCompatActivity {
 
-    private CalendarView calendarView;
     private ImageView imageArrowLeft;
+    private CalendarView calendarView;
+    private List<Long> selectedDates;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calendario);
 
-        // Busca el CalendarView en el layout
+        imageArrowLeft = findViewById(R.id.imageArrowLeft);
         calendarView = findViewById(R.id.calendarView);
-        imageArrowLeft = findViewById(R.id.imageArrowleft);
+
+        selectedDates = new ArrayList<>();
 
         imageArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,40 +33,38 @@ public class Calendario extends AppCompatActivity {
             }
         });
 
-        // Configura un listener para detectar cambios en la fecha seleccionada
+        // Cambiar los nombres de los días de la semana
+        String[] daysOfWeek = { "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb","Dom"};
+        calendarView.setFirstDayOfWeek(Calendar.MONDAY); // Establecer el primer día de la semana
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                // Aquí puedes manejar la fecha seleccionada, por ejemplo, mostrarla en un Toast
-                Toast.makeText(Calendario.this, "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // Puedes hacer algo aquí si lo necesitas
             }
         });
 
-        // Configura un listener para abrir un DatePickerDialog al hacer clic en el CalendarView
-        calendarView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Obtén la fecha actual para establecerla como fecha inicial en el DatePickerDialog
-                Calendar currentDate = Calendar.getInstance();
-                int year = currentDate.get(Calendar.YEAR);
-                int month = currentDate.get(Calendar.MONTH);
-                int day = currentDate.get(Calendar.DAY_OF_MONTH);
 
-                // Crea un DatePickerDialog con la fecha actual
-                DatePickerDialog datePickerDialog = new DatePickerDialog(Calendario.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        // Aquí puedes manejar la fecha seleccionada, por ejemplo, mostrarla en un Toast
-                        Toast.makeText(Calendario.this, "Fecha seleccionada: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
-                    }
-                }, year, month, day);
-
-                // Muestra el DatePickerDialog
-                datePickerDialog.show();
-            }
-        });
-
-        // Aplica el estilo personalizado para el texto de los días del calendario
+        // Cambiar los nombres de los meses
+        String[] months = {"Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"};
         calendarView.setDateTextAppearance(R.style.CustomCalendarDateText);
+
+        // Configurar un listener para detectar cuando el usuario selecciona una fecha en el CalendarView
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+                long selectedMillis = selectedDate.getTimeInMillis();
+
+                // Verificar si la fecha ya está seleccionada o no
+                if (selectedDates.contains(selectedMillis)) {
+                    selectedDates.remove(selectedMillis);
+                    Toast.makeText(Calendario.this, "Día deseleccionado: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
+                } else {
+                    selectedDates.add(selectedMillis);
+                    Toast.makeText(Calendario.this, "Día seleccionado: " + dayOfMonth + "/" + (month + 1) + "/" + year, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

@@ -7,8 +7,22 @@
         <item name="android:background">@color/black</item>
     </style>
     <style name="CustomCalendarDateText">
-        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="CustomCalendarWeekDayText">
+        <item name="android:textColor">@color/green</item> <!-- Cambia el color del texto de los días de la semana -->
+        <!-- Otros atributos de texto, como tamaño, tipo de fuente, etc., según sea necesario -->
+    </style>
+    <style name="CustomCalendarWeekDay" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/green</item>
+    </style>
+    <style name="CustomCalendarTitleText" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/green</item>
+    </style>
+
+
+
 
 
 </resources>
