@@ -103,7 +103,7 @@
             android:layout_height="35dp"
             android:layout_marginRight="8dp"
             android:layout_gravity="center"
-            android:src="@drawable/icono_enviar_mensaje"
+            android:src="@drawable/enviar_mensaje"
             app:layout_constraintTop_toTopOf="@id/mensaje_a_enviar"
             app:layout_constraintRight_toRightOf="@id/mensaje_a_enviar"
             app:layout_constraintBottom_toBottomOf="@id/mensaje_a_enviar"

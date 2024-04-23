@@ -87,7 +87,7 @@ public class Chat extends Fragment {
 
                             binding.nombreUsuario.setText(name);
                             if (foto.equals("")){
-                                binding.fotoUsuario.setImageResource(R.drawable.icono_perfil_predeterminado);
+                                binding.fotoUsuario.setImageResource(R.drawable.perfil_predeterminado);
                             } else {
                                 Glide.with(requireContext()).load(foto).into(binding.fotoUsuario);
                             }
