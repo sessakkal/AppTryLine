@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearPartido">
+    tools:context=".CrearEntreno">
 
     <ImageView
         android:layout_width="match_parent"
@@ -22,21 +22,21 @@
         android:onClick="goBack"/>
 
     <TextView
-        android:id="@+id/tituloanadirentreno"
+        android:id="@+id/tituloanadirpartido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/short_left_button"
         android:layout_marginStart="1dp"
         android:layout_marginTop="32dp"
         android:layout_toEndOf="@id/short_left_button"
-        android:text="AÑADIR ENTRENO"
+        android:text="AÑADIR PARTIDO"
         android:textColor="@color/white"
         android:textSize="20sp" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tituloanadirentreno"
+        android:layout_below="@id/tituloanadirpartido"
         android:layout_marginTop="20dp">
 
         <RelativeLayout
@@ -69,7 +69,7 @@
                 android:id="@+id/hora_inicio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hora de inicio del entreno"
+                android:hint="Hora de inicio del partido"
                 android:layout_below="@id/fecha"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -79,10 +79,22 @@
                 android:backgroundTint="@color/green"/>
 
             <EditText
-                android:id="@+id/hora_fin"
+                android:id="@+id/coordenadas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Hora de finalización del entreno"
+                android:hint="Ubicación en coordenadas"
+                android:layout_below="@id/hora_inicio"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/gris_flojo"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/green"/>
+            <EditText
+                android:id="@+id/ubi_texto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ubicación en coordenadas"
                 android:layout_below="@id/hora_inicio"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -91,15 +103,13 @@
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"/>
 
-
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/anadirpartido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Añadir entreno"
+                android:text="Añadir partido"
                 android:background="@drawable/boton_verde"
-                android:layout_below="@id/hora_fin"
+                android:layout_below="@id/coordenadas"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="25dp"/>
