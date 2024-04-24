@@ -31,7 +31,6 @@ public class IniciarSesion extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private TextView registroTextView;
     private FirebaseAuth mAuth;
-    private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 9001;
 
     @Override
@@ -58,8 +57,6 @@ public class IniciarSesion extends AppCompatActivity {
                 startActivity(new Intent(IniciarSesion.this, UnirseEquipo.class));
             }
         });
-
-        configureGoogleSignIn();
 
         TextView crearEquipoText = findViewById(R.id.crear_equipo_text);
         crearEquipoText.setOnClickListener(new View.OnClickListener() {
@@ -90,59 +87,6 @@ public class IniciarSesion extends AppCompatActivity {
                             finish();
                         } else {
                             Toast.makeText(IniciarSesion.this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void configureGoogleSignIn() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        findViewById(R.id.googleSignInButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signInWithGoogle();
-            }
-        });
-    }
-
-    private void signInWithGoogle() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                Log.w("GoogleSignIn", "signInResult:failed code=" + e.getStatusCode());
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(IniciarSesion.this, Calendario.class));
-                            finish();
-                        } else {
-                            Toast.makeText(IniciarSesion.this, "Error al iniciar sesión con Google: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
