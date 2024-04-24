@@ -3,23 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/green"
     android:layout_height="match_parent"
-    tools:context=".Splash"
-    style="@style/fondo">
+    tools:context=".Splash">
 
     <ImageView
-        android:id="@+id/logosplash"
+        android:id="@+id/imageViewsplash"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTryLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/icono_negro" />
+
+    <TextView
+        android:id="@+id/textViewTryLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="124dp"
-        android:layout_marginBottom="4dp"
-        android:adjustViewBounds="true"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/pelota_verde"
+        android:text="TryLine"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="70dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
