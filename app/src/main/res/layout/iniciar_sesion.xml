@@ -42,6 +42,7 @@
         android:layout_below="@id/inicio_text"
         android:layout_marginTop="20dp"/>
 
+
     <EditText
         android:id="@+id/email_edittext"
         android:layout_width="match_parent"

@@ -17,7 +17,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
     private final ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
     private final LocalDate selectedDate;
-    private final LocalDate todayDate;// Agrega esta variable
+    private final LocalDate todayDate;
 
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate, LocalDate todayDate) {
         this.daysOfMonth = daysOfMonth;
@@ -33,7 +33,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.calendar_cell, parent, false);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = (int) (parent.getHeight() * 0.166666666);
+        layoutParams.height = (int) (parent.getHeight() * 0.1);
         return new CalendarViewHolder(view, onItemListener);
     }
 
@@ -42,7 +42,6 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
         String dayText = daysOfMonth.get(position);
         holder.dayOfMonth.setText(dayText);
 
-        // Resaltar el día de hoy
         if (!dayText.isEmpty()) {
             int day = Integer.parseInt(dayText);
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
@@ -50,7 +49,6 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder>
             if (date.equals(todayDate)) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));
             } else {
-                // Restablecer el color de fondo a transparente si no es el día de hoy
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
         }
