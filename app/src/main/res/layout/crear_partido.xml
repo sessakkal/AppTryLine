@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CrearEntreno">
+    tools:context=".CrearPartido">
 
     <ImageView
         android:layout_width="match_parent"
@@ -32,11 +32,20 @@
         android:text="AÑADIR PARTIDO"
         android:textColor="@color/white"
         android:textSize="20sp" />
+    <TextView
+        android:id="@+id/anadirpartidotext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Por favor, ingrese los siguientes datos para crear el entreno."
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tituloanadirpartido"
+        android:layout_marginTop="20dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tituloanadirpartido"
+        android:layout_below="@id/anadirpartidotext"
         android:layout_marginTop="20dp">
 
         <RelativeLayout
@@ -94,8 +103,32 @@
                 android:id="@+id/ubi_texto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ubicación en coordenadas"
-                android:layout_below="@id/hora_inicio"
+                android:hint="Ubicación en texto"
+                android:layout_below="@id/coordenadas"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/gris_flojo"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/green"/>
+            <EditText
+                android:id="@+id/equipolocal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Equipo Local"
+                android:layout_below="@id/ubi_texto"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/gris_flojo"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/green"/>
+            <EditText
+                android:id="@+id/equipovisitante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Equipo Visitante"
+                android:layout_below="@id/equipolocal"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="20dp"
@@ -103,13 +136,14 @@
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"/>
 
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/anadirpartido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Añadir partido"
                 android:background="@drawable/boton_verde"
-                android:layout_below="@id/coordenadas"
+                android:layout_below="@id/equipovisitante"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="25dp"/>

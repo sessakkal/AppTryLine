@@ -22,7 +22,7 @@
         android:onClick="goBack"/>
 
     <TextView
-        android:id="@+id/registro_text"
+        android:id="@+id/inicio_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/short_left_button"
@@ -32,13 +32,22 @@
         android:text="INICIAR SESIÓN"
         android:textColor="@color/white"
         android:textSize="20sp" />
+    <TextView
+        android:id="@+id/iniciar_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="¡Inicia sesión para consultar próximos partidos!"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/inicio_text"
+        android:layout_marginTop="20dp"/>
 
     <EditText
         android:id="@+id/email_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Dirección de correo electrónico"
-        android:layout_below="@id/registro_text"
+        android:layout_below="@id/iniciar_text"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="20dp"
