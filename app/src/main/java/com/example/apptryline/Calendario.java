@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -96,6 +97,10 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
     {
         selectedDate = selectedDate.plusMonths(1);
         setMonthView();
+    }
+    public void onOption4Click(View view) {
+        Intent intent = new Intent(this, Partido.class);
+        startActivity(intent);
     }
 
     @Override

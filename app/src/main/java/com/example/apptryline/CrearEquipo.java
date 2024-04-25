@@ -16,8 +16,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CrearEquipo extends AppCompatActivity {
+    ActivityMainBinding binding;
+    String usuario, mail;
+    boolean admin;
+    FirebaseDatabase db;
+    DatabaseReference reference;
 
     private EditText nombreEquipoEditText;
     private EditText editTextCorreo;

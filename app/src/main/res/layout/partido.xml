@@ -1,7 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <include layout = "@layout/mapa"/>
+    android:layout_height="match_parent"
+    android:background="@drawable/mele"
+    tools:context=".Partido">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/titulo_mostrar_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Datos del Partido"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"/>
+
+    <TextView
+        android:id="@+id/textViewNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/titulo_mostrar_partido"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/nombre_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewNombre"
+        android:layout_alignBaseline="@id/textViewNombre"/>
+
+    <TextView
+        android:id="@+id/textViewFecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewNombre"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/fecha_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewFecha"
+        android:layout_alignBaseline="@id/textViewFecha"/>
+
+    <TextView
+        android:id="@+id/textViewHoraInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de inicio:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewFecha"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/hora_inicio_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewHoraInicio"
+        android:layout_alignBaseline="@id/textViewHoraInicio"/>
+
+    <TextView
+        android:id="@+id/textViewCoordenadas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación en mapa:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewHoraInicio"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+    <TextView
+        android:id="@+id/coordenadas_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewCoordenadas"/>
+
+
+    <org.osmdroid.views.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@id/textViewCoordenadas"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
+
+    <TextView
+        android:id="@+id/textViewUbicacionTexto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación en texto:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/mapView"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/ubicacion_texto_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewUbicacionTexto"
+        android:layout_alignBaseline="@id/textViewUbicacionTexto"/>
+
+    <TextView
+        android:id="@+id/textViewEquipoLocal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Equipo Local:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewUbicacionTexto"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/equipo_local_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewEquipoLocal"
+        android:layout_alignBaseline="@id/textViewEquipoLocal"/>
+
+    <TextView
+        android:id="@+id/textViewEquipoVisitante"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Equipo Visitante:"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_below="@id/textViewEquipoLocal"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/equipo_visitante_partido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:layout_toEndOf="@id/textViewEquipoVisitante"
+        android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
+
+</RelativeLayout>
