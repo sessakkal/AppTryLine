@@ -20,11 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CrearEquipo extends AppCompatActivity {
-    ActivityMainBinding binding;
-    String usuario, mail;
-    boolean admin;
-    FirebaseDatabase db;
-    DatabaseReference reference;
 
     private EditText nombreEquipoEditText;
     private EditText editTextCorreo;
