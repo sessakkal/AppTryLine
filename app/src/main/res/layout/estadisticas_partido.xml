@@ -6,145 +6,67 @@
     android:background="@drawable/mele"
     tools:context=".EstadisticasPartido">
 
-
-    <ImageView
-        android:id="@+id/short_left_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/short_left"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:onClick="goBack"/>
-
     <TextView
-        android:id="@+id/tituloanadirpartido"
+        android:id="@+id/titulo_mostrar_partido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/short_left_button"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="32dp"
-        android:layout_toEndOf="@id/short_left_button"
-        android:text="AÑADIR PARTIDO"
+        android:text="Datos del Partido"
         android:textColor="@color/white"
-        android:textSize="20sp" />
-    <TextView
-        android:id="@+id/anadirpartidotext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Por favor, ingrese los siguientes datos para crear el entreno."
-        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/tituloanadirpartido"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="32dp"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/anadirpartidotext"
-        android:layout_marginTop="20dp">
+        android:layout_height="match_parent"
+        android:layout_below="@id/titulo_mostrar_partido">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/nombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nombre"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
-            <EditText
-                android:id="@+id/fecha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Fecha"
-                android:layout_below="@id/nombre"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
 
-            <EditText
-                android:id="@+id/hora_inicio"
-                android:layout_width="match_parent"
+            <!-- Otros elementos como gráficos y estadísticas aquí -->
+            <TextView
+                android:id="@+id/tries_titulo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Hora de inicio del partido"
-                android:layout_below="@id/fecha"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
+                android:text="TRIES"
                 android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
+                android:textSize="18sp"
+                android:layout_below="@id/titulo_mostrar_partido"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"/>
 
-            <EditText
-                android:id="@+id/coordenadas"
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/tries"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ubicación en coordenadas"
-                android:layout_below="@id/hora_inicio"
+                android:layout_height="80dp"
+                android:layout_below="@id/tries_titulo"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
-            <EditText
-                android:id="@+id/ubi_texto"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ubicación en texto"
-                android:layout_below="@id/coordenadas"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
-            <EditText
-                android:id="@+id/equipolocal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Equipo Local"
-                android:layout_below="@id/ubi_texto"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
-            <EditText
-                android:id="@+id/equipovisitante"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Equipo Visitante"
-                android:layout_below="@id/equipolocal"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/gris_flojo"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"/>
+                android:layout_marginEnd="16dp" />
 
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/anadirpartido"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/transformaciones_titulo"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Añadir partido"
-                android:background="@drawable/boton_verde"
-                android:layout_below="@id/equipovisitante"
+                android:text="TRANSFORMACIONES"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@id/tries"
+                android:layout_marginTop="32dp"
+                android:layout_marginStart="16dp"/>
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/transformaciones"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@id/transformaciones_titulo"
+                android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="25dp"/>
+                android:layout_marginEnd="16dp"/>
 
         </RelativeLayout>
     </ScrollView>
-
 </RelativeLayout>

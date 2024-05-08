@@ -16,13 +16,6 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textViewNombre"
@@ -178,15 +171,12 @@
         android:textSize="18sp"
         android:layout_toEndOf="@id/textViewEquipoVisitante"
         android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
+            <Button
+                android:id="@+id/btnVerEstadisticas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewEquipoVisitante"
+                android:text="Ver Estadísticas"
+                android:onClick="irAEstadisticas" />
 
-            <com.github.mikephil.charting.charts.HorizontalBarChart
-                android:id="@+id/horizontalBarChart"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:layout_below="@id/equipo_visitante_partido"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"/>
-        </RelativeLayout>
-</ScrollView>
 </RelativeLayout>
