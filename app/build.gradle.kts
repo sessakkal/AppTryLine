@@ -39,6 +39,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+
 }
 
 dependencies {
@@ -70,7 +72,6 @@ dependencies {
     implementation ("com.google.firebase:firebase-database:20.3.1")
     implementation ("com.sun.mail:android-mail:1.6.7")
     implementation ("com.sun.mail:android-activation:1.6.7")
-
-
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
 }

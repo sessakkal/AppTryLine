@@ -52,6 +52,12 @@
         <activity
             android:name=".Partido"
             android:exported="true" />
+        <activity
+            android:name=".EstadisticasPartido"
+            android:exported="true" />
+        <activity
+            android:name=".PartidoActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

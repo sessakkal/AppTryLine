@@ -15,10 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UnirseEquipo extends AppCompatActivity {
 
-    private EditText emailEditText, passwordEditText, confirmPasswordEditText;
+    private EditText emailEditText, passwordEditText, confirmPasswordEditText, nombreUsuarioEditText;
     private FirebaseAuth mAuth;
 
     @Override
@@ -29,6 +31,7 @@ public class UnirseEquipo extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_edittext);
         passwordEditText = findViewById(R.id.password_edittext);
         confirmPasswordEditText = findViewById(R.id.repetir_contra);
+        nombreUsuarioEditText = findViewById(R.id.nombre_usuario); // Agregado
         mAuth = FirebaseAuth.getInstance();
 
         findViewById(R.id.registro_button).setOnClickListener(new View.OnClickListener() {
@@ -43,8 +46,9 @@ public class UnirseEquipo extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
+        String nombreUsuario = nombreUsuarioEditText.getText().toString().trim(); // Agregado
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(nombreUsuario)) { // Actualizado
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -61,17 +65,35 @@ public class UnirseEquipo extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             // Aquí se inicia la actividad MenuPrincipal después de un registro exitoso
-                            startActivity(new Intent(UnirseEquipo.this, Calendario.class));
-                            // Se finaliza esta actividad para evitar volver a ella con el botón "Atrás"
-                            finish();
+                            // También se guarda la información del usuario en la base de datos
+                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario);
                         } else {
                             Toast.makeText(UnirseEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
+
+    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
+        Usuario usuario = new Usuario("", email, nombreUsuario);
+        ref.child(userId).setValue(usuario)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(UnirseEquipo.this, "Usuario registrado y datos guardados exitosamente", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(UnirseEquipo.this, Calendario.class));
+                            finish();
+                        } else {
+                            Toast.makeText(UnirseEquipo.this, "Error al guardar la información del usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
     public void goBack(View view) {
         onBackPressed();
     }
-
 }
+

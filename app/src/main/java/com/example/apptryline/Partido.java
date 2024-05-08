@@ -1,15 +1,16 @@
 package com.example.apptryline;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import java.util.Map;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import java.util.ArrayList;
 
 public class Partido extends AppCompatActivity {
 
@@ -20,6 +21,7 @@ public class Partido extends AppCompatActivity {
     private TextView ubicacionTextoTextView;
     private TextView equipoLocalTextView;
     private TextView equipoVisitanteTextView;
+    private HorizontalBarChart horizontalBarChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,41 +36,57 @@ public class Partido extends AppCompatActivity {
         ubicacionTextoTextView = findViewById(R.id.ubicacion_texto_partido);
         equipoLocalTextView = findViewById(R.id.equipo_local_partido);
         equipoVisitanteTextView = findViewById(R.id.equipo_visitante_partido);
+        horizontalBarChart = findViewById(R.id.horizontalBarChart);
 
-        // Obtener referencia a la base de datos Firebase
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        // Datos de ejemplo para el partido (goles, tiros a puerta, tarjetas, etc.)
+        ArrayList<BarEntry> localData = new ArrayList<>();
+        ArrayList<BarEntry> visitorData = new ArrayList<>();
 
-        // Obtener los datos del nodo "partido_ejemplo"
-        dbRef.child("partido_ejemplo").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                DataSnapshot dataSnapshot = task.getResult();
-                if (dataSnapshot.exists()) {
-                    // Obtener los valores de los nodos
-                    String nombre = dataSnapshot.child("nombre").getValue(String.class);
-                    String fecha = dataSnapshot.child("fecha").getValue(String.class);
-                    String horaInicio = dataSnapshot.child("horaInicio").getValue(String.class);
-                    Map<String, Double> coordenadasMap = dataSnapshot.child("coordenadas").getValue(Map.class);
-                    String ubicacionTexto = dataSnapshot.child("ubicacionTexto").getValue(String.class);
-                    String equipoLocal = dataSnapshot.child("equipoLocal").getValue(String.class);
-                    String equipoVisitante = dataSnapshot.child("equipoVisitante").getValue(String.class);
+        // Agregar datos de ejemplo para el equipo local y el equipo visitante
+        localData.add(new BarEntry(1, -7));  // Tres goles para el equipo local
+        localData.add(new BarEntry(2, -5));  // Cinco tiros a puerta para el equipo local
 
-                    // Convertir las coordenadas de Map a una cadena legible
-                    String coordenadas = coordenadasMap.get("latitud") + ", " + coordenadasMap.get("longitud");
+        visitorData.add(new BarEntry(1, 4));  // Dos goles para el equipo visitante
+        visitorData.add(new BarEntry(2, 9));  // Tres tiros a puerta para el equipo visitante
 
-                    // Mostrar los valores en las TextViews
-                    nombreTextView.setText(nombre);
-                    fechaTextView.setText(fecha);
-                    horaInicioTextView.setText(horaInicio);
-                    coordenadasTextView.setText(coordenadas);
-                    ubicacionTextoTextView.setText(ubicacionTexto);
-                    equipoLocalTextView.setText(equipoLocal);
-                    equipoVisitanteTextView.setText(equipoVisitante);
-                } else {
-                    Log.d("Partido", "No existe el nodo 'partido_ejemplo'");
-                }
-            } else {
-                Log.d("Partido", "Error al obtener datos: ", task.getException());
-            }
-        });
+        // Crear conjuntos de datos para el equipo local y el equipo visitante
+        BarDataSet localDataSet = new BarDataSet(localData, "Equipo Local");
+        localDataSet.setColor(Color.GREEN);
+
+        BarDataSet visitorDataSet = new BarDataSet(visitorData, "Equipo Visitante");
+        visitorDataSet.setColor(Color.GREEN);
+
+        // Crear BarData con los conjuntos de datos
+        BarData barData = new BarData(localDataSet, visitorDataSet);
+
+        // Establecer los datos en el gráfico
+        horizontalBarChart.setData(barData);
+        horizontalBarChart.getLegend().setEnabled(false);
+        horizontalBarChart.setDrawBorders(false);
+
+        // Personalizar el aspecto del gráfico según tus preferencias
+        horizontalBarChart.setDrawValueAboveBar(false); // Mostrar los valores encima de las barras
+        horizontalBarChart.getAxisLeft().setAxisMinimum(-10); // Establecer el mínimo del eje izquierdo
+        horizontalBarChart.getAxisRight().setAxisMinimum(-10); // Establecer el mínimo del eje derecho
+
+        // Ocultar la cuadrícula y los números en el eje X
+        XAxis xAxis = horizontalBarChart.getXAxis();
+        xAxis.setDrawGridLines(false);
+        xAxis.setDrawLabels(false);
+
+        // Ocultar la cuadrícula y los números en el eje Y izquierdo
+        YAxis leftAxis = horizontalBarChart.getAxisLeft();
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawLabels(false);
+
+        // Ocultar la cuadrícula y los números en el eje Y derecho
+        YAxis rightAxis = horizontalBarChart.getAxisRight();
+        rightAxis.setDrawGridLines(false);
+        rightAxis.setDrawLabels(false);
+
+        // Invalidar el gráfico para que se actualice
+        horizontalBarChart.invalidate();
     }
 }
+
+

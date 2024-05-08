@@ -1,6 +1,6 @@
 package com.example.apptryline;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class CrearEquipo extends AppCompatActivity {
 
     private EditText nombreEquipoEditText;
@@ -28,6 +30,7 @@ public class CrearEquipo extends AppCompatActivity {
     private Button buttonRegistrar;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,7 @@ public class CrearEquipo extends AppCompatActivity {
         setContentView(R.layout.registro_admin);
 
         mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("Equipos");
 
         nombreEquipoEditText = findViewById(R.id.nombre_equipo_edittext);
         editTextCorreo = findViewById(R.id.email_edittext);
@@ -51,7 +55,7 @@ public class CrearEquipo extends AppCompatActivity {
     }
 
     private void registrarUsuario() {
-        String nombreEquipo = nombreEquipoEditText.getText().toString().trim();
+        final String nombreEquipo = nombreEquipoEditText.getText().toString().trim();
         String correo = editTextCorreo.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repetirpassword = editTextRepetirPassword.getText().toString().trim();
@@ -74,13 +78,59 @@ public class CrearEquipo extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(CrearEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
-                            finish();
+
+                            // Obtenemos una referencia a la base de datos
+                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+
+                            // Creamos un nuevo nodo "usuarios" y obtenemos su referencia
+                            DatabaseReference usuariosRef = databaseRef.child("usuarios");
+
+                            // Creamos un nuevo nodo con el ID del usuario y establecemos los valores
+                            String userID = user.getUid();
+                            DatabaseReference currentUserRef = usuariosRef.child(userID);
+                            currentUserRef.child("nombre").setValue(nombreEquipo);
+                            currentUserRef.child("correo").setValue(correo);
+                            // Añade más campos si es necesario
+
+                            // Intent para iniciar la actividad de la pantalla de calendario
+                            Intent intent = new Intent(CrearEquipo.this, Calendario.class);
+                            startActivity(intent);
+                            finish(); // Esto cierra la actividad actual para que el usuario no pueda volver atrás con el botón de retroceso
                         } else {
                             Toast.makeText(CrearEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+
+
+
     }
+
+    private void guardarEquipoEnFirebase(String userId, String nombreEquipo) {
+        DatabaseReference equiposRef = mDatabase.child("equipos"); // Referencia a la colección de equipos
+        DatabaseReference equipoRef = equiposRef.push(); // Genera un nuevo ID único para el equipo
+        String equipoId = equipoRef.getKey(); // Obtiene el ID del equipo generado
+
+        // Construye el objeto del equipo
+        HashMap<String, Object> equipoMap = new HashMap<>();
+        equipoMap.put("admin_id", userId); // ID del administrador
+        equipoMap.put("nombre", nombreEquipo); // Nombre del equipo
+
+        // Guarda el equipo en la base de datos
+        equipoRef.setValue(equipoMap)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CrearEquipo.this, "Equipo creado exitosamente", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(CrearEquipo.this, "Error al crear el equipo: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+
     public void goBack(View view) {
         onBackPressed();
     }

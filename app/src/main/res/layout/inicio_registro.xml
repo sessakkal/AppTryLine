@@ -3,13 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/touch_negro"
     tools:context=".InicioRegistro">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/touch_negro"
-        android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/icono_azul"
