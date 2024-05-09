@@ -171,12 +171,5 @@
         android:textSize="18sp"
         android:layout_toEndOf="@id/textViewEquipoVisitante"
         android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
-            <Button
-                android:id="@+id/btnVerEstadisticas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/textViewEquipoVisitante"
-                android:text="Ver Estadísticas"
-                android:onClick="irAEstadisticas" />
 
 </RelativeLayout>

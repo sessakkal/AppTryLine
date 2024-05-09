@@ -99,7 +99,7 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         setMonthView();
     }
     public void onOption4Click(View view) {
-        Intent intent = new Intent(this, Partido.class);
+        Intent intent = new Intent(this, ResultadoPartido.class);
         startActivity(intent);
     }
 

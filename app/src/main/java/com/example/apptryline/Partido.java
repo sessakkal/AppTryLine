@@ -33,10 +33,7 @@ public class Partido extends AppCompatActivity {
         equipoLocalTextView = findViewById(R.id.equipo_local_partido);
         equipoVisitanteTextView = findViewById(R.id.equipo_visitante_partido);
     }
-    public void irAEstadisticas(View view) {
-        Intent intent = new Intent(this, EstadisticasPartido.class);
-        startActivity(intent);
-    }
+
 }
 
 

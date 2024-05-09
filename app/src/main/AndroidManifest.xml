@@ -55,6 +55,9 @@
         <activity
             android:name=".EstadisticasPartido"
             android:exported="true" />
+        <activity
+            android:name=".ResultadoPartido"
+            android:exported="true" />
     </application>
 
 </manifest>
