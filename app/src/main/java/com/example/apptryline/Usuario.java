@@ -1,28 +1,23 @@
 package com.example.apptryline;
 
 public class Usuario {
-    private String nombreEquipo;
     private String correoElectronico;
     private String nombreUsuario;
+    private String nombre;
+    private boolean admin;
 
     // Constructor vacío requerido por Firebase
     public Usuario() {
     }
 
-    public Usuario(String nombreEquipo, String correoElectronico, String nombreUsuario) {
-        this.nombreEquipo = nombreEquipo;
+    // Constructor para inicializar correo electrónico, nombre de usuario y nombre
+    public Usuario(String correoElectronico, String nombreUsuario, String nombre) {
         this.correoElectronico = correoElectronico;
         this.nombreUsuario = nombreUsuario;
+        this.nombre = nombre;
     }
 
-    public String getNombreEquipo() {
-        return nombreEquipo;
-    }
-
-    public void setNombreEquipo(String nombreEquipo) {
-        this.nombreEquipo = nombreEquipo;
-    }
-
+    // Getters y setters
     public String getCorreoElectronico() {
         return correoElectronico;
     }
@@ -37,5 +32,21 @@ public class Usuario {
 
     public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 }

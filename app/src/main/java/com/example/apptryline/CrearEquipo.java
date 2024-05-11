@@ -59,6 +59,7 @@ public class CrearEquipo extends AppCompatActivity {
         String correo = editTextCorreo.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repetirpassword = editTextRepetirPassword.getText().toString().trim();
+        final String nombreUsuario = nombreEquipo; // Usamos el nombre del equipo como nombre de usuario para el admin
 
         if (TextUtils.isEmpty(nombreEquipo) || TextUtils.isEmpty(correo) ||
                 TextUtils.isEmpty(password) || TextUtils.isEmpty(repetirpassword)) {
@@ -79,34 +80,33 @@ public class CrearEquipo extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(CrearEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
 
-                            // Obtenemos una referencia a la base de datos
-                            DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
+                            // Crear equipo y guardar en Firebase
+                            guardarEquipoEnFirebase(user.getUid(), nombreEquipo, nombreUsuario);
 
-                            // Creamos un nuevo nodo "usuarios" y obtenemos su referencia
-                            DatabaseReference usuariosRef = databaseRef.child("usuarios");
+                            // Iniciar sesión automáticamente después de crear el usuario
+                            mAuth.signInWithEmailAndPassword(correo, password)
+                                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                // Inicio de sesión exitoso, redirigir al usuario a la actividad Calendario
+                                                startActivity(new Intent(CrearEquipo.this, Calendario.class));
+                                                finish();
+                                            } else {
+                                                // Error al iniciar sesión automáticamente
+                                                Toast.makeText(CrearEquipo.this, "Error al iniciar sesión automáticamente: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
 
-                            // Creamos un nuevo nodo con el ID del usuario y establecemos los valores
-                            String userID = user.getUid();
-                            DatabaseReference currentUserRef = usuariosRef.child(userID);
-                            currentUserRef.child("nombre").setValue(nombreEquipo);
-                            currentUserRef.child("correo").setValue(correo);
-                            // Añade más campos si es necesario
-
-                            // Intent para iniciar la actividad de la pantalla de calendario
-                            Intent intent = new Intent(CrearEquipo.this, Calendario.class);
-                            startActivity(intent);
-                            finish(); // Esto cierra la actividad actual para que el usuario no pueda volver atrás con el botón de retroceso
                         } else {
                             Toast.makeText(CrearEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-
-
     }
 
-    private void guardarEquipoEnFirebase(String userId, String nombreEquipo) {
+    private void guardarEquipoEnFirebase(final String userId, final String nombreEquipo, final String nombreUsuario) {
         DatabaseReference equiposRef = mDatabase.child("equipos"); // Referencia a la colección de equipos
         DatabaseReference equipoRef = equiposRef.push(); // Genera un nuevo ID único para el equipo
         String equipoId = equipoRef.getKey(); // Obtiene el ID del equipo generado
@@ -115,6 +115,11 @@ public class CrearEquipo extends AppCompatActivity {
         HashMap<String, Object> equipoMap = new HashMap<>();
         equipoMap.put("admin_id", userId); // ID del administrador
         equipoMap.put("nombre", nombreEquipo); // Nombre del equipo
+
+        // Agregar al administrador como miembro del equipo
+        HashMap<String, Boolean> miembros = new HashMap<>();
+        miembros.put(userId, true);
+        equipoMap.put("miembros", miembros);
 
         // Guarda el equipo en la base de datos
         equipoRef.setValue(equipoMap)
@@ -129,7 +134,6 @@ public class CrearEquipo extends AppCompatActivity {
                     }
                 });
     }
-
 
     public void goBack(View view) {
         onBackPressed();

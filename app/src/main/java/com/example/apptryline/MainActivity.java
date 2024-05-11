@@ -1,10 +1,8 @@
 package com.example.apptryline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,13 +11,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
-        // Navegar al fragmento MenuIniciarSesionRegistrar
-        navController.navigate(R.id.InicioRegistro);
+        // Iniciar la actividad InicioRegistro
+        Intent intent = new Intent(this, InicioRegistro.class);
+        startActivity(intent);
     }
-
-
-
-
 }

@@ -53,7 +53,7 @@
             android:name=".Partido"
             android:exported="true" />
         <activity
-            android:name=".EstadisticasPartido"
+            android:name=".InicioRegistro"
             android:exported="true" />
         <activity
             android:name=".ResultadoPartido"

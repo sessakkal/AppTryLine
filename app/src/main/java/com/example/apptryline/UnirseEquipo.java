@@ -64,9 +64,10 @@ public class UnirseEquipo extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // Aquí se inicia la actividad MenuPrincipal después de un registro exitoso
+                            // Aquí se inicia la actividad Calendario después de un registro exitoso
                             // También se guarda la información del usuario en la base de datos
-                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario);
+                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario, "nombre"); // Actualizado
+
                         } else {
                             Toast.makeText(UnirseEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -74,9 +75,9 @@ public class UnirseEquipo extends AppCompatActivity {
                 });
     }
 
-    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
-        Usuario usuario = new Usuario("", email, nombreUsuario);
+    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario, String nombre) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuario");
+        Usuario usuario = new Usuario(email, nombreUsuario, nombre); // Actualizado
         ref.child(userId).setValue(usuario)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -92,8 +93,8 @@ public class UnirseEquipo extends AppCompatActivity {
                 });
     }
 
+
     public void goBack(View view) {
         onBackPressed();
     }
 }
-
