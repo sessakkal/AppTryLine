@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/mele"
-    tools:context=".Partido">
+    android:background="@drawable/mele">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".Partido">
 
     <TextView
         android:id="@+id/titulo_mostrar_partido"
@@ -172,4 +176,13 @@
         android:layout_toEndOf="@id/textViewEquipoVisitante"
         android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
 
-</RelativeLayout>
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="121dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/equipo_visitante_partido" />
+
+
+    </RelativeLayout>
+</ScrollView>

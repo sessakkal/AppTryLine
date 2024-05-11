@@ -16,6 +16,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+
 public class Calendario extends AppCompatActivity implements CalendarAdapter.OnItemListener
 {
     private TextView monthYearText;
@@ -99,7 +100,7 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         setMonthView();
     }
     public void onOption4Click(View view) {
-        Intent intent = new Intent(this, ResultadoPartido.class);
+        Intent intent = new Intent(this, Partido.class);
         startActivity(intent);
     }
 

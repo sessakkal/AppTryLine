@@ -36,6 +36,7 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -73,5 +74,6 @@ dependencies {
     implementation ("com.sun.mail:android-mail:1.6.7")
     implementation ("com.sun.mail:android-activation:1.6.7")
     implementation("com.github.AnyChart:AnyChart-Android:1.1.5")
+
 
 }
