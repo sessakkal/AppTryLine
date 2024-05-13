@@ -1,3 +1,4 @@
+// UnirseEquipo.java
 package com.example.apptryline;
 
 import android.content.Intent;
@@ -31,7 +32,7 @@ public class UnirseEquipo extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_edittext);
         passwordEditText = findViewById(R.id.password_edittext);
         confirmPasswordEditText = findViewById(R.id.repetir_contra);
-        nombreUsuarioEditText = findViewById(R.id.nombre_usuario); // Agregado
+        nombreUsuarioEditText = findViewById(R.id.nombre_usuario);
         mAuth = FirebaseAuth.getInstance();
 
         findViewById(R.id.registro_button).setOnClickListener(new View.OnClickListener() {
@@ -43,12 +44,12 @@ public class UnirseEquipo extends AppCompatActivity {
     }
 
     private void registerUser() {
-        String email = emailEditText.getText().toString().trim();
+        final String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
         String confirmPassword = confirmPasswordEditText.getText().toString().trim();
-        String nombreUsuario = nombreUsuarioEditText.getText().toString().trim(); // Agregado
+        final String nombreUsuario = nombreUsuarioEditText.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(nombreUsuario)) { // Actualizado
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(nombreUsuario)) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -64,10 +65,10 @@ public class UnirseEquipo extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            // Aquí se inicia la actividad Calendario después de un registro exitoso
-                            // También se guarda la información del usuario en la base de datos
-                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario, "nombre"); // Actualizado
-
+                            // Cambiar este valor según corresponda
+                            boolean admin = false; // O true si es un administrador
+                            String equipoId = ""; // Aquí debes asignar el ID del equipo al que se une el usuario
+                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario, admin, equipoId);
                         } else {
                             Toast.makeText(UnirseEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -75,9 +76,9 @@ public class UnirseEquipo extends AppCompatActivity {
                 });
     }
 
-    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario, String nombre) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuario");
-        Usuario usuario = new Usuario(email, nombreUsuario, nombre); // Actualizado
+    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario, boolean admin, String equipoId) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
+        Usuario usuario = new Usuario(email, nombreUsuario, "", admin, equipoId);
         ref.child(userId).setValue(usuario)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -92,7 +93,6 @@ public class UnirseEquipo extends AppCompatActivity {
                     }
                 });
     }
-
 
     public void goBack(View view) {
         onBackPressed();

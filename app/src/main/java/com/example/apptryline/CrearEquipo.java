@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class CrearEquipo extends AppCompatActivity {
 
@@ -28,7 +29,6 @@ public class CrearEquipo extends AppCompatActivity {
     private EditText editTextPassword;
     private EditText editTextRepetirPassword;
     private Button buttonRegistrar;
-
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
@@ -38,7 +38,7 @@ public class CrearEquipo extends AppCompatActivity {
         setContentView(R.layout.registro_admin);
 
         mAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("Equipos");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         nombreEquipoEditText = findViewById(R.id.nombre_equipo_edittext);
         editTextCorreo = findViewById(R.id.email_edittext);
@@ -81,7 +81,7 @@ public class CrearEquipo extends AppCompatActivity {
                             Toast.makeText(CrearEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
 
                             // Crear equipo y guardar en Firebase
-                            guardarEquipoEnFirebase(user.getUid(), nombreEquipo, nombreUsuario);
+                            guardarUsuarioYEquipo(user.getUid(), nombreEquipo, nombreUsuario);
 
                             // Iniciar sesión automáticamente después de crear el usuario
                             mAuth.signInWithEmailAndPassword(correo, password)
@@ -106,34 +106,38 @@ public class CrearEquipo extends AppCompatActivity {
                 });
     }
 
-    private void guardarEquipoEnFirebase(final String userId, final String nombreEquipo, final String nombreUsuario) {
-        DatabaseReference equiposRef = mDatabase.child("equipos"); // Referencia a la colección de equipos
-        DatabaseReference equipoRef = equiposRef.push(); // Genera un nuevo ID único para el equipo
-        String equipoId = equipoRef.getKey(); // Obtiene el ID del equipo generado
+    private void guardarUsuarioYEquipo(final String userId, final String nombreEquipo, final String nombreUsuario) {
+        // Obtenemos una referencia a la ubicación de los usuarios en la base de datos
+        DatabaseReference usuariosRef = mDatabase.child("Usuarios");
 
-        // Construye el objeto del equipo
-        HashMap<String, Object> equipoMap = new HashMap<>();
-        equipoMap.put("admin_id", userId); // ID del administrador
-        equipoMap.put("nombre", nombreEquipo); // Nombre del equipo
+        // Creamos un mapa para almacenar los datos del usuario
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("correoElectronico", mAuth.getCurrentUser().getEmail());
+        userData.put("nombreUsuario", nombreUsuario);
+        userData.put("nombre", "");
+        userData.put("admin", true); // El primer usuario siempre será el administrador
+        userData.put("equipoId", userId); // El ID del equipo será el mismo que el ID del usuario
 
-        // Agregar al administrador como miembro del equipo
-        HashMap<String, Boolean> miembros = new HashMap<>();
-        miembros.put(userId, true);
-        equipoMap.put("miembros", miembros);
+        // Guardamos los datos del usuario en la base de datos
+        usuariosRef.child(userId).setValue(userData);
 
-        // Guarda el equipo en la base de datos
-        equipoRef.setValue(equipoMap)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(CrearEquipo.this, "Equipo creado exitosamente", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(CrearEquipo.this, "Error al crear el equipo: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        // Obtenemos una referencia a la ubicación de los equipos en la base de datos
+        DatabaseReference equiposRef = mDatabase.child("Equipos");
+
+        // Creamos un mapa para almacenar los datos del equipo
+        Map<String, Object> equipoData = new HashMap<>();
+        equipoData.put("admin_id", userId); // ID del administrador
+        equipoData.put("nombre", nombreEquipo); // Nombre del equipo
+
+        // Creamos un mapa para almacenar los miembros del equipo
+        Map<String, Object> miembros = new HashMap<>();
+        miembros.put(userId, true); // Añadimos al administrador como miembro
+        equipoData.put("miembros", miembros); // Agregamos los miembros al mapa de datos del equipo
+
+        // Guardamos los datos del equipo en la base de datos
+        equiposRef.child(userId).setValue(equipoData);
     }
+
 
     public void goBack(View view) {
         onBackPressed();

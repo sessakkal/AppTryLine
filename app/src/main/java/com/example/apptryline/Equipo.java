@@ -1,19 +1,32 @@
 package com.example.apptryline;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Equipo {
+    private String nombre;
     private String adminId;
     private Map<String, Boolean> miembros;
-    private String nombre;
 
     public Equipo() {
         // Constructor vacío requerido por Firebase
     }
 
-    public Equipo(String adminId, Map<String, Boolean> miembros, String nombre) {
+    public Equipo(String nombre, String adminId) {
+        this.nombre = nombre;
         this.adminId = adminId;
-        this.miembros = miembros;
+        this.miembros = new HashMap<>();
+        // Agregar al administrador como miembro
+        this.miembros.put(adminId, true);
+    }
+
+    // Getters y setters
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -33,11 +46,15 @@ public class Equipo {
         this.miembros = miembros;
     }
 
-    public String getNombre() {
-        return nombre;
+    // Método para agregar un nuevo miembro al equipo
+    public void agregarMiembro(String memberId) {
+        miembros.put(memberId, true);
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    // Método para remover un miembro del equipo
+    public void removerMiembro(String memberId) {
+        miembros.remove(memberId);
     }
+
+    // Otros métodos útiles, como toString(), equals(), hashCode(), etc.
 }
