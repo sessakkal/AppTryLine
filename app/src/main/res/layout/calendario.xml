@@ -132,6 +132,40 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/boton1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Partido anterior" />
+
+        <Button
+            android:id="@+id/boton2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Proximo Entreno" />
+
+        <Button
+            android:id="@+id/boton3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="añadir entreno" />
+
+        <Button
+            android:id="@+id/boton4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="añadir partido" />
+
+    </LinearLayout>
     <!-- Barra de navegación inferior -->
     <LinearLayout
         android:id="@+id/bottom_navigation"
@@ -183,6 +217,7 @@
             android:src="@drawable/perfil_blanco" />
 
     </LinearLayout>
+
 
 
 </LinearLayout>

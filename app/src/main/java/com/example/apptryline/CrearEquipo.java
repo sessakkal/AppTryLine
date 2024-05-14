@@ -56,8 +56,8 @@ public class CrearEquipo extends AppCompatActivity {
 
     private void registrarUsuario() {
         final String nombreEquipo = nombreEquipoEditText.getText().toString().trim();
-        String correo = editTextCorreo.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
+        final String correo = editTextCorreo.getText().toString().trim(); // Agregar correo
+        final String password = editTextPassword.getText().toString().trim(); // Agregar password
         String repetirpassword = editTextRepetirPassword.getText().toString().trim();
         final String nombreUsuario = nombreEquipo; // Usamos el nombre del equipo como nombre de usuario para el admin
 
@@ -81,7 +81,7 @@ public class CrearEquipo extends AppCompatActivity {
                             Toast.makeText(CrearEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
 
                             // Crear equipo y guardar en Firebase
-                            guardarUsuarioYEquipo(user.getUid(), nombreEquipo, nombreUsuario);
+                            guardarUsuarioYEquipo(user.getUid(), nombreEquipo, nombreUsuario, correo, password); // Pasar correo y password
 
                             // Iniciar sesión automáticamente después de crear el usuario
                             mAuth.signInWithEmailAndPassword(correo, password)
@@ -106,7 +106,7 @@ public class CrearEquipo extends AppCompatActivity {
                 });
     }
 
-    private void guardarUsuarioYEquipo(final String userId, final String nombreEquipo, final String nombreUsuario) {
+    private void guardarUsuarioYEquipo(final String userId, final String nombreEquipo, final String nombreUsuario, final String correo, final String password) {
         // Obtenemos una referencia a la ubicación de los usuarios en la base de datos
         DatabaseReference usuariosRef = mDatabase.child("Usuarios");
 
@@ -114,29 +114,68 @@ public class CrearEquipo extends AppCompatActivity {
         Map<String, Object> userData = new HashMap<>();
         userData.put("correoElectronico", mAuth.getCurrentUser().getEmail());
         userData.put("nombreUsuario", nombreUsuario);
-        userData.put("nombre", "");
+        userData.put("nombre", nombreEquipo);
         userData.put("admin", true); // El primer usuario siempre será el administrador
         userData.put("equipoId", userId); // El ID del equipo será el mismo que el ID del usuario
 
         // Guardamos los datos del usuario en la base de datos
-        usuariosRef.child(userId).setValue(userData);
+        usuariosRef.child(userId).setValue(userData)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Obtenemos una referencia a la ubicación de los equipos en la base de datos
+                            DatabaseReference equiposRef = mDatabase.child("Equipos").child(userId);
 
-        // Obtenemos una referencia a la ubicación de los equipos en la base de datos
-        DatabaseReference equiposRef = mDatabase.child("Equipos");
+                            // Creamos un mapa para almacenar los datos del equipo
+                            Map<String, Object> equipoData = new HashMap<>();
+                            equipoData.put("admin_id", userId); // ID del administrador
+                            equipoData.put("nombre", nombreEquipo); // Nombre del equipo
 
-        // Creamos un mapa para almacenar los datos del equipo
-        Map<String, Object> equipoData = new HashMap<>();
-        equipoData.put("admin_id", userId); // ID del administrador
-        equipoData.put("nombre", nombreEquipo); // Nombre del equipo
+                            // Creamos un mapa para almacenar los miembros del equipo
+                            Map<String, Object> miembros = new HashMap<>();
+                            miembros.put(userId, true); // Añadimos al administrador como miembro
+                            equipoData.put("miembros", miembros); // Agregamos los miembros al mapa de datos del equipo
 
-        // Creamos un mapa para almacenar los miembros del equipo
-        Map<String, Object> miembros = new HashMap<>();
-        miembros.put(userId, true); // Añadimos al administrador como miembro
-        equipoData.put("miembros", miembros); // Agregamos los miembros al mapa de datos del equipo
+                            // Guardamos los datos del equipo en la base de datos
+                            equiposRef.setValue(equipoData)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                // Ambas operaciones de guardado completadas con éxito
+                                                Toast.makeText(CrearEquipo.this, "Usuario y equipo registrados exitosamente", Toast.LENGTH_SHORT).show();
 
-        // Guardamos los datos del equipo en la base de datos
-        equiposRef.child(userId).setValue(equipoData);
+                                                // Iniciar sesión automáticamente después de crear el usuario
+                                                mAuth.signInWithEmailAndPassword(correo, password)
+                                                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    // Inicio de sesión exitoso, redirigir al usuario a la actividad Calendario
+                                                                    startActivity(new Intent(CrearEquipo.this, Calendario.class));
+                                                                    finish();
+                                                                } else {
+                                                                    // Error al iniciar sesión automáticamente
+                                                                    Toast.makeText(CrearEquipo.this, "Error al iniciar sesión automáticamente: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            }
+                                                        });
+                                            } else {
+                                                // Error al guardar datos del equipo
+                                                Toast.makeText(CrearEquipo.this, "Error al registrar el equipo: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                        } else {
+                            // Error al guardar datos del usuario
+                            Toast.makeText(CrearEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
+
+
 
 
     public void goBack(View view) {

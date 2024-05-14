@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,17 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
 
         selectedDate = LocalDate.now();
         setMonthView();
+        Button boton3 = findViewById(R.id.boton3);
+
+        // Establecer un listener de clic para el botón
+        boton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Iniciar la actividad Partido cuando se hace clic en el botón
+                Intent intent = new Intent(Calendario.this, Partido.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initWidgets()
@@ -100,10 +112,21 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         setMonthView();
     }
     public void onOption4Click(View view) {
-        Intent intent = new Intent(this, Partido.class);
+        Intent intent = new Intent(this, EditarPerfil.class);
         startActivity(intent);
     }
-
+    public void onOption2Click(View view) {
+        Intent intent = new Intent(this, Conversaciones.class);
+        startActivity(intent);
+    }
+    public void onOption3Click(View view) {
+        Intent intent = new Intent(this, Calendario.class);
+        startActivity(intent);
+    }
+    public void onOption1Click(View view) {
+        Intent intent = new Intent(this, Conversaciones.class);
+        startActivity(intent);
+    }
     @Override
     public void onItemClick(int position, String dayText)
     {

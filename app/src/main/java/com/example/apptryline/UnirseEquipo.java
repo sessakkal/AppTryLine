@@ -1,95 +1,105 @@
-// UnirseEquipo.java
 package com.example.apptryline;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class UnirseEquipo extends AppCompatActivity {
 
-    private EditText emailEditText, passwordEditText, confirmPasswordEditText, nombreUsuarioEditText;
-    private FirebaseAuth mAuth;
+    private EditText emailAdminEditText, emailEditText, nombreUsuarioEditText, passwordEditText, repetirContraEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registro_user);
 
+        emailAdminEditText = findViewById(R.id.email_admin_edittext);
         emailEditText = findViewById(R.id.email_edittext);
-        passwordEditText = findViewById(R.id.password_edittext);
-        confirmPasswordEditText = findViewById(R.id.repetir_contra);
         nombreUsuarioEditText = findViewById(R.id.nombre_usuario);
-        mAuth = FirebaseAuth.getInstance();
+        passwordEditText = findViewById(R.id.password_edittext);
+        repetirContraEditText = findViewById(R.id.repetir_contra);
+        Button registroButton = findViewById(R.id.registro_button);
 
-        findViewById(R.id.registro_button).setOnClickListener(new View.OnClickListener() {
+        registroButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                registrarUsuario();
             }
         });
     }
 
-    private void registerUser() {
+    private void registrarUsuario() {
+        final String emailAdmin = emailAdminEditText.getText().toString().trim();
         final String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
-        String confirmPassword = confirmPasswordEditText.getText().toString().trim();
         final String nombreUsuario = nombreUsuarioEditText.getText().toString().trim();
+        final String password = passwordEditText.getText().toString().trim();
+        String repetirContra = repetirContraEditText.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword) || TextUtils.isEmpty(nombreUsuario)) {
+        if (TextUtils.isEmpty(emailAdmin) || TextUtils.isEmpty(email) || TextUtils.isEmpty(nombreUsuario) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repetirContra)) {
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (!password.equals(confirmPassword)) {
+        if (!password.equals(repetirContra)) {
             Toast.makeText(this, "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
+        ref.orderByChild("correoElectronico").equalTo(emailAdmin)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            // Cambiar este valor según corresponda
-                            boolean admin = false; // O true si es un administrador
-                            String equipoId = ""; // Aquí debes asignar el ID del equipo al que se une el usuario
-                            guardarInformacionUsuario(user.getUid(), email, nombreUsuario, admin, equipoId);
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                final String adminUid = snapshot.getKey();
+                                firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                        .addOnCompleteListener(UnirseEquipo.this, task -> {
+                                            if (task.isSuccessful()) {
+                                                FirebaseUser user = firebaseAuth.getCurrentUser();
+                                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getUid());
+                                                userRef.child("nombreUsuario").setValue(nombreUsuario);
+                                                userRef.child("equipoId").setValue(adminUid);
+
+                                                // Agregar al usuario como miembro del equipo
+                                                DatabaseReference equipoRef = FirebaseDatabase.getInstance().getReference("Equipos").child(adminUid).child("miembros");
+                                                equipoRef.child(user.getUid()).setValue(true);
+
+                                                Toast.makeText(UnirseEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+
+                                                // Acceder a la actividad Calendario
+                                                startActivity(new Intent(UnirseEquipo.this, Calendario.class));
+                                                finish();
+                                            } else {
+                                                Toast.makeText(UnirseEquipo.this, "Error al registrar usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                return;
+                            }
                         } else {
-                            Toast.makeText(UnirseEquipo.this, "Error al registrar el usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UnirseEquipo.this, "No se encontró un administrador con ese correo electrónico", Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
-    }
 
-    private void guardarInformacionUsuario(String userId, String email, String nombreUsuario, boolean admin, String equipoId) {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
-        Usuario usuario = new Usuario(email, nombreUsuario, "", admin, equipoId);
-        ref.child(userId).setValue(usuario)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(UnirseEquipo.this, "Usuario registrado y datos guardados exitosamente", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(UnirseEquipo.this, Calendario.class));
-                            finish();
-                        } else {
-                            Toast.makeText(UnirseEquipo.this, "Error al guardar la información del usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(UnirseEquipo.this, "Error al buscar administrador: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

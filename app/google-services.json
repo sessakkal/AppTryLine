@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1008395824977",
+    "firebase_url": "https://apptryline-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "apptryline",
     "storage_bucket": "apptryline.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.example.apptryline"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1008395824977-a83r3pqevefgfg8afunfb1cfmb1tki4c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apptryline",
+            "certificate_hash": "e4b1060af88ed3cc1fa928bc6c14ebdbb67b71be"
+          }
+        },
+        {
+          "client_id": "1008395824977-mpq0h37mtic011jfuo09i0he4gdkrm5t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDOIKsB2P5Ho_B3Yyt3k8jnV_h4WHOR-34"
@@ -20,7 +34,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1008395824977-mpq0h37mtic011jfuo09i0he4gdkrm5t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

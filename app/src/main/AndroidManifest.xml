@@ -56,7 +56,10 @@
             android:name=".InicioRegistro"
             android:exported="true" />
         <activity
-            android:name=".ResultadoPartido"
+            android:name=".Conversaciones"
+            android:exported="true" />
+        <activity
+            android:name=".EditarPerfil"
             android:exported="true" />
     </application>
 
