@@ -1,5 +1,6 @@
 package com.example.apptryline;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -127,17 +135,81 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         startActivity(intent);
     }
     public void onOption2Click(View view) {
-        Intent intent = new Intent(this, Conversaciones.class);
-        startActivity(intent);
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), Conversaciones.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
     public void onOption3Click(View view) {
         Intent intent = new Intent(this, Calendario.class);
         startActivity(intent);
     }
     public void onOption1Click(View view) {
-        Intent intent = new Intent(this, Conversaciones.class);
-        startActivity(intent);
+        // Obtener una referencia a la base de datos de Firebase
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+
+        // Obtener el ID del usuario actual (puedes cambiar esto dependiendo de cómo estés autenticando al usuario)
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Obtener la referencia del usuario actual
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        // Agregar un listener para obtener los datos del usuario actual
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // Verificar si existe el campo "equipoId" en los datos del usuario
+                if (dataSnapshot.hasChild("equipoId")) {
+                    // Obtener el ID del equipo del usuario
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+
+                    // Verificar si se obtuvo un ID de equipo válido
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        // Crear un intent para iniciar la actividad General y pasar el ID del equipo como extra
+                        Intent intent = new Intent(getApplicationContext(), General.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        // Manejar el caso cuando el ID del equipo es nulo o vacío
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // Manejar el caso cuando el campo "equipoId" no está presente en los datos del usuario
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Manejar errores de base de datos si es necesario
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
     @Override
     public void onItemClick(int position, String dayText)
     {

@@ -8,7 +8,7 @@
         android:id="@+id/nombreEquipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nombre del Jugador"
+        android:text="Nombre del equipo"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_alignParentTop="true"

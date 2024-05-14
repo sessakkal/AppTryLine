@@ -1,6 +1,9 @@
 package com.example.apptryline;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,6 +38,16 @@ public class Conversaciones extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         obtenerEquipoIdUsuarioActual();
+
+        // Agregar un listener al ListView para manejar la selección de usuarios
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String usuarioSeleccionado = usuarios.get(position);
+                // Obtener el ID del usuario seleccionado y abrir la actividad de conversación individual
+                abrirConversacionIndividual(usuarioSeleccionado);
+            }
+        });
     }
 
     private void obtenerEquipoIdUsuarioActual() {
@@ -81,4 +94,31 @@ public class Conversaciones extends AppCompatActivity {
             }
         });
     }
+
+    private void abrirConversacionIndividual(String nombreUsuario) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Usuarios");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String uid = snapshot.getKey();
+                    String nombreUsuarioFirebase = snapshot.child("nombreUsuario").getValue(String.class);
+                    if (nombreUsuarioFirebase != null && nombreUsuarioFirebase.equals(nombreUsuario)) {
+                        // Obtener el ID del usuario seleccionado y abrir la actividad de conversación individual
+                        String idUsuarioSeleccionado = uid;
+                        Intent intent = new Intent(Conversaciones.this, Chat.class);
+                        intent.putExtra("otroUsuarioId", idUsuarioSeleccionado); // Aquí se pasa el ID del usuario seleccionado
+                        startActivity(intent);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Conversaciones.this, "Error al abrir la conversación individual", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

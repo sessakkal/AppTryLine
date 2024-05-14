@@ -64,6 +64,9 @@
         <activity
             android:name=".CrearPartido"
             android:exported="true" />
+        <activity
+            android:name=".General"
+            android:exported="true" />
     </application>
 
 </manifest>

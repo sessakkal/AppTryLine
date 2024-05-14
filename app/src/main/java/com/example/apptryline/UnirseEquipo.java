@@ -76,6 +76,7 @@ public class UnirseEquipo extends AppCompatActivity {
                                                 DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(user.getUid());
                                                 userRef.child("nombreUsuario").setValue(nombreUsuario);
                                                 userRef.child("equipoId").setValue(adminUid);
+                                                userRef.child("correoElectronico").setValue(email);
 
                                                 // Agregar al usuario como miembro del equipo
                                                 DatabaseReference equipoRef = FirebaseDatabase.getInstance().getReference("Equipos").child(adminUid).child("miembros");
