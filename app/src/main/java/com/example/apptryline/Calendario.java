@@ -48,6 +48,17 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
                 startActivity(intent);
             }
         });
+        Button boton4 = findViewById(R.id.boton4);
+
+        // Establecer un listener de clic para el botón
+        boton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Iniciar la actividad Partido cuando se hace clic en el botón
+                Intent intent = new Intent(Calendario.this, CrearPartido.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initWidgets()

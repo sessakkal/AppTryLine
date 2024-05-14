@@ -168,7 +168,7 @@ public class EditarPerfil extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        Log.d("ProfileFragment", "User photo URL updated.");
+                                                        Log.d("EditarPerfil", "User photo URL updated.");
                                                     }
                                                 }
                                             });
