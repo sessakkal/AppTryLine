@@ -37,10 +37,10 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
 
         selectedDate = LocalDate.now();
         setMonthView();
-        Button boton3 = findViewById(R.id.boton3);
+        Button boton1 = findViewById(R.id.boton3);
 
         // Establecer un listener de clic para el botón
-        boton3.setOnClickListener(new View.OnClickListener() {
+        boton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Iniciar la actividad Partido cuando se hace clic en el botón
