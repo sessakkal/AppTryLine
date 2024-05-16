@@ -21,27 +21,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"/>
 
-        <TextView
-            android:id="@+id/textViewNombre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Nombre:"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_below="@id/titulo_mostrar_partido"
-            android:layout_marginTop="32dp"
-            android:layout_marginStart="16dp"/>
-
-    <TextView
-        android:id="@+id/nombre_partido"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:layout_toEndOf="@id/textViewNombre"
-        android:layout_alignBaseline="@id/textViewNombre"/>
-
     <TextView
         android:id="@+id/textViewFecha"
         android:layout_width="wrap_content"
@@ -49,7 +28,7 @@
         android:text="Fecha:"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:layout_below="@id/textViewNombre"
+        android:layout_below="@id/titulo_mostrar_partido"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -104,15 +83,6 @@
         android:layout_below="@id/textViewCoordenadas"/>
 
 
-    <org.osmdroid.views.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@id/textViewCoordenadas"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
-
     <TextView
         android:id="@+id/textViewUbicacionTexto"
         android:layout_width="wrap_content"
@@ -120,7 +90,7 @@
         android:text="Ubicación en texto:"
         android:textColor="@color/white"
         android:textSize="18sp"
-        android:layout_below="@id/mapView"
+        android:layout_below="@id/textViewCoordenadas"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"/>
 
@@ -176,12 +146,6 @@
         android:layout_toEndOf="@id/textViewEquipoVisitante"
         android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
 
-    <com.anychart.AnyChartView
-        android:id="@+id/any_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="121dp"
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/equipo_visitante_partido" />
 
 
     </RelativeLayout>

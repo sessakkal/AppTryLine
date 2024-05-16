@@ -21,7 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class CrearPartido extends AppCompatActivity {
 
-    private EditText nombreEditText, fechaEditText, horaInicioEditText, coordenadasEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText;
+    private EditText fechaEditText, horaInicioEditText, coordenadasEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText;
     private Button anadirPartidoButton;
     private FirebaseAuth mAuth;
     private DatabaseReference equiposRef;
@@ -34,7 +34,6 @@ public class CrearPartido extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         equiposRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
 
-        nombreEditText = findViewById(R.id.nombre);
         fechaEditText = findViewById(R.id.fecha);
         horaInicioEditText = findViewById(R.id.hora_inicio);
         coordenadasEditText = findViewById(R.id.coordenadas);
@@ -85,7 +84,6 @@ public class CrearPartido extends AppCompatActivity {
     }
 
     private void crearPartido(String equipoId) {
-        String nombre = nombreEditText.getText().toString().trim();
         String fecha = fechaEditText.getText().toString().trim();
         String horaInicio = horaInicioEditText.getText().toString().trim();
         String coordenadas = coordenadasEditText.getText().toString().trim();
@@ -96,7 +94,7 @@ public class CrearPartido extends AppCompatActivity {
         DatabaseReference partidoRef = equiposRef.child(equipoId).child("Partidos").push(); // Generar un ID único para el partido
         String partidoId = partidoRef.getKey();
 
-        PartidoDatos partido = new PartidoDatos(nombre, fecha, horaInicio, coordenadas, ubicacionTexto, equipoLocal, equipoVisitante);
+        PartidoDatos partido = new PartidoDatos(fecha, horaInicio, coordenadas, ubicacionTexto, equipoLocal, equipoVisitante);
 
         partidoRef.setValue(partido)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -114,3 +112,4 @@ public class CrearPartido extends AppCompatActivity {
                 });
     }
 }
+
