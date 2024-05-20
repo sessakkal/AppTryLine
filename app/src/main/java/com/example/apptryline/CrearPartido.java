@@ -94,7 +94,7 @@ public class CrearPartido extends AppCompatActivity {
         DatabaseReference partidoRef = equiposRef.child(equipoId).child("Partidos").push();
         String partidoId = partidoRef.getKey();
 
-        PartidoDatos partido = new PartidoDatos(fecha, horaInicio, coordenadas, ubicacionTexto, equipoLocal, equipoVisitante);
+        PartidoDatos partido = new PartidoDatos(partidoId, fecha, horaInicio, coordenadas, ubicacionTexto, equipoLocal, equipoVisitante);
 
         partidoRef.setValue(partido).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -107,4 +107,5 @@ public class CrearPartido extends AppCompatActivity {
             }
         });
     }
+
 }

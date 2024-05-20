@@ -49,9 +49,7 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         setMonthView();
 
         setUpButtons();
-        setUpRecyclerView();
-
-        cargarPartidosDesdeFirebase();
+        cargarPartidosDesdeFirebase(); // Se llama después de setUpButtons
     }
 
     private void initWidgets() {
@@ -108,13 +106,6 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
     }
 
     private void setUpButtons() {
-        Button boton1 = findViewById(R.id.boton3);
-        boton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Calendario.this, Partido.class));
-            }
-        });
 
         Button boton4 = findViewById(R.id.boton4);
         boton4.setOnClickListener(new View.OnClickListener() {
@@ -125,9 +116,9 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         });
     }
 
-    private void setUpRecyclerView() {
+    private void setUpRecyclerView(String equipoId) {
         partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        partidoAdapter = new PartidoAdapter(partidosIds, this);  // Pass the Context here
+        partidoAdapter = new PartidoAdapter(partidosIds, equipoId, this);
         partidosRecyclerView.setAdapter(partidoAdapter);
     }
 
@@ -172,6 +163,7 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
                         String partidoId = partidoSnapshot.getKey();
                         partidosIds.add(partidoId);
                     }
+                    setUpRecyclerView(equipoId);
                     partidoAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(Calendario.this, "No hay partidos programados para el equipo", Toast.LENGTH_SHORT).show();

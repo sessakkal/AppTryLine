@@ -10,36 +10,34 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
-public class PartidoAdapter extends RecyclerView.Adapter<PartidoAdapter.ViewHolder> {
+public class PartidoAdapter extends RecyclerView.Adapter<PartidoAdapter.PartidoViewHolder> {
 
     private List<String> partidosIds;
+    private String equipoId;
     private Context context;
 
-    public PartidoAdapter(List<String> partidosIds, Context context) {
+    public PartidoAdapter(List<String> partidosIds, String equipoId, Context context) {
         this.partidosIds = partidosIds;
+        this.equipoId = equipoId;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_partido, parent, false);
-        return new ViewHolder(itemView);
+    public PartidoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.item_partido, parent, false);
+        return new PartidoViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PartidoViewHolder holder, int position) {
         String partidoId = partidosIds.get(position);
         holder.textViewPartido.setText(partidoId);
 
-        // Set an OnClickListener to navigate to the Partido activity
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Partido.class);
-                intent.putExtra("partidoId", partidoId);
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, Partido.class);
+            intent.putExtra("partidoId", partidoId);
+            context.startActivity(intent);
         });
     }
 
@@ -48,18 +46,17 @@ public class PartidoAdapter extends RecyclerView.Adapter<PartidoAdapter.ViewHold
         return partidosIds.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void updatePartidos(List<String> nuevosPartidos) {
+        this.partidosIds = nuevosPartidos;
+        notifyDataSetChanged();
+    }
+
+    public static class PartidoViewHolder extends RecyclerView.ViewHolder {
         TextView textViewPartido;
 
-        public ViewHolder(@NonNull View itemView) {
+        public PartidoViewHolder(View itemView) {
             super(itemView);
             textViewPartido = itemView.findViewById(R.id.textViewPartido);
         }
-    }
-
-    // Method to update the list of matches in the adapter
-    public void updatePartidos(List<String> partidosIds) {
-        this.partidosIds = partidosIds;
-        notifyDataSetChanged(); // Notify the RecyclerView that data has changed
     }
 }

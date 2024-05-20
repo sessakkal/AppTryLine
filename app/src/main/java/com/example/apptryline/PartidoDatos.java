@@ -1,6 +1,7 @@
 package com.example.apptryline;
 
 public class PartidoDatos {
+    private String id;
     private String fecha;
     private String horaInicio;
     private String coordenadas;
@@ -12,9 +13,9 @@ public class PartidoDatos {
         // Constructor vacío requerido para Firebase
     }
 
-    public PartidoDatos( String fecha, String horaInicio, String coordenadas,
+    public PartidoDatos(String id, String fecha, String horaInicio, String coordenadas,
                    String ubicacionTexto, String equipoLocal, String equipoVisitante) {
-
+        this.id = id;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.coordenadas = coordenadas;
@@ -65,6 +66,14 @@ public class PartidoDatos {
 
     public String getEquipoVisitante() {
         return equipoVisitante;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setEquipoVisitante(String equipoVisitante) {

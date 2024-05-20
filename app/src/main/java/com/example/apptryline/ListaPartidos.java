@@ -17,6 +17,7 @@ public class ListaPartidos extends AppCompatActivity {
 
     private RecyclerView recyclerViewPartidos;
     private PartidoAdapter partidoAdapter;
+    private String equipoId = "equipoId"; // Supongamos que el equipoId es conocido por ahora
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +27,12 @@ public class ListaPartidos extends AppCompatActivity {
         recyclerViewPartidos = findViewById(R.id.recyclerViewPartidos);
         recyclerViewPartidos.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configure the adapter with an empty list for now and pass the context
-        partidoAdapter = new PartidoAdapter(new ArrayList<>(), this);
+        // Configure the adapter with an empty list, equipoId, and context
+        partidoAdapter = new PartidoAdapter(new ArrayList<>(), equipoId, this);
         recyclerViewPartidos.setAdapter(partidoAdapter);
 
         // Get reference to the Firebase database where matches are stored
-        DatabaseReference partidosRef = FirebaseDatabase.getInstance().getReference("Equipos").child("TuEquipoId").child("Partidos");
+        DatabaseReference partidosRef = FirebaseDatabase.getInstance().getReference("Equipos").child(equipoId).child("Partidos");
         partidosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
