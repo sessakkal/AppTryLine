@@ -2,6 +2,7 @@ package com.example.apptryline;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +12,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 public class Partido extends AppCompatActivity {
 
     private TextView textViewFecha, textViewHoraInicio, textViewCoordenadas, textViewUbicacionTexto, textViewEquipoLocal, textViewEquipoVisitante;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,9 @@ public class Partido extends AppCompatActivity {
                             PartidoDatos partido = equipoSnapshot.child("Partidos").child(partidoId).getValue(PartidoDatos.class);
 
                             // Actualizar las vistas con los datos del partido
-                            textViewFecha.setText(partido.getFecha());
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                            String fechaString = dateFormat.format(partido.getFecha());
+                            textViewFecha.setText(fechaString);
                             textViewHoraInicio.setText(partido.getHoraInicio());
                             textViewCoordenadas.setText(partido.getCoordenadas());
                             textViewUbicacionTexto.setText(partido.getUbicacionTexto());

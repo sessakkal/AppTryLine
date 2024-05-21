@@ -156,6 +156,18 @@
             android:textSize="18sp"
             android:layout_toEndOf="@id/textViewEquipoVisitante"
             android:layout_alignBaseline="@id/textViewEquipoVisitante"/>
+        <ProgressBar
+            android:id="@+id/posesion_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/textViewEquipoVisitante"
+            android:max="100"
+            android:progress="50" />
+
 
     </RelativeLayout>
 </ScrollView>

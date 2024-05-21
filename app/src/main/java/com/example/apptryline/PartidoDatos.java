@@ -1,8 +1,9 @@
 package com.example.apptryline;
 
+import java.util.Date;
 public class PartidoDatos {
     private String id;
-    private String fecha;
+    private Date fecha;
     private String horaInicio;
     private String coordenadas;
     private String ubicacionTexto;
@@ -13,7 +14,7 @@ public class PartidoDatos {
         // Constructor vacío requerido para Firebase
     }
 
-    public PartidoDatos(String id, String fecha, String horaInicio, String coordenadas,
+    public PartidoDatos(String id, Date fecha, String horaInicio, String coordenadas,
                    String ubicacionTexto, String equipoLocal, String equipoVisitante) {
         this.id = id;
         this.fecha = fecha;
@@ -24,11 +25,11 @@ public class PartidoDatos {
         this.equipoVisitante = equipoVisitante;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
