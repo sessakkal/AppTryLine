@@ -27,27 +27,26 @@ public class ListaPartidos extends AppCompatActivity {
         recyclerViewPartidos = findViewById(R.id.recyclerViewPartidos);
         recyclerViewPartidos.setLayoutManager(new LinearLayoutManager(this));
 
-        // Configure the adapter with an empty list, equipoId, and context
+
         partidoAdapter = new PartidoAdapter(new ArrayList<>(), equipoId, this);
         recyclerViewPartidos.setAdapter(partidoAdapter);
 
-        // Get reference to the Firebase database where matches are stored
+
         DatabaseReference partidosRef = FirebaseDatabase.getInstance().getReference("Equipos").child(equipoId).child("Partidos");
         partidosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> partidos = new ArrayList<>(); // List to store match names
+                List<String> partidos = new ArrayList<>();
                 for (DataSnapshot partidoSnapshot : dataSnapshot.getChildren()) {
                     String nombrePartido = partidoSnapshot.child("nombre").getValue(String.class);
                     partidos.add(nombrePartido);
                 }
-                // Update the adapter with the data obtained from Firebase
                 partidoAdapter.updatePartidos(partidos);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle error if data reading is cancelled
+
             }
         });
     }

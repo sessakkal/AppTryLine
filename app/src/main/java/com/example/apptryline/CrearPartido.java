@@ -27,7 +27,7 @@ import java.util.Locale;
 
 public class CrearPartido extends AppCompatActivity {
 
-    private EditText fechaEditText, horaInicioEditText, coordenadasEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText;
+    private EditText fechaEditText, horaInicioEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText, resultEditText, melesAFavorEditText, melesEnContraEditText, triesAFavorEditText, triesEnContraEditText;
     private Button anadirPartidoButton;
     private FirebaseAuth mAuth;
     private DatabaseReference equiposRef;
@@ -42,11 +42,15 @@ public class CrearPartido extends AppCompatActivity {
 
         fechaEditText = findViewById(R.id.fecha);
         horaInicioEditText = findViewById(R.id.hora_inicio);
-        coordenadasEditText = findViewById(R.id.coordenadas);
         ubicacionTextoEditText = findViewById(R.id.ubi_texto);
         equipoLocalEditText = findViewById(R.id.equipolocal);
         equipoVisitanteEditText = findViewById(R.id.equipovisitante);
         anadirPartidoButton = findViewById(R.id.anadirpartido);
+        resultEditText = findViewById(R.id.result);
+        melesAFavorEditText = findViewById(R.id.meles_a_favor);
+        melesEnContraEditText = findViewById(R.id.meles_en_contra);
+        triesAFavorEditText = findViewById(R.id.tries_a_favor);
+        triesEnContraEditText = findViewById(R.id.tries_en_contra);
 
         anadirPartidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,13 +91,17 @@ public class CrearPartido extends AppCompatActivity {
     private void crearPartido(String equipoId) {
         String fechaString = fechaEditText.getText().toString().trim();
         String horaInicio = horaInicioEditText.getText().toString().trim();
-        String coordenadas = coordenadasEditText.getText().toString().trim();
         String ubicacionTexto = ubicacionTextoEditText.getText().toString().trim();
         String equipoLocal = equipoLocalEditText.getText().toString().trim();
         String equipoVisitante = equipoVisitanteEditText.getText().toString().trim();
+        String result = resultEditText.getText().toString().trim();
+        String melesAFavor = melesAFavorEditText.getText().toString().trim();
+        String melesEnContra = melesEnContraEditText.getText().toString().trim();
+        String triesAFavor = triesAFavorEditText.getText().toString().trim();
+        String triesEnContra = triesEnContraEditText.getText().toString().trim();
 
         // Validar que se ingresen todos los campos
-        if (fechaString.isEmpty() || horaInicio.isEmpty() || coordenadas.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty()) {
+        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty() || result.isEmpty() || melesAFavor.isEmpty()|| melesEnContra.isEmpty()) {
             Toast.makeText(CrearPartido.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -110,7 +118,7 @@ public class CrearPartido extends AppCompatActivity {
         }
 
         // Crear un objeto PartidoDatos con los datos proporcionados
-        PartidoDatos partido = new PartidoDatos(null, fecha, horaInicio, coordenadas, ubicacionTexto, equipoLocal, equipoVisitante);
+        PartidoDatos partido = new PartidoDatos(null, fecha, horaInicio, ubicacionTexto, equipoLocal, equipoVisitante, result, Integer.parseInt(melesAFavor), Integer.parseInt(melesEnContra), Integer.parseInt(triesEnContra), Integer.parseInt(triesAFavor));
 
         // Guardar el partido en la base de datos
         DatabaseReference partidoRef = equiposRef.child(equipoId).child("Partidos").push();

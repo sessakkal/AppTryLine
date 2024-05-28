@@ -25,7 +25,7 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         this.onItemListener = onItemListener;
         this.selectedDate = selectedDate;
         this.todayDate = todayDate;
-        this.diasConPartidos = diasConPartidos; // Nuevo campo para almacenar días con partidos
+        this.diasConPartidos = diasConPartidos;
     }
 
     @NonNull
@@ -47,15 +47,12 @@ class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
             int day = Integer.parseInt(dayText);
             LocalDate date = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
 
-            // Verificar si el día es el día actual
             if (date.equals(todayDate)) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.green));
             } else {
-                // Establecer el fondo transparente para los días que no son el día actual
                 holder.itemView.setBackgroundColor(Color.TRANSPARENT);
             }
 
-            // Cambiar el color de fondo si hay un partido en este día
             if (diasConPartidos.contains(dayText)) {
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
             }

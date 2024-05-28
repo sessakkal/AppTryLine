@@ -34,10 +34,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Calendario extends AppCompatActivity implements CalendarAdapter.OnItemListener {
+public class Calendario extends AppCompatActivity{
 
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
     private RecyclerView partidosRecyclerView;
     private LocalDate selectedDate;
     private LocalDate todayDate;
@@ -51,9 +49,6 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         setContentView(R.layout.calendario);
 
         initWidgets();
-        todayDate = LocalDate.now();
-        selectedDate = LocalDate.now();
-        setMonthView();
 
         checkAdminStatus();
         cargarPartidosDesdeFirebase();
@@ -77,19 +72,19 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
                     } else {
                         boton4.setVisibility(View.GONE);
                     }
-                    setUpButtons();  // Llamar a setUpButtons() aquí después de verificar el estado del usuario
+                    setUpButtons();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(Calendario.this, "Error al verificar el estado de administrador", Toast.LENGTH_SHORT).show();
                     boton4.setVisibility(View.GONE);
-                    setUpButtons();  // Asegurarse de que setUpButtons() se llame incluso si hay un error
+                    setUpButtons();
                 }
             });
         } else {
             boton4.setVisibility(View.GONE);
-            setUpButtons();  // Asegurarse de que setUpButtons() se llame si el usuario no está autenticado
+            setUpButtons();
         }
     }
 
@@ -104,57 +99,11 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
     }
 
     private void initWidgets() {
-        calendarRecyclerView = findViewById(R.id.calendarRecyclerView);
-        monthYearText = findViewById(R.id.monthYearTV);
+
         partidosRecyclerView = findViewById(R.id.partidosRecyclerView);
     }
 
-    private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, selectedDate, todayDate, diasConPartidos); // Pasar diasConPartidos al constructor
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 7);
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-    }
-
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-
-        int daysInMonth = yearMonth.lengthOfMonth();
-        DayOfWeek firstDayOfWeek = DayOfWeek.MONDAY;
-        int firstDayOfWeekValue = firstDayOfWeek.getValue();
-
-        LocalDate firstOfMonth = LocalDate.of(date.getYear(), date.getMonth(), 1);
-        int firstDayOfMonthValue = firstOfMonth.getDayOfWeek().getValue();
-
-        for (int i = 1; i < firstDayOfMonthValue; i++) {
-            daysInMonthArray.add("");
-        }
-
-        for (int i = 1; i <= daysInMonth; i++) {
-            daysInMonthArray.add(String.valueOf(i));
-        }
-
-        return daysInMonthArray;
-    }
-
-    private String monthYearFromDate(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
-    }
-
-    public void previousMonthAction(View view) {
-        selectedDate = selectedDate.minusMonths(1);
-        setMonthView();
-    }
-
-    public void nextMonthAction(View view) {
-        selectedDate = selectedDate.plusMonths(1);
-        setMonthView();
-    }
     public void onOption4Click(View view) {
         Intent intent = new Intent(this, EditarPerfil.class);
         startActivity(intent);
@@ -193,52 +142,36 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         startActivity(intent);
     }
     public void onOption1Click(View view) {
-        // Obtener una referencia a la base de datos de Firebase
         DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
 
-        // Obtener el ID del usuario actual (puedes cambiar esto dependiendo de cómo estés autenticando al usuario)
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // Obtener la referencia del usuario actual
         DatabaseReference usuarioActualRef = usuariosRef.child(userId);
 
-        // Agregar un listener para obtener los datos del usuario actual
         usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // Verificar si existe el campo "equipoId" en los datos del usuario
                 if (dataSnapshot.hasChild("equipoId")) {
-                    // Obtener el ID del equipo del usuario
                     String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
 
-                    // Verificar si se obtuvo un ID de equipo válido
                     if (equipoId != null && !equipoId.isEmpty()) {
-                        // Crear un intent para iniciar la actividad General y pasar el ID del equipo como extra
                         Intent intent = new Intent(getApplicationContext(), General.class);
                         intent.putExtra("equipoId", equipoId);
                         startActivity(intent);
                     } else {
-                        // Manejar el caso cuando el ID del equipo es nulo o vacío
                         Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    // Manejar el caso cuando el campo "equipoId" no está presente en los datos del usuario
                     Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar errores de base de datos si es necesario
                 Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
-
-
-
-
-
 
     private void setUpRecyclerView(String equipoId) {
         partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -287,22 +220,16 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
                         String partidoId = partidoSnapshot.getKey();
                         partidosIds.add(partidoId);
 
-                        // Obtener los datos del partido
                         String fechaString;
                         Object fechaObject = partidoSnapshot.child("fecha").getValue();
                         if (fechaObject instanceof String) {
-                            // Si el valor es una cadena, asignarlo a fechaString
                             fechaString = (String) fechaObject;
                         } else if (fechaObject instanceof HashMap) {
-                            // Si el valor es un HashMap, acceder al campo "date" u otro campo que contenga la fecha
-                            // Por ejemplo, si la fecha se almacena bajo el campo "date"
                             fechaString = ((HashMap<String, Object>) fechaObject).get("date").toString();
                         } else {
-                            // Si el valor no es ni una cadena ni un HashMap, manejar el caso según sea necesario
-                            fechaString = ""; // O asignar otro valor predeterminado
+                            fechaString = "";
                         }
 
-                        // Convertir la cadena de fecha a un objeto Date
                         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                         Date fecha;
                         try {
@@ -312,7 +239,6 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
                             fecha = null;
                         }
 
-                        // Ahora puedes usar "fecha" como objeto Date para lo que necesites
                     }
                     setUpRecyclerView(equipoId);
                     partidoAdapter.notifyDataSetChanged();
@@ -328,19 +254,5 @@ public class Calendario extends AppCompatActivity implements CalendarAdapter.OnI
         });
     }
 
-    @Override
-    public void onItemClick(int position, String dayText) {
-        if (!dayText.isEmpty()) {
-            if (diasConPartidos.contains(dayText)) {
-                Intent intent = new Intent(this, Partido.class);
-                intent.putExtra("selectedDay", dayText);
-                intent.putExtra("selectedMonth", monthYearFromDate(selectedDate));
-                startActivity(intent);
-            } else {
-                String message = "Selected Date: " + dayText + " " + monthYearFromDate(selectedDate);
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 }
 

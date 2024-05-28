@@ -10,8 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -21,14 +19,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -38,13 +44,15 @@ public class EditarPerfil extends AppCompatActivity {
     private static final int GALLERY_REQUEST_CODE = 1;
     private static final int CAMERA_REQUEST_CODE = 2;
 
-    ImageView photoImageView ;
-    TextView displayNameTextView, emailTextView;
+    ImageView photoImageView;
+    TextView emailTextView;
+    EditText nameEditText, currentPasswordEditText, newPasswordEditText;
     ImageButton changePhotoButton;
-    EditText nameEditText;
-    Button saveButton;
+    Button saveButton, changePasswordButton;
     Uri photoUri;
-    NavController navController;
+    DatabaseReference userRef;
+    FirebaseUser user;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,20 +60,55 @@ public class EditarPerfil extends AppCompatActivity {
         setContentView(R.layout.editar_perfil);
 
         photoImageView = findViewById(R.id.photoImageView);
-        displayNameTextView = findViewById(R.id.displayNameTextView);
         emailTextView = findViewById(R.id.emailTextView);
         changePhotoButton = findViewById(R.id.changePhotoButton);
         nameEditText = findViewById(R.id.nameEditText);
+        currentPasswordEditText = findViewById(R.id.currentPasswordEditText);
+        newPasswordEditText = findViewById(R.id.newPasswordEditText);
         saveButton = findViewById(R.id.saveButton);
+        changePasswordButton = findViewById(R.id.changePasswordButton);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
 
-        if(user != null){
-            displayNameTextView.setText(user.getDisplayName());
+        if (user != null) {
             emailTextView.setText(user.getEmail());
             Glide.with(this).load(user.getPhotoUrl()).into(photoImageView);
 
-            // Establece un listener para el botón de cambiar foto
+            // Cargar el nombre de usuario actual desde Firebase Database
+            userRef = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(user.getUid());
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String nombreUsuario = snapshot.child("nombreUsuario").getValue(String.class);
+                        nameEditText.setText(nombreUsuario);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(EditarPerfil.this, "Error al cargar el nombre de usuario", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        String photoUrl = snapshot.child("photoUrl").getValue(String.class);
+                        if (photoUrl != null) {
+                            Glide.with(EditarPerfil.this).load(photoUrl).into(photoImageView);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(EditarPerfil.this, "Error al cargar la foto de perfil", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             changePhotoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -73,11 +116,17 @@ public class EditarPerfil extends AppCompatActivity {
                 }
             });
 
-            // Establece un listener para el botón de guardar
             saveButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     saveChanges(user);
+                }
+            });
+
+            changePasswordButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changePassword(user);
                 }
             });
         }
@@ -120,11 +169,14 @@ public class EditarPerfil extends AppCompatActivity {
                     photoImageView.setImageURI(photoUri);
                 }
             } else if (requestCode == CAMERA_REQUEST_CODE) {
-                photoUri = (Uri) data.getExtras().get("data");
-                photoImageView.setImageURI(photoUri);
+                if (data != null && data.getExtras() != null) {
+                    photoUri = (Uri) data.getExtras().get("data");
+                    photoImageView.setImageURI(photoUri);
+                }
             }
         }
     }
+
 
     private void saveChanges(FirebaseUser user) {
         String newName = String.valueOf(nameEditText.getText());
@@ -140,16 +192,22 @@ public class EditarPerfil extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Log.d("ProfileFragment", "User display name updated.");
+                                Log.d("EditarPerfil", "User display name updated.");
+                                Toast.makeText(EditarPerfil.this, "Nombre actualizado", Toast.LENGTH_SHORT).show();
+
+                                // Actualizar el nombre en Firebase Database
+                                userRef.child("nombreUsuario").setValue(newName);
+                            } else {
+                                Toast.makeText(EditarPerfil.this, "Error al actualizar nombre", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
         }
 
         // Verifica si la foto ha cambiado
-        if (photoUri != null && !photoUri.equals(user.getPhotoUrl())) {
+        if (photoUri != null) {
             // Sube la nueva foto a Firebase Storage
-            StorageReference photoRef = FirebaseStorage.getInstance().getReference().child("profile_photos/" + user.getUid());
+            StorageReference photoRef = FirebaseStorage.getInstance().getReference().child("profile_photos/" + user.getUid() + ".jpg");
             photoRef.putFile(photoUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -158,24 +216,56 @@ public class EditarPerfil extends AppCompatActivity {
                             photoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    // Actualiza la URL de la foto en Firebase Authentication
-                                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                            .setPhotoUri(uri)
-                                            .build();
-
-                                    user.updateProfile(profileUpdates)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        Log.d("EditarPerfil", "User photo URL updated.");
-                                                    }
-                                                }
-                                            });
+                                    // Actualiza la URL de la foto en Firebase Database
+                                    userRef.child("photoUrl").setValue(uri.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d("EditarPerfil", "User photo URL updated.");
+                                                Toast.makeText(EditarPerfil.this, "Foto de perfil actualizada", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(EditarPerfil.this, "Error al actualizar foto de perfil", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
                                 }
                             });
                         }
                     });
+        }
+    }
+
+    private void changePassword(FirebaseUser user) {
+        String currentPassword = currentPasswordEditText.getText().toString();
+        String newPassword = newPasswordEditText.getText().toString();
+
+        if (!currentPassword.isEmpty() && !newPassword.isEmpty()) {
+            AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+
+            user.reauthenticate(credential)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                user.updatePassword(newPassword)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("EditarPerfil", "User password updated.");
+                                                    Toast.makeText(EditarPerfil.this, "Contraseña actualizada", Toast.LENGTH_SHORT).show();
+                                                } else {
+                                                    Toast.makeText(EditarPerfil.this, "Error al actualizar contraseña", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            } else {
+                                Toast.makeText(EditarPerfil.this, "Contraseña actual incorrecta", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            Toast.makeText(this, "Por favor, introduce la contraseña actual y la nueva", Toast.LENGTH_SHORT).show();
         }
     }
 }
