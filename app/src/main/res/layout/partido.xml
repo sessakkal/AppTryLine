@@ -16,6 +16,7 @@
             android:layout_height="200dp"
             android:background="@color/green"
             android:padding="16dp">
+
             <ImageView
                 android:id="@+id/short_left_button"
                 android:layout_width="wrap_content"
@@ -25,6 +26,28 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:onClick="goBack"/>
+
+            <ImageView
+                android:id="@+id/editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icono_editar"
+                android:layout_marginEnd="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_alignParentEnd="true"
+                android:onClick="editarPartido"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/eliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icono_eliminar"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_toStartOf="@id/editar"
+                android:onClick="eliminarPartido"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/equipo_local_partido"
@@ -64,8 +87,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:context=".Partido">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textViewFecha"
@@ -120,18 +142,6 @@
                 android:layout_marginStart="16dp"/>
 
             <TextView
-                android:id="@+id/titulo_estadisticas"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Estadisticas"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_below="@id/textViewUbicacionTexto"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"/>
-
-            <TextView
                 android:id="@+id/ubicacion_texto_partido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,10 +152,33 @@
                 android:layout_alignBaseline="@id/textViewUbicacionTexto"/>
 
             <TextView
+                android:id="@+id/titulo_estadisticas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estadísticas"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_below="@id/textViewUbicacionTexto"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
+                android:id="@+id/titulo_meles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meles"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@id/titulo_estadisticas"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
                 android:id="@+id/meles_a_favor_partido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titulo_estadisticas"
+                android:layout_below="@id/titulo_meles"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -157,7 +190,7 @@
                 android:id="@+id/meles_en_contra_partido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/titulo_estadisticas"
+                android:layout_below="@id/titulo_meles"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_alignParentEnd="true"
@@ -180,10 +213,21 @@
                 android:progressBackgroundTint="@color/gray_602"/>
 
             <TextView
+                android:id="@+id/titulo_tries"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tries"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_below="@id/progress_meles"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="32dp"/>
+
+            <TextView
                 android:id="@+id/tries_a_favor_partido"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/progress_meles"
+                android:layout_below="@id/titulo_tries"
                 android:layout_marginTop="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
@@ -195,7 +239,7 @@
                 android:id="@+id/tries_en_contra_partido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/progress_meles"
+                android:layout_below="@id/titulo_tries"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_alignParentEnd="true"
@@ -218,8 +262,6 @@
                 android:progressBackgroundTint="@color/gray_602"/>
         </RelativeLayout>
 
-        <!-- Aquí va la definición de los TextViews para los jugadores -->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -233,7 +275,7 @@
                 android:src="@drawable/rugby_alineacion"
                 android:scaleType="fitCenter" />
 
-            <!-- TextViews para los nombres de los jugadores -->
+            <!-- Añadir TextViews para los jugadores -->
             <TextView
                 android:id="@+id/player1"
                 android:layout_width="wrap_content"

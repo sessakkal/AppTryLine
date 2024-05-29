@@ -98,7 +98,7 @@ public class CrearPartido extends AppCompatActivity {
         String triesEnContra = triesEnContraEditText.getText().toString().trim();
 
         // Validar que se ingresen todos los campos
-        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty() || result.isEmpty() || melesAFavor.isEmpty() || melesEnContra.isEmpty() || triesAFavor.isEmpty() || triesEnContra.isEmpty()) {
+        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty()) {
             Toast.makeText(CrearPartido.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }

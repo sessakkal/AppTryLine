@@ -37,11 +37,8 @@ import java.util.Map;
 public class Calendario extends AppCompatActivity{
 
     private RecyclerView partidosRecyclerView;
-    private LocalDate selectedDate;
-    private LocalDate todayDate;
     private PartidoAdapter partidoAdapter;
     private List<String> partidosIds = new ArrayList<>();
-    private List<String> diasConPartidos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
