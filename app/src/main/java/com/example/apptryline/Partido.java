@@ -18,6 +18,7 @@ public class Partido extends AppCompatActivity {
 
     private TextView textViewFecha, textViewHoraInicio, textViewUbicacionTexto, textViewEquipoLocal, textViewEquipoVisitante, textViewResultado, textViewMelesAFavor, textViewMelesEnContra, textViewTriesAFavor, textViewTriesEnContra;
     private ProgressBar progressBarMeles, progressBarTries;
+    private TextView[] playerTextViews = new TextView[30];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,11 @@ public class Partido extends AppCompatActivity {
         textViewTriesEnContra = findViewById(R.id.tries_en_contra_partido);
         progressBarMeles = findViewById(R.id.progress_meles);
         progressBarTries = findViewById(R.id.tries_meles);
+
+        for (int i = 0; i < playerTextViews.length; i++) {
+            int resId = getResources().getIdentifier("player" + (i + 1), "id", getPackageName());
+            playerTextViews[i] = findViewById(resId);
+        }
     }
 
     private void loadPartidoDetails(String partidoId) {
@@ -89,9 +95,35 @@ public class Partido extends AppCompatActivity {
                                 } else {
                                     progressBarTries.setProgress(0);
                                 }
+
+                                // Cargar y mostrar los nombres de los jugadores
+                                loadPlayerNames(partidoId);
                             }
 
                             break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
+    }
+
+    private void loadPlayerNames(String partidoId) {
+        DatabaseReference alineacionRef = FirebaseDatabase.getInstance().getReference().child("Alineacion").child(partidoId);
+        alineacionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (int i = 0; i < playerTextViews.length; i++) {
+                        String playerKey = "Jugador" + (i + 1);
+                        if (dataSnapshot.hasChild(playerKey)) {
+                            String playerName = dataSnapshot.child(playerKey).child("nombre").getValue(String.class);
+                            playerTextViews[i].setText(playerName);
                         }
                     }
                 }

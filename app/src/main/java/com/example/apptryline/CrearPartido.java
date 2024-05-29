@@ -30,7 +30,7 @@ public class CrearPartido extends AppCompatActivity {
     private EditText fechaEditText, horaInicioEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText, resultEditText, melesAFavorEditText, melesEnContraEditText, triesAFavorEditText, triesEnContraEditText;
     private Button anadirPartidoButton;
     private FirebaseAuth mAuth;
-    private DatabaseReference equiposRef;
+    private DatabaseReference equiposRef, alineacionRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class CrearPartido extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         equiposRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
+        alineacionRef = FirebaseDatabase.getInstance().getReference().child("Alineacion");
 
         fechaEditText = findViewById(R.id.fecha);
         horaInicioEditText = findViewById(R.id.hora_inicio);
@@ -58,6 +59,61 @@ public class CrearPartido extends AppCompatActivity {
                 obtenerEquipoId();
             }
         });
+    }
+
+    public void guardarAlineacion(View view) {
+        String partidoId = obtenerPartidoId();
+        if (partidoId != null) {
+            guardarJugadorCoordenadas(partidoId, "Jugador1", R.id.player1);
+            guardarJugadorCoordenadas(partidoId, "Jugador2", R.id.player2);
+            guardarJugadorCoordenadas(partidoId, "Jugador3", R.id.player3);
+            guardarJugadorCoordenadas(partidoId, "Jugador4", R.id.player4);
+            guardarJugadorCoordenadas(partidoId, "Jugador5", R.id.player5);
+            guardarJugadorCoordenadas(partidoId, "Jugador6", R.id.player6);
+            guardarJugadorCoordenadas(partidoId, "Jugador7", R.id.player7);
+            guardarJugadorCoordenadas(partidoId, "Jugador8", R.id.player8);
+            guardarJugadorCoordenadas(partidoId, "Jugador9", R.id.player9);
+            guardarJugadorCoordenadas(partidoId, "Jugador10", R.id.player10);
+            guardarJugadorCoordenadas(partidoId, "Jugador11", R.id.player11);
+            guardarJugadorCoordenadas(partidoId, "Jugador12", R.id.player12);
+            guardarJugadorCoordenadas(partidoId, "Jugador13", R.id.player13);
+            guardarJugadorCoordenadas(partidoId, "Jugador14", R.id.player14);
+            guardarJugadorCoordenadas(partidoId, "Jugador15", R.id.player15);
+            guardarJugadorCoordenadas(partidoId, "Jugador16", R.id.player16);
+            guardarJugadorCoordenadas(partidoId, "Jugador17", R.id.player17);
+            guardarJugadorCoordenadas(partidoId, "Jugador18", R.id.player18);
+            guardarJugadorCoordenadas(partidoId, "Jugador19", R.id.player19);
+            guardarJugadorCoordenadas(partidoId, "Jugador20", R.id.player20);
+            guardarJugadorCoordenadas(partidoId, "Jugador21", R.id.player21);
+            guardarJugadorCoordenadas(partidoId, "Jugador22", R.id.player22);
+            guardarJugadorCoordenadas(partidoId, "Jugador23", R.id.player23);
+            guardarJugadorCoordenadas(partidoId, "Jugador24", R.id.player24);
+            guardarJugadorCoordenadas(partidoId, "Jugador25", R.id.player25);
+            guardarJugadorCoordenadas(partidoId, "Jugador26", R.id.player26);
+            guardarJugadorCoordenadas(partidoId, "Jugador27", R.id.player27);
+            guardarJugadorCoordenadas(partidoId, "Jugador28", R.id.player28);
+            guardarJugadorCoordenadas(partidoId, "Jugador29", R.id.player29);
+            guardarJugadorCoordenadas(partidoId, "Jugador30", R.id.player30);
+        }
+        Toast.makeText(this, "Alineación guardada exitosamente", Toast.LENGTH_SHORT).show();
+    }
+
+    private void guardarJugadorCoordenadas(String partidoId, String nombreJugador, int editTextId) {
+        EditText jugadorEditText = findViewById(editTextId);
+        String nombre = jugadorEditText.getText().toString();
+        float x = jugadorEditText.getX();
+        float y = jugadorEditText.getY();
+
+        // Guardar en Firebase bajo el ID del partido
+        alineacionRef.child(partidoId).child(nombreJugador).child("nombre").setValue(nombre);
+        alineacionRef.child(partidoId).child(nombreJugador).child("posicion_x").setValue(x);
+        alineacionRef.child(partidoId).child(nombreJugador).child("posicion_y").setValue(y);
+    }
+
+    private String obtenerPartidoId() {
+        // Este método debería obtener el ID del partido actual.
+        // Asegúrate de tener una forma de obtener y almacenar el ID del partido cuando se crea.
+        return "EL_ID_DEL_PARTIDO";
     }
 
     private void obtenerEquipoId() {
@@ -101,7 +157,7 @@ public class CrearPartido extends AppCompatActivity {
         String triesEnContra = triesEnContraEditText.getText().toString().trim();
 
         // Validar que se ingresen todos los campos
-        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty() || result.isEmpty() || melesAFavor.isEmpty()|| melesEnContra.isEmpty()) {
+        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty() || result.isEmpty() || melesAFavor.isEmpty() || melesEnContra.isEmpty()) {
             Toast.makeText(CrearPartido.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -130,6 +186,7 @@ public class CrearPartido extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(CrearPartido.this, "Partido creado exitosamente", Toast.LENGTH_SHORT).show();
+                    guardarAlineacion(null); // Guardar alineación después de crear el partido
                     // Redirigir al usuario a la pantalla de calendario después de crear el partido
                     Intent intent = new Intent(CrearPartido.this, Calendario.class);
                     startActivity(intent);
@@ -140,5 +197,4 @@ public class CrearPartido extends AppCompatActivity {
             }
         });
     }
-
 }
