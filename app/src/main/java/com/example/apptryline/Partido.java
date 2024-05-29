@@ -97,7 +97,7 @@ public class Partido extends AppCompatActivity {
                                 }
 
                                 // Cargar y mostrar los nombres de los jugadores
-                                loadPlayerNames(partidoId);
+                                loadPlayerNames(equipoSnapshot.getKey(), partidoId);
                             }
 
                             break;
@@ -113,8 +113,8 @@ public class Partido extends AppCompatActivity {
         });
     }
 
-    private void loadPlayerNames(String partidoId) {
-        DatabaseReference alineacionRef = FirebaseDatabase.getInstance().getReference().child("Alineacion").child(partidoId);
+    private void loadPlayerNames(String equipoId, String partidoId) {
+        DatabaseReference alineacionRef = FirebaseDatabase.getInstance().getReference().child("Equipos").child(equipoId).child("Partidos").child(partidoId).child("Alineacion");
         alineacionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
