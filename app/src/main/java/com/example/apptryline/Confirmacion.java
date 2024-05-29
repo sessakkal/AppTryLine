@@ -6,7 +6,6 @@ public class Confirmacion {
     private String comentario;
 
     public Confirmacion() {
-        // Default constructor required for calls to DataSnapshot.getValue(Confirmacion.class)
     }
 
     public Confirmacion(String usuario, String comentario) {

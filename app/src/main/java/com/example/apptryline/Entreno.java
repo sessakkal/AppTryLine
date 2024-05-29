@@ -3,7 +3,9 @@ package com.example.apptryline;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +45,14 @@ public class Entreno extends AppCompatActivity {
             loadEntrenoDetails(entrenoId);
             checkIfAdmin();
         }
+
+        checkBoxConfirmar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                editTextComentario.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+                saveConfirmation(isChecked, editTextComentario.getText().toString());
+            }
+        });
     }
 
     private void initViews() {
@@ -121,6 +131,29 @@ public class Entreno extends AppCompatActivity {
                 // Handle database error
             }
         });
+    }
+
+    private void saveConfirmation(boolean isConfirmed, String comentario) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null && equipoId != null && entrenoId != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference confirmacionRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Equipos").child(equipoId).child("Entrenos").child(entrenoId).child("Confirmaciones").child(userId);
+
+            Confirmacion confirmacion = new Confirmacion(currentUser.getEmail(), comentario);
+            confirmacionRef.setValue(confirmacion)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(Entreno.this, "Confirmación guardada", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Entreno.this, "Error al guardar confirmación", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }
+    }
+
+    public void guardarComentario(View view) {
+        saveConfirmation(checkBoxConfirmar.isChecked(), editTextComentario.getText().toString());
     }
 
     public void goBack(View view) {
