@@ -2,7 +2,6 @@ package com.example.apptryline;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,24 +19,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-public class Calendario extends AppCompatActivity{
+public class Calendario extends AppCompatActivity {
 
     private RecyclerView partidosRecyclerView;
+    private RecyclerView entrenosRecyclerView;
     private PartidoAdapter partidoAdapter;
+    private EntrenoAdapter entrenoAdapter;
     private List<String> partidosIds = new ArrayList<>();
+    private List<String> entrenosIds = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +39,12 @@ public class Calendario extends AppCompatActivity{
         initWidgets();
 
         checkAdminStatus();
-        cargarPartidosDesdeFirebase();
+        cargarPartidosYEntrenosDesdeFirebase();
     }
+
     private void checkAdminStatus() {
         Button boton4 = findViewById(R.id.boton4);
+        Button boton1 = findViewById(R.id.boton1);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -63,11 +56,14 @@ public class Calendario extends AppCompatActivity{
                         Boolean isAdmin = snapshot.child("admin").getValue(Boolean.class);
                         if (isAdmin != null && isAdmin) {
                             boton4.setVisibility(View.VISIBLE);
+                            boton1.setVisibility(View.VISIBLE);
                         } else {
                             boton4.setVisibility(View.GONE);
+                            boton1.setVisibility(View.GONE);
                         }
                     } else {
                         boton4.setVisibility(View.GONE);
+                        boton1.setVisibility(View.GONE);
                     }
                     setUpButtons();
                 }
@@ -76,11 +72,13 @@ public class Calendario extends AppCompatActivity{
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(Calendario.this, "Error al verificar el estado de administrador", Toast.LENGTH_SHORT).show();
                     boton4.setVisibility(View.GONE);
+                    boton1.setVisibility(View.GONE);
                     setUpButtons();
                 }
             });
         } else {
             boton4.setVisibility(View.GONE);
+            boton1.setVisibility(View.GONE);
             setUpButtons();
         }
     }
@@ -93,18 +91,34 @@ public class Calendario extends AppCompatActivity{
                 startActivity(new Intent(Calendario.this, CrearPartido.class));
             }
         });
+
+        Button boton1 = findViewById(R.id.boton1);
+        boton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Calendario.this, CrearEntreno.class));
+            }
+        });
     }
 
     private void initWidgets() {
-
         partidosRecyclerView = findViewById(R.id.partidosRecyclerView);
-    }
+        entrenosRecyclerView = findViewById(R.id.entrenosRecyclerView);
 
+        partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        partidoAdapter = new PartidoAdapter(partidosIds, "", this); // Inicializar el adapter aquí
+        partidosRecyclerView.setAdapter(partidoAdapter);
+
+        entrenosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        entrenoAdapter = new EntrenoAdapter(entrenosIds, "", this); // Inicializar el adapter aquí
+        entrenosRecyclerView.setAdapter(entrenoAdapter);
+    }
 
     public void onOption4Click(View view) {
         Intent intent = new Intent(this, EditarPerfil.class);
         startActivity(intent);
     }
+
     public void onOption2Click(View view) {
         DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -138,11 +152,10 @@ public class Calendario extends AppCompatActivity{
         Intent intent = new Intent(this, Calendario.class);
         startActivity(intent);
     }
+
     public void onOption1Click(View view) {
         DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
-
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         DatabaseReference usuarioActualRef = usuariosRef.child(userId);
 
         usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -150,7 +163,6 @@ public class Calendario extends AppCompatActivity{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChild("equipoId")) {
                     String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
-
                     if (equipoId != null && !equipoId.isEmpty()) {
                         Intent intent = new Intent(getApplicationContext(), General.class);
                         intent.putExtra("equipoId", equipoId);
@@ -170,13 +182,15 @@ public class Calendario extends AppCompatActivity{
         });
     }
 
-    private void setUpRecyclerView(String equipoId) {
-        partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        partidoAdapter = new PartidoAdapter(partidosIds, equipoId, this);
+    private void setUpRecyclerViews(String equipoId) {
+        partidoAdapter = new PartidoAdapter(partidosIds, equipoId, this); // Asegúrate de inicializar el adapter con el equipoId correcto
         partidosRecyclerView.setAdapter(partidoAdapter);
+
+        entrenoAdapter = new EntrenoAdapter(entrenosIds, equipoId, this); // Asegúrate de inicializar el adapter con el equipoId correcto
+        entrenosRecyclerView.setAdapter(entrenoAdapter);
     }
 
-    private void cargarPartidosDesdeFirebase() {
+    private void cargarPartidosYEntrenosDesdeFirebase() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -190,6 +204,8 @@ public class Calendario extends AppCompatActivity{
                         String equipoId = snapshot.child("equipoId").getValue(String.class);
                         if (equipoId != null && !equipoId.isEmpty()) {
                             cargarPartidosEquipo(equipoId);
+                            cargarEntrenosEquipo(equipoId);
+                            setUpRecyclerViews(equipoId); // Asegúrate de llamar esto aquí
                         } else {
                             Toast.makeText(Calendario.this, "El usuario no tiene un equipo asignado", Toast.LENGTH_SHORT).show();
                         }
@@ -216,28 +232,7 @@ public class Calendario extends AppCompatActivity{
                     for (DataSnapshot partidoSnapshot : snapshot.getChildren()) {
                         String partidoId = partidoSnapshot.getKey();
                         partidosIds.add(partidoId);
-
-                        String fechaString;
-                        Object fechaObject = partidoSnapshot.child("fecha").getValue();
-                        if (fechaObject instanceof String) {
-                            fechaString = (String) fechaObject;
-                        } else if (fechaObject instanceof HashMap) {
-                            fechaString = ((HashMap<String, Object>) fechaObject).get("date").toString();
-                        } else {
-                            fechaString = "";
-                        }
-
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        Date fecha;
-                        try {
-                            fecha = dateFormat.parse(fechaString);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                            fecha = null;
-                        }
-
                     }
-                    setUpRecyclerView(equipoId);
                     partidoAdapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(Calendario.this, "No hay partidos programados para el equipo", Toast.LENGTH_SHORT).show();
@@ -251,5 +246,28 @@ public class Calendario extends AppCompatActivity{
         });
     }
 
-}
+    private void cargarEntrenosEquipo(String equipoId) {
+        DatabaseReference entrenosRef = FirebaseDatabase.getInstance().getReference().child("Equipos").child(equipoId).child("Entrenos");
+        entrenosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    entrenosIds.clear();
+                    for (DataSnapshot entrenoSnapshot : snapshot.getChildren()) {
+                        String entrenoId = entrenoSnapshot.getKey();
+                        entrenosIds.add(entrenoId);
+                    }
+                    entrenoAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(Calendario.this, "No hay entrenos programados para el equipo", Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Calendario.this, "Error al cargar los entrenos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+}

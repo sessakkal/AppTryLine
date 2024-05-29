@@ -73,6 +73,15 @@
         <activity
             android:name=".EditarPartido"
             android:exported="true" />
+        <activity
+            android:name=".CrearEntreno"
+            android:exported="true" />
+        <activity
+            android:name=".ListaEntrenos"
+            android:exported="true" />
+        <activity
+            android:name=".Entreno"
+            android:exported="true" />
     </application>
 
 </manifest>

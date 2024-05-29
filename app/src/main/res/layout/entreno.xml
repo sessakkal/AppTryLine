@@ -1,6 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".Entreno">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/nombre_entreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nombre del entreno"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/fecha_entreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_below="@id/nombre_entreno"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/hora_inicio_entreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de inicio"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_below="@id/fecha_entreno"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/hora_fin_entreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de finalización"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_below="@id/hora_inicio_entreno"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/lugar_entreno"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lugar"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_below="@id/hora_fin_entreno"
+        android:layout_marginBottom="8dp" />
+
+    <CheckBox
+        android:id="@+id/checkbox_confirmar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Confirmar entreno"
+        android:layout_below="@id/lugar_entreno"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/boton_guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar"
+        android:layout_below="@id/checkbox_confirmar"
+        android:layout_marginTop="16dp" />
+</RelativeLayout>

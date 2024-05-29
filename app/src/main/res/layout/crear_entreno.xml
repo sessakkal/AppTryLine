@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/mele"
-    tools:context=".CrearPartido">
+    tools:context=".CrearEntreno">
 
 
     <ImageView
@@ -96,6 +96,19 @@
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"/>
 
+            <EditText
+                android:id="@+id/lugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lugar del entreno"
+                android:layout_below="@id/hora_fin"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/gris_flojo"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/green"/>
+
 
 
             <androidx.appcompat.widget.AppCompatButton
@@ -104,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="Añadir entreno"
                 android:background="@drawable/boton_verde"
-                android:layout_below="@id/hora_fin"
+                android:layout_below="@id/lugar"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="25dp"/>
