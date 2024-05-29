@@ -82,6 +82,9 @@
         <activity
             android:name=".Entreno"
             android:exported="true" />
+        <activity
+            android:name=".ConfirmarEntreno"
+            android:exported="true" />
     </application>
 
 </manifest>

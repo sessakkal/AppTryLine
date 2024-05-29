@@ -25,7 +25,7 @@ public class Entreno extends AppCompatActivity {
     private TextView textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
     private CheckBox checkBoxConfirmar;
     private EditText editTextComentario;
-    private ImageView editarIcono, eliminarIcono;
+    private ImageView editarIcono, eliminarIcono, listaIcono;
     private FirebaseAuth mAuth;
     private String equipoId;
     private String entrenoId;
@@ -54,6 +54,7 @@ public class Entreno extends AppCompatActivity {
         editTextComentario = findViewById(R.id.comentario_entreno);
         editarIcono = findViewById(R.id.editar);
         eliminarIcono = findViewById(R.id.eliminar);
+        listaIcono = findViewById(R.id.lista);
     }
 
     private void checkIfAdmin() {
@@ -69,9 +70,11 @@ public class Entreno extends AppCompatActivity {
                         if (Boolean.TRUE.equals(isAdmin)) {
                             editarIcono.setVisibility(View.VISIBLE);
                             eliminarIcono.setVisibility(View.VISIBLE);
+                            listaIcono.setVisibility(View.VISIBLE);
                         } else {
                             editarIcono.setVisibility(View.GONE);
                             eliminarIcono.setVisibility(View.GONE);
+                            listaIcono.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -159,5 +162,12 @@ public class Entreno extends AppCompatActivity {
                 // Handle database error
             }
         });
+    }
+
+    public void mostrarLista(View view) {
+        Intent intent = new Intent(this, ConfirmarEntreno.class);
+        intent.putExtra("entrenoId", entrenoId);
+        intent.putExtra("equipoId", equipoId);
+        startActivity(intent);
     }
 }
