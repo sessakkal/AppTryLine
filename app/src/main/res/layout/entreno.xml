@@ -1,72 +1,195 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@color/negro"
     tools:context=".Entreno">
 
-    <TextView
-        android:id="@+id/nombre_entreno"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nombre del entreno"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/fecha_entreno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_below="@id/nombre_entreno"
-        android:layout_marginBottom="8dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
 
-    <TextView
-        android:id="@+id/hora_inicio_entreno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hora de inicio"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_below="@id/fecha_entreno"
-        android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/short_left_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/short_left"
+                android:layout_alignParentStart="true"
+                android:onClick="goBack"/>
 
-    <TextView
-        android:id="@+id/hora_fin_entreno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hora de finalización"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_below="@id/hora_inicio_entreno"
-        android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/eliminar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icono_eliminar_blanco"
+                android:layout_alignParentEnd="true"
+                android:onClick="eliminarEntreno"
+                android:visibility="gone"
+                android:layout_marginEnd="16dp" />
 
-    <TextView
-        android:id="@+id/lugar_entreno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lugar"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:layout_below="@id/hora_fin_entreno"
-        android:layout_marginBottom="8dp" />
+            <ImageView
+                android:id="@+id/editar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/eliminar"
+                android:layout_marginEnd="16dp"
+                android:onClick="editarEntreno"
+                android:visibility="gone"
+                android:src="@drawable/icono_editar_blanco" />
+        </RelativeLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_confirmar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirmar entreno"
-        android:layout_below="@id/lugar_entreno"
-        android:layout_marginBottom="16dp" />
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmación de entreno"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="32dp"
+            android:layout_gravity="center_horizontal"/>
 
-    <Button
-        android:id="@+id/boton_guardar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Guardar"
-        android:layout_below="@id/checkbox_confirmar"
-        android:layout_marginTop="16dp" />
-</RelativeLayout>
+        <!-- Fecha -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textViewFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fecha:"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/fecha_entreno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/textViewFecha"
+                android:layout_alignBaseline="@id/textViewFecha"/>
+        </RelativeLayout>
+
+        <!-- Hora de inicio -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textViewHoraInicio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hora de inicio:"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/hora_inicio_entreno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/textViewHoraInicio"
+                android:layout_alignBaseline="@id/textViewHoraInicio"/>
+        </RelativeLayout>
+
+        <!-- Hora de finalización -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textViewHoraFin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hora de finalización:"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/hora_fin_entreno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/textViewHoraFin"
+                android:layout_alignBaseline="@id/textViewHoraFin"/>
+        </RelativeLayout>
+
+        <!-- Lugar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:id="@+id/textViewLugar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lugar:"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/lugar_entreno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/textViewLugar"
+                android:layout_alignBaseline="@id/textViewLugar"/>
+        </RelativeLayout>
+
+        <!-- Confirmar entreno -->
+        <CheckBox
+            android:id="@+id/checkbox_confirmar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmar entreno"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Comentario -->
+        <EditText
+            android:id="@+id/comentario_entreno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Añadir comentario"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/white"
+            android:padding="10dp" />
+
+        <!-- Botón Guardar -->
+        <Button
+            android:id="@+id/boton_guardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

@@ -9,18 +9,22 @@ public class EntrenoDatos {
     private String horaInicio;
     private String horaFin;
     private String lugar;
+    private Boolean confirmado;
+    private String comentario;
 
     public EntrenoDatos() {
         // Constructor vacío requerido para Firebase
     }
 
-    public EntrenoDatos(String id, String nombre, Date fecha, String horaInicio, String horaFin, String lugar) {
+    public EntrenoDatos(String id, String nombre, Date fecha, String horaInicio, String horaFin, String lugar, Boolean confirmado, String comentario) {
         this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.lugar = lugar;
+        this.confirmado = confirmado;
+        this.comentario = comentario;
     }
 
     // Getters y setters
@@ -70,5 +74,21 @@ public class EntrenoDatos {
 
     public void setLugar(String lugar) {
         this.lugar = lugar;
+    }
+
+    public Boolean getConfirmado() {
+        return confirmado;
+    }
+
+    public void setConfirmado(Boolean confirmado) {
+        this.confirmado = confirmado;
+    }
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
     }
 }

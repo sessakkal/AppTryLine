@@ -105,7 +105,7 @@ public class CrearEntreno extends AppCompatActivity {
         }
 
         // Crear un objeto EntrenoDatos con los datos proporcionados
-        EntrenoDatos entreno = new EntrenoDatos(null, nombre, fecha, horaInicio, horaFin, lugar);
+        EntrenoDatos entreno = new EntrenoDatos(null, nombre, fecha, horaInicio, horaFin, lugar, false, "");
 
         // Guardar el entreno en la base de datos dentro del equipo
         DatabaseReference entrenoRef = equiposRef.child(equipoId).child("Entrenos").push();
@@ -127,6 +127,7 @@ public class CrearEntreno extends AppCompatActivity {
             }
         });
     }
+
 
     public void goBack(View view) {
         onBackPressed();

@@ -1,9 +1,11 @@
 package com.example.apptryline;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -15,16 +17,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class Entreno extends AppCompatActivity {
 
-    private TextView textViewNombre, textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
+    private TextView textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
     private CheckBox checkBoxConfirmar;
-    private Button botonGuardar;
+    private EditText editTextComentario;
+    private ImageView editarIcono, eliminarIcono;
     private FirebaseAuth mAuth;
-    private DatabaseReference entrenosRef;
-    private String entrenoId;
     private String equipoId;
+    private String entrenoId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,76 +36,128 @@ public class Entreno extends AppCompatActivity {
         setContentView(R.layout.entreno);
 
         mAuth = FirebaseAuth.getInstance();
-        entrenosRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
+        initViews();
 
-        textViewNombre = findViewById(R.id.nombre_entreno);
+        entrenoId = getIntent().getStringExtra("entrenoId");
+        if (entrenoId != null) {
+            loadEntrenoDetails(entrenoId);
+            checkIfAdmin();
+        }
+    }
+
+    private void initViews() {
         textViewFecha = findViewById(R.id.fecha_entreno);
         textViewHoraInicio = findViewById(R.id.hora_inicio_entreno);
         textViewHoraFin = findViewById(R.id.hora_fin_entreno);
         textViewLugar = findViewById(R.id.lugar_entreno);
         checkBoxConfirmar = findViewById(R.id.checkbox_confirmar);
-        botonGuardar = findViewById(R.id.boton_guardar);
-
-        entrenoId = getIntent().getStringExtra("entrenoId");
-        equipoId = getIntent().getStringExtra("equipoId");
-
-        if (entrenoId != null && equipoId != null) {
-            cargarDatosEntreno(equipoId, entrenoId);
-        }
-
-        botonGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmarEntreno(equipoId, entrenoId);
-            }
-        });
+        editTextComentario = findViewById(R.id.comentario_entreno);
+        editarIcono = findViewById(R.id.editar);
+        eliminarIcono = findViewById(R.id.eliminar);
     }
 
-    private void cargarDatosEntreno(String equipoId, String entrenoId) {
-        DatabaseReference entrenoRef = entrenosRef.child(equipoId).child("Entrenos").child(entrenoId);
+    private void checkIfAdmin() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Usuarios").child(userId);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Boolean isAdmin = dataSnapshot.child("admin").getValue(Boolean.class);
+                        if (Boolean.TRUE.equals(isAdmin)) {
+                            editarIcono.setVisibility(View.VISIBLE);
+                            eliminarIcono.setVisibility(View.VISIBLE);
+                        } else {
+                            editarIcono.setVisibility(View.GONE);
+                            eliminarIcono.setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(Entreno.this, "Error al verificar administrador", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void loadEntrenoDetails(String entrenoId) {
+        DatabaseReference entrenoRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
+
         entrenoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String nombre = dataSnapshot.child("nombre").getValue(String.class);
-                    String fecha = dataSnapshot.child("fecha").getValue(String.class);
-                    String horaInicio = dataSnapshot.child("horaInicio").getValue(String.class);
-                    String horaFin = dataSnapshot.child("horaFin").getValue(String.class);
-                    String lugar = dataSnapshot.child("lugar").getValue(String.class);
-                    Boolean confirmado = dataSnapshot.child("confirmado").getValue(Boolean.class);
+                    for (DataSnapshot equipoSnapshot : dataSnapshot.getChildren()) {
+                        if (equipoSnapshot.child("Entrenos").hasChild(entrenoId)) {
+                            EntrenoDatos entreno = equipoSnapshot.child("Entrenos").child(entrenoId).getValue(EntrenoDatos.class);
+                            equipoId = equipoSnapshot.getKey(); // Obtener el equipoId
 
-                    textViewNombre.setText(nombre);
-                    textViewFecha.setText(fecha);
-                    textViewHoraInicio.setText(horaInicio);
-                    textViewHoraFin.setText(horaFin);
-                    textViewLugar.setText(lugar);
+                            if (entreno != null) {
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                                String fechaString = dateFormat.format(entreno.getFecha());
+                                textViewFecha.setText(fechaString);
+                                textViewHoraInicio.setText(entreno.getHoraInicio());
+                                textViewHoraFin.setText(entreno.getHoraFin());
+                                textViewLugar.setText(entreno.getLugar());
+                                checkBoxConfirmar.setChecked(Boolean.TRUE.equals(entreno.getConfirmado()));
+                                editTextComentario.setText(entreno.getComentario());
+                            }
 
-                    checkBoxConfirmar.setChecked(Boolean.TRUE.equals(confirmado));
-                } else {
-                    Toast.makeText(Entreno.this, "No se encontraron datos para el entreno", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(Entreno.this, "Error al cargar los datos del entreno", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void confirmarEntreno(String equipoId, String entrenoId) {
-        DatabaseReference entrenoRef = entrenosRef.child(equipoId).child("Entrenos").child(entrenoId);
-        boolean isChecked = checkBoxConfirmar.isChecked();
-        entrenoRef.child("confirmado").setValue(isChecked).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Toast.makeText(Entreno.this, "Entrenamiento " + (isChecked ? "confirmado" : "no confirmado"), Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(Entreno.this, "Error al actualizar la confirmación del entreno", Toast.LENGTH_SHORT).show();
+                // Handle database error
             }
         });
     }
 
     public void goBack(View view) {
         onBackPressed();
+    }
+
+    public void editarEntreno(View view) {
+        Intent intent = new Intent(this, EditarEntreno.class);
+        intent.putExtra("entrenoId", entrenoId);
+        intent.putExtra("equipoId", equipoId); // Pasar el equipoId
+        startActivity(intent);
+    }
+
+    public void eliminarEntreno(View view) {
+        DatabaseReference entrenoRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
+        entrenoRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot equipoSnapshot : dataSnapshot.getChildren()) {
+                        if (equipoSnapshot.child("Entrenos").hasChild(entrenoId)) {
+                            equipoSnapshot.child("Entrenos").child(entrenoId).getRef().removeValue()
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(Entreno.this, "Entreno eliminado exitosamente", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        } else {
+                                            Toast.makeText(Entreno.this, "Error al eliminar el entreno", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database error
+            }
+        });
     }
 }
