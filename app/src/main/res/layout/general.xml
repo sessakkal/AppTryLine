@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/negro"
@@ -13,27 +15,30 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/blanco"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:paddingBottom="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerChat"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_below="@id/nombreEquipo"
-        android:layout_above="@+id/contenedorMensaje"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
         android:overScrollMode="never"
-        android:paddingBottom="8dp"/>
+        android:paddingBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/nombreEquipo"
+        app:layout_constraintBottom_toTopOf="@id/contenedorMensaje"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <LinearLayout
         android:id="@+id/contenedorMensaje"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <EditText
             android:id="@+id/mensajeAEnviar"
@@ -60,9 +65,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Volver"
-        android:layout_alignParentStart="true"
+        app:layout_constraintTop_toBottomOf="@id/nombreEquipo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/recyclerChat"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"/>
-
-</RelativeLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>

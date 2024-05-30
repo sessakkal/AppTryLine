@@ -3,12 +3,16 @@ package com.example.apptryline;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
@@ -41,6 +46,17 @@ public class Partido extends AppCompatActivity {
             loadPartidoDetails(partidoId);
             checkIfAdmin();
         }
+
+        Button consultarAlineacionButton = findViewById(R.id.alineacion);
+        consultarAlineacionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Partido.this, ConsultarAlineacion.class);
+                intent.putExtra("equipoId", equipoId);
+                intent.putExtra("partidoId", partidoId);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
@@ -55,14 +71,9 @@ public class Partido extends AppCompatActivity {
         textViewTriesAFavor = findViewById(R.id.tries_a_favor_partido);
         textViewTriesEnContra = findViewById(R.id.tries_en_contra_partido);
         progressBarMeles = findViewById(R.id.progress_meles);
-        progressBarTries = findViewById(R.id.tries_meles);
+        progressBarTries = findViewById(R.id.progress_tries);
         editarIcono = findViewById(R.id.editar);
         eliminarIcono = findViewById(R.id.eliminar);
-
-        for (int i = 0; i < playerTextViews.length; i++) {
-            int resId = getResources().getIdentifier("player" + (i + 1), "id", getPackageName());
-            playerTextViews[i] = findViewById(resId);
-        }
     }
 
     private void checkIfAdmin() {
@@ -134,8 +145,6 @@ public class Partido extends AppCompatActivity {
                                 } else {
                                     progressBarTries.setProgress(0);
                                 }
-
-                                loadPlayerNames(equipoId, partidoId);
                             }
 
                             break;
@@ -146,30 +155,7 @@ public class Partido extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
-            }
-        });
-    }
-
-    private void loadPlayerNames(String equipoId, String partidoId) {
-        DatabaseReference alineacionRef = FirebaseDatabase.getInstance().getReference().child("Equipos").child(equipoId).child("Partidos").child(partidoId).child("Alineacion");
-        alineacionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (int i = 0; i < playerTextViews.length; i++) {
-                        String playerKey = "Jugador" + (i + 1);
-                        if (dataSnapshot.hasChild(playerKey)) {
-                            String playerName = dataSnapshot.child(playerKey).child("nombre").getValue(String.class);
-                            playerTextViews[i].setText(playerName);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                // Manejar error de la base de datos
             }
         });
     }
@@ -212,7 +198,7 @@ public class Partido extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+                // Manejar error de la base de datos
             }
         });
     }

@@ -1,68 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/negro"
     tools:context=".Entreno">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
+            android:padding="16dp">
 
             <ImageView
                 android:id="@+id/short_left_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/short_left"
-                android:layout_alignParentStart="true"
-                android:onClick="goBack"/>
+                android:onClick="goBack"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <ImageView
                 android:id="@+id/eliminar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/icono_eliminar_blanco"
-                android:layout_alignParentEnd="true"
                 android:onClick="eliminarEntreno"
                 android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="16dp" />
 
             <ImageView
                 android:id="@+id/lista"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/eliminar"
                 android:layout_marginEnd="16dp"
                 android:onClick="mostrarLista"
                 android:visibility="gone"
-                android:src="@drawable/lista" />
-        </RelativeLayout>
+                android:src="@drawable/lista"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/eliminar" />
 
-        <TextView
-            android:id="@+id/titulo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmación de entreno"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="32dp"
-            android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmación de entreno"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintTop_toBottomOf="@id/short_left_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"/>
 
-        <!-- Fecha -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
+            <!-- Fecha -->
             <TextView
                 android:id="@+id/textViewFecha"
                 android:layout_width="wrap_content"
@@ -70,7 +73,8 @@
                 android:text="Fecha:"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/titulo"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/fecha_entreno"
@@ -79,16 +83,11 @@
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_toEndOf="@id/textViewFecha"
-                android:layout_alignBaseline="@id/textViewFecha"/>
-        </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/titulo"
+                app:layout_constraintStart_toEndOf="@id/textViewFecha"
+                app:layout_constraintBaseline_toBaselineOf="@id/textViewFecha"/>
 
-        <!-- Hora de inicio -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
+            <!-- Hora de inicio -->
             <TextView
                 android:id="@+id/textViewHoraInicio"
                 android:layout_width="wrap_content"
@@ -96,7 +95,9 @@
                 android:text="Hora de inicio:"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/textViewFecha"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"/>
 
             <TextView
                 android:id="@+id/hora_inicio_entreno"
@@ -105,16 +106,12 @@
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_toEndOf="@id/textViewHoraInicio"
-                android:layout_alignBaseline="@id/textViewHoraInicio"/>
-        </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/textViewFecha"
+                app:layout_constraintStart_toEndOf="@id/textViewHoraInicio"
+                app:layout_constraintBaseline_toBaselineOf="@id/textViewHoraInicio"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Hora de finalización -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
+            <!-- Hora de finalización -->
             <TextView
                 android:id="@+id/textViewHoraFin"
                 android:layout_width="wrap_content"
@@ -122,7 +119,9 @@
                 android:text="Hora de finalización:"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/textViewHoraInicio"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"/>
 
             <TextView
                 android:id="@+id/hora_fin_entreno"
@@ -131,16 +130,12 @@
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_toEndOf="@id/textViewHoraFin"
-                android:layout_alignBaseline="@id/textViewHoraFin"/>
-        </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/textViewHoraInicio"
+                app:layout_constraintStart_toEndOf="@id/textViewHoraFin"
+                app:layout_constraintBaseline_toBaselineOf="@id/textViewHoraFin"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Lugar -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp">
-
+            <!-- Lugar -->
             <TextView
                 android:id="@+id/textViewLugar"
                 android:layout_width="wrap_content"
@@ -148,7 +143,9 @@
                 android:text="Lugar:"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_alignParentStart="true"/>
+                app:layout_constraintTop_toBottomOf="@id/textViewHoraFin"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="16dp"/>
 
             <TextView
                 android:id="@+id/lugar_entreno"
@@ -157,41 +154,50 @@
                 android:text=""
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:layout_toEndOf="@id/textViewLugar"
-                android:layout_alignBaseline="@id/textViewLugar"/>
-        </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/textViewHoraFin"
+                app:layout_constraintStart_toEndOf="@id/textViewLugar"
+                app:layout_constraintBaseline_toBaselineOf="@id/textViewLugar"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Confirmar entreno -->
-        <CheckBox
-            android:id="@+id/checkbox_confirmar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmar entreno"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:layout_marginBottom="16dp"/>
+            <!-- Confirmar entreno -->
+            <CheckBox
+                android:id="@+id/checkbox_confirmar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmar entreno"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@id/textViewLugar"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Comentario -->
-        <EditText
-            android:id="@+id/comentario_entreno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Añadir comentario"
-            android:visibility="gone"
-            android:layout_marginBottom="16dp"
-            android:textColor="@color/white"
-            android:padding="10dp" />
+            <!-- Comentario -->
+            <EditText
+                android:id="@+id/comentario_entreno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="Añadir comentario"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp"
+                android:textColor="@color/white"
+                android:padding="10dp"
+                app:layout_constraintTop_toBottomOf="@id/checkbox_confirmar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"/>
 
-        <!-- Botón Guardar -->
-        <Button
-            android:id="@+id/boton_guardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:onClick="guardarComentario" />
+            <!-- Botón Guardar -->
+            <Button
+                android:id="@+id/boton_guardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar"
+                app:layout_constraintTop_toBottomOf="@id/comentario_entreno"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:onClick="guardarComentario" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
-    </LinearLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

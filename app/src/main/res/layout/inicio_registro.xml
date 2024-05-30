@@ -1,65 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/touch_negro"
     tools:context=".InicioRegistro">
-
 
     <ImageView
         android:id="@+id/icono_azul"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/icono_verde"
-        android:layout_centerHorizontal="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="50dp" />
 
     <TextView
         android:id="@+id/texto_bienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/icono_azul"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:text="¡Bienvenido a TryLine!"
         android:textSize="24sp"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/icono_azul"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/texto_encima"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/texto_bienvenida"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:text="¡Organiza tu equipo de forma digital!"
         android:textSize="20sp"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/texto_bienvenida"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="10dp" />
 
     <TextView
         android:id="@+id/texto_principal"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/texto_encima"
-        android:layout_centerHorizontal="true"
         android:gravity="center"
         android:padding="20dp"
         android:text="Esta aplicación será tu mejor compañía para gestionar a tu equipo!\n\nSi aún no has creado un equipo, te invitamos a hacerlo ahora mismo.\n\nCon nuestra aplicación, podrás formar un equipo en pocos pasos y empezar a invitar a tus compañeros para que se unan a ti.\n\nSi ya eres parte de un equipo, simplemente inicia sesión para acceder a todas las funcionalidades que nuestra aplicación tiene para ofrecerte."
         android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/texto_encima"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:id="@+id/contenedor_botones"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/texto_principal"
-        android:layout_marginTop="25dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/texto_principal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="25dp">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/boton_crear_equipo"
@@ -67,9 +74,9 @@
             android:layout_height="55dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/boton_verde"
-        android:text="CREAR EQUIPO"
-        android:textColor="#000000"
-        android:textStyle="bold" />
+            android:text="CREAR EQUIPO"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/boton_unirse_equipo"
@@ -77,23 +84,24 @@
             android:layout_height="55dp"
             android:layout_marginStart="10dp"
             android:background="@drawable/boton_verde"
-        android:text="UNIRSE A EQUIPO"
-        android:textColor="#000000"
-        android:textStyle="bold" />
+            android:text="UNIRSE A EQUIPO"
+            android:textColor="#000000"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/boton_iniciar_sesion"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/contenedor_botones"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="100dp"
         android:background="@drawable/boton_blanco"
         android:text="INICIAR SESIÓN"
         android:textColor="#000000"
-        android:textStyle="bold"/>
-
-</RelativeLayout>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/contenedor_botones"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -85,6 +85,9 @@
         <activity
             android:name=".ConfirmarEntreno"
             android:exported="true" />
+        <activity
+            android:name=".ConsultarAlineacion"
+            android:exported="true" />
     </application>
 
 </manifest>
