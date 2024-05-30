@@ -40,23 +40,20 @@ public class ContraOlvidada extends AppCompatActivity {
     }
 
     private void enviarCorreoReset(String correo) {
-
         FirebaseAuth.getInstance().sendPasswordResetEmail(correo)
-            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(ContraOlvidada.this, "Se ha enviado un correo electrónico para restablecer tu contraseña", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(ContraOlvidada.this, "Error al enviar el correo electrónico de restablecimiento de contraseña", Toast.LENGTH_SHORT).show();
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ContraOlvidada.this, "Se ha enviado un correo electrónico para restablecer tu contraseña", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(ContraOlvidada.this, "Error al enviar el correo electrónico de restablecimiento de contraseña", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
-            });
-
+                });
     }
+
     public void goBack(View view) {
         onBackPressed();
     }
 }
-
-

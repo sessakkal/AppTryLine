@@ -33,7 +33,7 @@
 
     <TextView
         android:id="@+id/anadirpartidotext"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Por favor, ingrese los siguientes datos para crear el partido."
         android:textColor="@color/white"

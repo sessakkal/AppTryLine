@@ -107,7 +107,7 @@ public class Chat extends AppCompatActivity {
         DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
                 .child(firebaseUser.getUid()).child(otroUsuarioId);
         String messageId = mensajesRef.push().getKey();
-        ModelChat modelChat = new ModelChat(mensaje, firebaseUser.getUid(), otroUsuarioId, String.valueOf(System.currentTimeMillis()), false);
+        ModelChat modelChat = new ModelChat(mensaje, firebaseUser.getUid(), otroUsuarioId, String.valueOf(System.currentTimeMillis()));
 
         if (messageId != null) {
             mensajesRef.child(messageId).setValue(modelChat)
@@ -126,5 +126,4 @@ public class Chat extends AppCompatActivity {
                     });
         }
     }
-
 }

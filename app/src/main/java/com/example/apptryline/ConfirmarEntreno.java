@@ -1,17 +1,21 @@
 package com.example.apptryline;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,5 +73,9 @@ public class ConfirmarEntreno extends AppCompatActivity {
                 Toast.makeText(ConfirmarEntreno.this, "Error al cargar confirmaciones", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void goBack(View view) {
+        onBackPressed();
     }
 }

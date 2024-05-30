@@ -128,7 +128,6 @@ public class CrearEntreno extends AppCompatActivity {
         });
     }
 
-
     public void goBack(View view) {
         onBackPressed();
     }

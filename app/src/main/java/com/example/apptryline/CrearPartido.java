@@ -114,8 +114,14 @@ public class CrearPartido extends AppCompatActivity {
             return;
         }
 
+        // Validar campos numéricos
+        int melesAFavorInt = !melesAFavor.isEmpty() ? Integer.parseInt(melesAFavor) : 0;
+        int melesEnContraInt = !melesEnContra.isEmpty() ? Integer.parseInt(melesEnContra) : 0;
+        int triesAFavorInt = !triesAFavor.isEmpty() ? Integer.parseInt(triesAFavor) : 0;
+        int triesEnContraInt = !triesEnContra.isEmpty() ? Integer.parseInt(triesEnContra) : 0;
+
         // Crear un objeto PartidoDatos con los datos proporcionados
-        PartidoDatos partido = new PartidoDatos(null, fecha, horaInicio, ubicacionTexto, equipoLocal, equipoVisitante, result, Integer.parseInt(melesAFavor), Integer.parseInt(melesEnContra), Integer.parseInt(triesEnContra), Integer.parseInt(triesAFavor));
+        PartidoDatos partido = new PartidoDatos(null, fecha, horaInicio, ubicacionTexto, equipoLocal, equipoVisitante, result, melesAFavorInt, melesEnContraInt, triesEnContraInt, triesAFavorInt);
 
         // Guardar el partido en la base de datos
         DatabaseReference partidoRef = equiposRef.child(equipoId).child("Partidos").push();
@@ -179,7 +185,6 @@ public class CrearPartido extends AppCompatActivity {
 
         // Guardar en Firebase bajo el ID del partido
         alineacionRef.child(nombreJugador).child("nombre").setValue(nombre);
-
     }
 
     public void goBack(View view) {

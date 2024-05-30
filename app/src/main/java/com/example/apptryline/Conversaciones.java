@@ -37,6 +37,9 @@ public class Conversaciones extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // Remove default title to use custom title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         // Ensure the toolbar title color is white
         TextView toolbarTitle = findViewById(R.id.toolbar_title);
         toolbarTitle.setTextColor(getResources().getColor(android.R.color.white));
@@ -128,5 +131,9 @@ public class Conversaciones extends AppCompatActivity {
                 Toast.makeText(Conversaciones.this, "Error al abrir la conversación individual", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void goBack(View view) {
+        onBackPressed();
     }
 }

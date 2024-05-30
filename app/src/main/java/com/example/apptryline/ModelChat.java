@@ -6,18 +6,16 @@ public class ModelChat {
     private String idUsuarioEnvia;
     private String idUsuarioRecibe;
     private String timestamp;
-    private boolean mensajeVisto;
 
     public ModelChat() {
         // Constructor vacío necesario para la deserialización de Firebase
     }
 
-    public ModelChat(String mensaje, String idUsuarioEnvia, String idUsuarioRecibe, String timestamp, boolean mensajeVisto) {
+    public ModelChat(String mensaje, String idUsuarioEnvia, String idUsuarioRecibe, String timestamp) {
         this.mensaje = mensaje;
         this.idUsuarioEnvia = idUsuarioEnvia;
         this.idUsuarioRecibe = idUsuarioRecibe;
         this.timestamp = timestamp;
-        this.mensajeVisto = mensajeVisto;
     }
 
     public String getMensaje() {
@@ -50,13 +48,5 @@ public class ModelChat {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public boolean isMensajeVisto() {
-        return mensajeVisto;
-    }
-
-    public void setMensajeVisto(boolean mensajeVisto) {
-        this.mensajeVisto = mensajeVisto;
     }
 }

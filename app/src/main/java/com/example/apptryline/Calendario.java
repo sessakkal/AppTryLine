@@ -37,7 +37,6 @@ public class Calendario extends AppCompatActivity {
         setContentView(R.layout.calendario);
 
         initWidgets();
-
         checkAdminStatus();
         cargarPartidosYEntrenosDesdeFirebase();
     }

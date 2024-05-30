@@ -380,6 +380,7 @@ public class EditarPerfil extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     public void goBack(View view) {
         onBackPressed();
     }

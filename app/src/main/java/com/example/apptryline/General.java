@@ -8,7 +8,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.apptryline.databinding.GeneralBinding;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -129,7 +128,7 @@ public class General extends AppCompatActivity {
         DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesEquipos").child(equipoId);
         String messageId = mensajesRef.push().getKey();
         String idMyUser = firebaseUser.getUid();
-        ModelChat modelChat = new ModelChat(mensaje, idMyUser, equipoId, String.valueOf(System.currentTimeMillis()), false);
+        ModelChat modelChat = new ModelChat(mensaje, idMyUser, equipoId, String.valueOf(System.currentTimeMillis()));
 
         if (messageId != null) {
             mensajesRef.child(messageId).setValue(modelChat)
@@ -148,5 +147,4 @@ public class General extends AppCompatActivity {
                     });
         }
     }
-
 }
