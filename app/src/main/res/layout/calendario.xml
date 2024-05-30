@@ -30,7 +30,18 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
-
+    <TextView
+        android:id="@+id/textViewPartidos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Partidos"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/partidosRecyclerView"
         android:layout_width="0dp"
@@ -41,6 +52,18 @@
         app:layout_constraintBottom_toTopOf="@id/entrenosRecyclerView"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp" />
+    <TextView
+        android:id="@+id/textViewEntrenos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Entrenos"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/partidosRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="16dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/entrenosRecyclerView"
