@@ -2,9 +2,11 @@ package com.example.apptryline;
 
 import android.os.Bundle;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,11 +20,21 @@ public class ConfirmarEntreno extends AppCompatActivity {
     private ListView listViewConfirmaciones;
     private ConfirmacionAdapter confirmacionAdapter;
     private List<Confirmacion> confirmacionList;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.confirmar_entreno);
+
+        // Configuración del Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        toolbarTitle = findViewById(R.id.toolbar_title);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         listViewConfirmaciones = findViewById(R.id.lista_confirmaciones);
         confirmacionList = new ArrayList<>();

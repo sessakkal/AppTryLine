@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,9 +34,16 @@ public class Conversaciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversaciones);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Ensure the toolbar title color is white
+        TextView toolbarTitle = findViewById(R.id.toolbar_title);
+        toolbarTitle.setTextColor(getResources().getColor(android.R.color.white));
+
         ListView listView = findViewById(R.id.listViewUsuarios);
         usuarios = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, usuarios);
+        adapter = new ArrayAdapter<>(this, R.layout.lista_conversaciones, R.id.text1, usuarios);
         listView.setAdapter(adapter);
 
         obtenerEquipoIdUsuarioActual();
@@ -120,5 +129,4 @@ public class Conversaciones extends AppCompatActivity {
             }
         });
     }
-
 }

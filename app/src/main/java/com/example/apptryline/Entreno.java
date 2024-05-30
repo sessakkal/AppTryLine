@@ -27,10 +27,11 @@ public class Entreno extends AppCompatActivity {
     private TextView textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
     private CheckBox checkBoxConfirmar;
     private EditText editTextComentario;
-    private ImageView editarIcono, eliminarIcono, listaIcono;
+    private ImageView  eliminarIcono, listaIcono;
     private FirebaseAuth mAuth;
     private String equipoId;
     private String entrenoId;
+    private Button botonGuardar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,13 @@ public class Entreno extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 editTextComentario.setVisibility(isChecked ? View.VISIBLE : View.GONE);
-                saveConfirmation(isChecked, editTextComentario.getText().toString());
+            }
+        });
+
+        botonGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guardarComentario(v);
             }
         });
     }
@@ -62,9 +69,9 @@ public class Entreno extends AppCompatActivity {
         textViewLugar = findViewById(R.id.lugar_entreno);
         checkBoxConfirmar = findViewById(R.id.checkbox_confirmar);
         editTextComentario = findViewById(R.id.comentario_entreno);
-        editarIcono = findViewById(R.id.editar);
         eliminarIcono = findViewById(R.id.eliminar);
         listaIcono = findViewById(R.id.lista);
+        botonGuardar = findViewById(R.id.boton_guardar);
     }
 
     private void checkIfAdmin() {
@@ -78,11 +85,9 @@ public class Entreno extends AppCompatActivity {
                     if (dataSnapshot.exists()) {
                         Boolean isAdmin = dataSnapshot.child("admin").getValue(Boolean.class);
                         if (Boolean.TRUE.equals(isAdmin)) {
-                            editarIcono.setVisibility(View.VISIBLE);
                             eliminarIcono.setVisibility(View.VISIBLE);
                             listaIcono.setVisibility(View.VISIBLE);
                         } else {
-                            editarIcono.setVisibility(View.GONE);
                             eliminarIcono.setVisibility(View.GONE);
                             listaIcono.setVisibility(View.GONE);
                         }
@@ -120,6 +125,7 @@ public class Entreno extends AppCompatActivity {
                                 editTextComentario.setText(entreno.getComentario());
                             }
 
+                            loadUserConfirmation();  // Load user confirmation after loading entrain details
                             break;
                         }
                     }
@@ -133,6 +139,38 @@ public class Entreno extends AppCompatActivity {
         });
     }
 
+    private void loadUserConfirmation() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null && equipoId != null && entrenoId != null) {
+            String userId = currentUser.getUid();
+            DatabaseReference confirmacionRef = FirebaseDatabase.getInstance().getReference()
+                    .child("Equipos").child(equipoId).child("Entrenos").child(entrenoId).child("Confirmaciones").child(userId);
+
+            confirmacionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        Confirmacion confirmacion = dataSnapshot.getValue(Confirmacion.class);
+                        if (confirmacion != null) {
+                            checkBoxConfirmar.setChecked(true);
+                            editTextComentario.setText(confirmacion.getComentario());
+                            editTextComentario.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        checkBoxConfirmar.setChecked(false);
+                        editTextComentario.setText("");
+                        editTextComentario.setVisibility(View.GONE);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(Entreno.this, "Error al cargar la confirmación", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     private void saveConfirmation(boolean isConfirmed, String comentario) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null && equipoId != null && entrenoId != null) {
@@ -140,15 +178,26 @@ public class Entreno extends AppCompatActivity {
             DatabaseReference confirmacionRef = FirebaseDatabase.getInstance().getReference()
                     .child("Equipos").child(equipoId).child("Entrenos").child(entrenoId).child("Confirmaciones").child(userId);
 
-            Confirmacion confirmacion = new Confirmacion(currentUser.getEmail(), comentario);
-            confirmacionRef.setValue(confirmacion)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(Entreno.this, "Confirmación guardada", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(Entreno.this, "Error al guardar confirmación", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            if (isConfirmed) {
+                Confirmacion confirmacion = new Confirmacion(currentUser.getEmail(), comentario);
+                confirmacionRef.setValue(confirmacion)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Entreno.this, "Confirmación guardada", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Entreno.this, "Error al guardar confirmación", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                confirmacionRef.removeValue()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Entreno.this, "Confirmación eliminada", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Entreno.this, "Error al eliminar confirmación", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         }
     }
 
@@ -160,12 +209,6 @@ public class Entreno extends AppCompatActivity {
         onBackPressed();
     }
 
-    public void editarEntreno(View view) {
-        Intent intent = new Intent(this, EditarEntreno.class);
-        intent.putExtra("entrenoId", entrenoId);
-        intent.putExtra("equipoId", equipoId); // Pasar el equipoId
-        startActivity(intent);
-    }
 
     public void eliminarEntreno(View view) {
         DatabaseReference entrenoRef = FirebaseDatabase.getInstance().getReference().child("Equipos");

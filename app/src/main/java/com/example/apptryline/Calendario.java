@@ -106,11 +106,11 @@ public class Calendario extends AppCompatActivity {
         entrenosRecyclerView = findViewById(R.id.entrenosRecyclerView);
 
         partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        partidoAdapter = new PartidoAdapter(partidosIds, "", this); // Inicializar el adapter aquí
+        partidoAdapter = new PartidoAdapter(partidosIds, "", this);
         partidosRecyclerView.setAdapter(partidoAdapter);
 
         entrenosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        entrenoAdapter = new EntrenoAdapter(entrenosIds, "", this); // Inicializar el adapter aquí
+        entrenoAdapter = new EntrenoAdapter(entrenosIds, "", this);
         entrenosRecyclerView.setAdapter(entrenoAdapter);
     }
 
@@ -183,10 +183,10 @@ public class Calendario extends AppCompatActivity {
     }
 
     private void setUpRecyclerViews(String equipoId) {
-        partidoAdapter = new PartidoAdapter(partidosIds, equipoId, this); // Asegúrate de inicializar el adapter con el equipoId correcto
+        partidoAdapter = new PartidoAdapter(partidosIds, equipoId, this);
         partidosRecyclerView.setAdapter(partidoAdapter);
 
-        entrenoAdapter = new EntrenoAdapter(entrenosIds, equipoId, this); // Asegúrate de inicializar el adapter con el equipoId correcto
+        entrenoAdapter = new EntrenoAdapter(entrenosIds, equipoId, this);
         entrenosRecyclerView.setAdapter(entrenoAdapter);
     }
 
@@ -205,7 +205,7 @@ public class Calendario extends AppCompatActivity {
                         if (equipoId != null && !equipoId.isEmpty()) {
                             cargarPartidosEquipo(equipoId);
                             cargarEntrenosEquipo(equipoId);
-                            setUpRecyclerViews(equipoId); // Asegúrate de llamar esto aquí
+                            setUpRecyclerViews(equipoId);
                         } else {
                             Toast.makeText(Calendario.this, "El usuario no tiene un equipo asignado", Toast.LENGTH_SHORT).show();
                         }
@@ -224,7 +224,7 @@ public class Calendario extends AppCompatActivity {
 
     private void cargarPartidosEquipo(String equipoId) {
         DatabaseReference partidosRef = FirebaseDatabase.getInstance().getReference().child("Equipos").child(equipoId).child("Partidos");
-        partidosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        partidosRef.addValueEventListener(new ValueEventListener() { // Cambiado a addValueEventListener
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -248,7 +248,7 @@ public class Calendario extends AppCompatActivity {
 
     private void cargarEntrenosEquipo(String equipoId) {
         DatabaseReference entrenosRef = FirebaseDatabase.getInstance().getReference().child("Equipos").child(equipoId).child("Entrenos");
-        entrenosRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        entrenosRef.addValueEventListener(new ValueEventListener() { // Cambiado a addValueEventListener
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
@@ -269,5 +269,4 @@ public class Calendario extends AppCompatActivity {
             }
         });
     }
-
 }

@@ -119,7 +119,6 @@ public class PartidoDatos {
     public int getTriesAFavor() {
         return triesAFavor;
     }
-
     public void setTriesAFavor(int triesAFavor) {
         this.triesAFavor = triesAFavor;
     }

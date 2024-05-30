@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/negro"
     tools:context=".Conversaciones">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,12 +14,21 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+        <ImageView
+            android:id="@+id/short_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/short_left"
+            android:layout_alignParentStart="true"
+            android:onClick="goBack"/>
+
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Conversaciones"
             android:textColor="@android:color/white"
+            android:layout_marginStart="30dp"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -28,10 +38,6 @@
         android:id="@+id/listViewUsuarios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>
