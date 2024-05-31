@@ -182,7 +182,7 @@ public class CrearPartido extends AppCompatActivity {
                 int local = Integer.parseInt(statLocal.getText().toString().trim());
                 int visitante = Integer.parseInt(statVisit.getText().toString().trim());
 
-                Estadistica estadistica = new Estadistica(titulo, local, visitante, 100, 0); // El valor de max y progreso puede ser ajustado según la necesidad
+                Estadistica estadistica = new Estadistica(titulo, local, visitante, 100, 0, 0); // Ajusta los valores de max y progreso según la necesidad
                 estadisticasRef.push().setValue(estadistica);
             }
         }
@@ -190,6 +190,7 @@ public class CrearPartido extends AppCompatActivity {
         Toast.makeText(CrearPartido.this, "Partido y estadísticas creados exitosamente", Toast.LENGTH_SHORT).show();
         finish();
     }
+
 
     private Date parseDate(String fecha) {
         try {

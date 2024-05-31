@@ -148,9 +148,10 @@ public class Partido extends AppCompatActivity {
                         int totalDato = estadistica.getDatoFavor() + estadistica.getDatoContra();
                         if (totalDato > 0) {
                             int porcentajeDatoAFavor = (estadistica.getDatoFavor() * 100) / totalDato;
-                            estadistica.setProgreso(porcentajeDatoAFavor);
+                            int porcentajeDatoEnContra = (estadistica.getDatoContra() * 100) / totalDato;
+                            estadistica.setProgreso(porcentajeDatoAFavor, porcentajeDatoEnContra);
                         } else {
-                            estadistica.setProgreso(0);
+                            estadistica.setProgreso(0, 0);
                         }
                         estadisticasList.add(estadistica);
                     }

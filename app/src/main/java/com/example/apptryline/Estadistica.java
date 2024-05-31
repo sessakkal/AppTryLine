@@ -4,21 +4,25 @@ public class Estadistica {
     private String titulo;
     private int datoFavor;
     private int datoContra;
+    private int progresoFavor;
+    private int progresoContra;
     private int max;
-    private int progreso;
 
+    // Constructor sin argumentos necesario para Firebase
     public Estadistica() {
-        // Constructor vacío necesario para Firebase
     }
 
-    public Estadistica(String titulo, int datoFavor, int datoContra, int max, int progreso) {
+    // Constructor con argumentos
+    public Estadistica(String titulo, int datoFavor, int datoContra, int max, int progresoFavor, int progresoContra) {
         this.titulo = titulo;
         this.datoFavor = datoFavor;
         this.datoContra = datoContra;
         this.max = max;
-        this.progreso = progreso;
+        this.progresoFavor = progresoFavor;
+        this.progresoContra = progresoContra;
     }
 
+    // Getters y setters...
     public String getTitulo() {
         return titulo;
     }
@@ -43,6 +47,22 @@ public class Estadistica {
         this.datoContra = datoContra;
     }
 
+    public int getProgresoFavor() {
+        return progresoFavor;
+    }
+
+    public void setProgresoFavor(int progresoFavor) {
+        this.progresoFavor = progresoFavor;
+    }
+
+    public int getProgresoContra() {
+        return progresoContra;
+    }
+
+    public void setProgresoContra(int progresoContra) {
+        this.progresoContra = progresoContra;
+    }
+
     public int getMax() {
         return max;
     }
@@ -51,11 +71,11 @@ public class Estadistica {
         this.max = max;
     }
 
-    public int getProgreso() {
-        return progreso;
-    }
-
-    public void setProgreso(int progreso) {
-        this.progreso = progreso;
+    // Nuevo método setProgreso
+    public void setProgreso(int progresoFavor, int progresoContra) {
+        this.progresoFavor = progresoFavor;
+        this.progresoContra = progresoContra;
     }
 }
+
+

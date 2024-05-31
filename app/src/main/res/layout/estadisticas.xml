@@ -41,18 +41,37 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/progressfavor"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:scaleX="-1"
+        android:progressTint="@color/green"
+        android:progressBackgroundTint="@color/gris_flojo"
+        app:layout_constraintTop_toBottomOf="@id/dato_contra"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/progresscontra"
+        android:layout_gravity="start" />
+
+    <ProgressBar
+        android:id="@+id/progresscontra"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:max="100"
         android:progress="0"
         android:progressTint="@color/green"
-        android:progressBackgroundTint="@color/gray_602"
+        android:progressBackgroundTint="@color/gris_flojo"
         app:layout_constraintTop_toBottomOf="@id/dato_contra"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintStart_toEndOf="@id/progressfavor"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="end" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,13 +4,73 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/negro"
+    android:background="@color/blanco"
     tools:context=".Entreno">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/green"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/short_left_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/short_left"
+            android:onClick="goBack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Confirmación de entreno"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="30dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/lista"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="16dp"
+            android:onClick="mostrarLista"
+            android:tint="@android:color/white"
+            android:visibility="gone"
+            android:src="@drawable/lista"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/eliminar" />
+
+
+        <ImageView
+            android:id="@+id/eliminar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/papelera"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/editar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="eliminarEntreno"
+            android:visibility="gone"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="end"/>
+    </androidx.appcompat.widget.Toolbar>
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -20,50 +80,6 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/short_left_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/short_left"
-                android:onClick="goBack"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-            <ImageView
-                android:id="@+id/eliminar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/papelera"
-                android:onClick="eliminarEntreno"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="16dp" />
-
-            <ImageView
-                android:id="@+id/lista"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="16dp"
-                android:onClick="mostrarLista"
-                android:visibility="gone"
-                android:src="@drawable/lista"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/eliminar" />
-
-            <TextView
-                android:id="@+id/titulo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Confirmación de entreno"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="32dp"
-                app:layout_constraintTop_toBottomOf="@id/short_left_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"/>
 
             <!-- Descripción -->
             <TextView
@@ -71,9 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Descripción:"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/titulo"
                 app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
@@ -81,9 +96,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/titulo"
                 app:layout_constraintStart_toEndOf="@id/textViewDescripcion"
                 app:layout_constraintBaseline_toBaselineOf="@id/textViewDescripcion"/>
 
@@ -93,9 +107,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fecha:"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewDescripcion"
+                app:layout_constraintTop_toBottomOf="@id/descripcion_entreno"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginTop="16dp"/>
 
@@ -104,9 +118,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@id/textViewDescripcion"
+                app:layout_constraintTop_toBottomOf="@id/descripcion_entreno"
                 app:layout_constraintStart_toEndOf="@id/textViewFecha"
                 app:layout_constraintBaseline_toBaselineOf="@id/textViewFecha"
                 android:layout_marginTop="16dp"/>
@@ -117,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hora de inicio:"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewFecha"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewFecha"
                 app:layout_constraintStart_toEndOf="@id/textViewHoraInicio"
@@ -141,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Hora de finalización:"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewHoraInicio"
                 app:layout_constraintStart_toStartOf="parent"
@@ -152,7 +166,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewHoraInicio"
                 app:layout_constraintStart_toEndOf="@id/textViewHoraFin"
@@ -165,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Lugar:"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewHoraFin"
                 app:layout_constraintStart_toStartOf="parent"
@@ -176,7 +190,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewHoraFin"
                 app:layout_constraintStart_toEndOf="@id/textViewLugar"
@@ -189,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Confirmar entreno"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:textSize="18sp"
                 app:layout_constraintTop_toBottomOf="@id/textViewLugar"
                 android:layout_marginTop="16dp"/>
@@ -202,7 +216,7 @@
                 android:hint="Añadir comentario"
                 android:visibility="gone"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/white"
+                android:textColor="@color/negro"
                 android:padding="10dp"
                 app:layout_constraintTop_toBottomOf="@id/checkbox_confirmar"
                 app:layout_constraintStart_toStartOf="parent"

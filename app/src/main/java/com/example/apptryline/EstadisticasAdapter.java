@@ -33,9 +33,12 @@ public class EstadisticasAdapter extends RecyclerView.Adapter<EstadisticasAdapte
         holder.tituloTextView.setText(estadistica.getTitulo());
         holder.datoFavorTextView.setText(String.valueOf(estadistica.getDatoFavor()));
         holder.datoContraTextView.setText(String.valueOf(estadistica.getDatoContra()));
-        holder.progressBar.setMax(estadistica.getMax());
-        holder.progressBar.setProgress(estadistica.getProgreso());
+        holder.progressBarfavor.setMax(100);
+        holder.progressBarcontra.setMax(100);
+        holder.progressBarfavor.setProgress(estadistica.getProgresoFavor());
+        holder.progressBarcontra.setProgress(estadistica.getProgresoContra());
     }
+
 
     @Override
     public int getItemCount() {
@@ -47,14 +50,15 @@ public class EstadisticasAdapter extends RecyclerView.Adapter<EstadisticasAdapte
         private TextView tituloTextView;
         private TextView datoFavorTextView;
         private TextView datoContraTextView;
-        private ProgressBar progressBar;
+        private ProgressBar progressBarfavor, progressBarcontra;
 
         public EstadisticasViewHolder(@NonNull View itemView) {
             super(itemView);
             tituloTextView = itemView.findViewById(R.id.titulo);
             datoFavorTextView = itemView.findViewById(R.id.dato_favor);
             datoContraTextView = itemView.findViewById(R.id.dato_contra);
-            progressBar = itemView.findViewById(R.id.progress);
+            progressBarfavor = itemView.findViewById(R.id.progressfavor);
+            progressBarcontra = itemView.findViewById(R.id.progresscontra);
         }
     }
 }
