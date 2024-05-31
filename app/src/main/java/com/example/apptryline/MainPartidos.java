@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,8 +27,7 @@ public class MainPartidos extends AppCompatActivity {
 
     private RecyclerView partidosRecyclerView;
     private PartidoAdapter partidoAdapter;
-    private List<String> partidosIds = new ArrayList<>();
-
+    private List<PartidoDatos> partidos = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class MainPartidos extends AppCompatActivity {
     }
 
     private void checkAdminStatus() {
-        Button boton4 = findViewById(R.id.boton4);
+        ImageView anadir = findViewById(R.id.anadir);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -50,12 +50,12 @@ public class MainPartidos extends AppCompatActivity {
                     if (snapshot.exists()) {
                         Boolean isAdmin = snapshot.child("admin").getValue(Boolean.class);
                         if (isAdmin != null && isAdmin) {
-                            boton4.setVisibility(View.VISIBLE);
+                            anadir.setVisibility(View.VISIBLE);
                         } else {
-                            boton4.setVisibility(View.GONE);
+                            anadir.setVisibility(View.GONE);
                         }
                     } else {
-                        boton4.setVisibility(View.GONE);
+                        anadir.setVisibility(View.GONE);
                     }
                     setUpButtons();
                 }
@@ -63,19 +63,19 @@ public class MainPartidos extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(MainPartidos.this, "Error al verificar el estado de administrador", Toast.LENGTH_SHORT).show();
-                    boton4.setVisibility(View.GONE);
+                    anadir.setVisibility(View.GONE);
                     setUpButtons();
                 }
             });
         } else {
-            boton4.setVisibility(View.GONE);
+            anadir.setVisibility(View.GONE);
             setUpButtons();
         }
     }
 
     private void setUpButtons() {
-        Button boton4 = findViewById(R.id.boton4);
-        boton4.setOnClickListener(new View.OnClickListener() {
+        ImageView anadir = findViewById(R.id.anadir);
+        anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainPartidos.this, CrearPartido.class));
@@ -86,7 +86,7 @@ public class MainPartidos extends AppCompatActivity {
     private void initWidgets() {
         partidosRecyclerView = findViewById(R.id.partidosRecyclerView);
         partidosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        partidoAdapter = new PartidoAdapter(partidosIds, "", this);
+        partidoAdapter = new PartidoAdapter(partidos, this);
         partidosRecyclerView.setAdapter(partidoAdapter);
     }
 
@@ -119,12 +119,52 @@ public class MainPartidos extends AppCompatActivity {
             });
         }
     }
-    public void onOption3Click(View view) {
+
+    public void irPartidos(View view) {
         Intent intent = new Intent(this, MainPartidos.class);
         startActivity(intent);
     }
 
-    public void onOption1Click(View view) {
+    public void irEntrenos(View view) {
+        Intent intent = new Intent(this, MainEntrenos.class);
+        startActivity(intent);
+    }
+
+    public void irPerfil(View view) {
+        Intent intent = new Intent(this, EditarPerfil.class);
+        startActivity(intent);
+    }
+
+    public void irConversaciones(View view) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), Conversaciones.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void irGlobal(View view) {
         DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference usuarioActualRef = usuariosRef.child(userId);
@@ -159,12 +199,12 @@ public class MainPartidos extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    partidosIds.clear();
+                    partidos.clear();
                     for (DataSnapshot partidoSnapshot : snapshot.getChildren()) {
-                        String partidoId = partidoSnapshot.getKey();
-                        partidosIds.add(partidoId);
+                        PartidoDatos partido = partidoSnapshot.getValue(PartidoDatos.class);
+                        partidos.add(partido);
                     }
-                    partidoAdapter.notifyDataSetChanged();
+                    partidoAdapter.updatePartidos(partidos);
                 } else {
                     Toast.makeText(MainPartidos.this, "No hay partidos programados para el equipo", Toast.LENGTH_SHORT).show();
                 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class EntrenoDatos {
     private String id;
-    private String nombre;
+    private String descripcion;
     private Date fecha;
     private String horaInicio;
     private String horaFin;
@@ -16,9 +16,9 @@ public class EntrenoDatos {
         // Constructor vacío requerido para Firebase
     }
 
-    public EntrenoDatos(String id, String nombre, Date fecha, String horaInicio, String horaFin, String lugar, Boolean confirmado, String comentario) {
+    public EntrenoDatos(String id, String descripcion, Date fecha, String horaInicio, String horaFin, String lugar, Boolean confirmado, String comentario) {
         this.id = id;
-        this.nombre = nombre;
+        this.descripcion = descripcion;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
@@ -36,12 +36,12 @@ public class EntrenoDatos {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public Date getFecha() {

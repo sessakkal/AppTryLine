@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/negro"
     tools:context=".Conversaciones">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,13 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/short_left_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/short_left"
-            android:onClick="goBack"/>
-
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
@@ -35,6 +27,7 @@
             android:layout_marginStart="30dp"
             android:textSize="20sp"
             android:textStyle="bold" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <ListView
@@ -45,4 +38,67 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/blanco"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/global"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irGlobal"
+            android:padding="2dp"
+            android:src="@drawable/global" />
+
+        <ImageView
+            android:id="@+id/conversaciones"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irConversaciones"
+            android:padding="2dp"
+            android:src="@drawable/conversacion" />
+
+        <ImageView
+            android:id="@+id/partidos"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irPartidos"
+            android:padding="2dp"
+            android:src="@drawable/partido" />
+
+        <ImageView
+            android:id="@+id/entrenos"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irEntrenos"
+            android:padding="2dp"
+            android:src="@drawable/training" />
+
+        <ImageView
+            android:id="@+id/perfil"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irPerfil"
+            android:padding="2dp"
+            android:src="@drawable/perfil" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

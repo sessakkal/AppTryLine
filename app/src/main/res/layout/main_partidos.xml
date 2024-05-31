@@ -29,6 +29,17 @@
             android:layout_marginStart="30dp"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/anadir"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/anadir"
+            android:onClick="anadir"
+            android:tint="@android:color/white"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="end" />
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -54,12 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
-            android:id="@+id/boton4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Añadir partido" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,21 +72,22 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@android:color/transparent"
-        android:padding="4dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:background="@color/blanco"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageView
-            android:id="@+id/menu"
+            android:id="@+id/global"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
-            android:onClick="onOption1Click"
+            android:onClick="irGlobal"
             android:padding="2dp"
-            android:src="@drawable/global_negro" />
+            android:src="@drawable/global" />
 
         <ImageView
             android:id="@+id/conversaciones"
@@ -89,19 +95,29 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
-            android:onClick="onOption2Click"
+            android:onClick="irConversaciones"
             android:padding="2dp"
-            android:src="@drawable/conversacion_negro" />
+            android:src="@drawable/conversacion" />
 
         <ImageView
-            android:id="@+id/calendario"
+            android:id="@+id/partidos"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
-            android:onClick="onOption3Click"
+            android:onClick="irPartidos"
             android:padding="2dp"
-            android:src="@drawable/icono_negro" />
+            android:src="@drawable/partido" />
+
+        <ImageView
+            android:id="@+id/entrenos"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:onClick="irEntrenos"
+            android:padding="2dp"
+            android:src="@drawable/training" />
 
         <ImageView
             android:id="@+id/perfil"
@@ -109,9 +125,11 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:clickable="true"
-            android:onClick="onOption4Click"
+            android:onClick="irPerfil"
             android:padding="2dp"
-            android:src="@drawable/perfil_negro" />
+            android:src="@drawable/perfil" />
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,10 +24,10 @@ import java.util.Locale;
 
 public class Entreno extends AppCompatActivity {
 
-    private TextView textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
+    private TextView textViewDescripcion, textViewFecha, textViewHoraInicio, textViewHoraFin, textViewLugar;
     private CheckBox checkBoxConfirmar;
     private EditText editTextComentario;
-    private ImageView  eliminarIcono, listaIcono;
+    private ImageView eliminarIcono, listaIcono;
     private FirebaseAuth mAuth;
     private String equipoId;
     private String entrenoId;
@@ -63,6 +63,7 @@ public class Entreno extends AppCompatActivity {
     }
 
     private void initViews() {
+        textViewDescripcion = findViewById(R.id.descripcion_entreno);
         textViewFecha = findViewById(R.id.fecha_entreno);
         textViewHoraInicio = findViewById(R.id.hora_inicio_entreno);
         textViewHoraFin = findViewById(R.id.hora_fin_entreno);
@@ -117,6 +118,7 @@ public class Entreno extends AppCompatActivity {
                             if (entreno != null) {
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
                                 String fechaString = dateFormat.format(entreno.getFecha());
+                                textViewDescripcion.setText(entreno.getDescripcion());
                                 textViewFecha.setText(fechaString);
                                 textViewHoraInicio.setText(entreno.getHoraInicio());
                                 textViewHoraFin.setText(entreno.getHoraFin());
@@ -208,7 +210,6 @@ public class Entreno extends AppCompatActivity {
     public void goBack(View view) {
         onBackPressed();
     }
-
 
     public void eliminarEntreno(View view) {
         DatabaseReference entrenoRef = FirebaseDatabase.getInstance().getReference().child("Equipos");

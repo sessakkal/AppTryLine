@@ -1,5 +1,4 @@
 package com.example.apptryline;
-
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +16,8 @@ public class ListaPartidos extends AppCompatActivity {
 
     private RecyclerView recyclerViewPartidos;
     private PartidoAdapter partidoAdapter;
-    private String equipoId = "equipoId"; // Supongamos que el equipoId es conocido por ahora
+    private List<PartidoDatos> partidos;
+    private String equipoId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,26 +27,29 @@ public class ListaPartidos extends AppCompatActivity {
         recyclerViewPartidos = findViewById(R.id.recyclerViewPartidos);
         recyclerViewPartidos.setLayoutManager(new LinearLayoutManager(this));
 
-
-        partidoAdapter = new PartidoAdapter(new ArrayList<>(), equipoId, this);
+        partidos = new ArrayList<>();
+        partidoAdapter = new PartidoAdapter(partidos, this);
         recyclerViewPartidos.setAdapter(partidoAdapter);
 
+        cargarPartidosDesdeFirebase();
+    }
 
+    private void cargarPartidosDesdeFirebase() {
         DatabaseReference partidosRef = FirebaseDatabase.getInstance().getReference("Equipos").child(equipoId).child("Partidos");
         partidosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> partidos = new ArrayList<>();
+                partidos.clear();
                 for (DataSnapshot partidoSnapshot : dataSnapshot.getChildren()) {
-                    String nombrePartido = partidoSnapshot.child("nombre").getValue(String.class);
-                    partidos.add(nombrePartido);
+                    PartidoDatos partido = partidoSnapshot.getValue(PartidoDatos.class);
+                    partidos.add(partido);
                 }
                 partidoAdapter.updatePartidos(partidos);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // Manejar error de la base de datos
             }
         });
     }

@@ -7,12 +7,96 @@
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/textViewEntreno"
+        android:id="@+id/textViewDescripcionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Entreno ID"
-        android:textColor="@color/green"
+        android:text="Descripción:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/descripcion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Descripción del entreno"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/textViewDescripcionLabel"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewHorarioLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horario:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/descripcion"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/textViewHorarioLabel"
+        app:layout_constraintTop_toBottomOf="@id/descripcion"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/horaInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de inicio"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/fecha"
+        app:layout_constraintTop_toBottomOf="@id/descripcion"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/horaFin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora de fin"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/horaInicio"
+        app:layout_constraintTop_toBottomOf="@id/descripcion"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewUbicacionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewHorarioLabel"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/ubicacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Ubicación del entreno"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/textViewUbicacionLabel"
+        app:layout_constraintTop_toBottomOf="@id/textViewHorarioLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

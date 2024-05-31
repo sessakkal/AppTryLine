@@ -3,12 +3,15 @@ package com.example.apptryline;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.apptryline.databinding.GeneralBinding;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,12 +33,19 @@ public class Chat extends AppCompatActivity {
     private AdapterChat adapterChat;
     private FirebaseUser firebaseUser;
     private String otroUsuarioId;
+    private String equipoId;
+    private boolean isGroupChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = GeneralBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // Configurar la barra de herramientas
+        Toolbar toolbar = findViewById(R.id.toolbarChat);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -44,13 +54,15 @@ public class Chat extends AppCompatActivity {
         binding.recyclerChat.setHasFixedSize(true);
         binding.recyclerChat.setLayoutManager(linearLayout);
 
-        // Obtener el ID del otro usuario del Intent
+        // Obtener datos del Intent
         otroUsuarioId = getIntent().getStringExtra("otroUsuarioId");
+        equipoId = getIntent().getStringExtra("equipoId");
+        isGroupChat = getIntent().getBooleanExtra("isGroupChat", false);
 
-        // Verificar si el ID del otro usuario es nulo
-        if (otroUsuarioId == null) {
-            Toast.makeText(this, "ID del usuario no proporcionado", Toast.LENGTH_SHORT).show();
-            finish(); // Cierra la actividad si el ID del otro usuario es nulo
+        // Verificar si los datos son nulos
+        if (otroUsuarioId == null && equipoId == null) {
+            Toast.makeText(this, "Datos no proporcionados", Toast.LENGTH_SHORT).show();
+            finish(); // Cierra la actividad si los datos son nulos
             return;
         }
 
@@ -77,10 +89,16 @@ public class Chat extends AppCompatActivity {
         adapterChat = new AdapterChat(this, chatArrayList);
         binding.recyclerChat.setAdapter(adapterChat);
 
-        leerMensajes();
+        if (isGroupChat) {
+            obtenerNombreEquipo();
+            leerMensajesGrupo();
+        } else {
+            cargarFotoPerfil();
+            leerMensajesIndividuales();
+        }
     }
 
-    private void leerMensajes() {
+    private void leerMensajesIndividuales() {
         DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
                 .child(firebaseUser.getUid()).child(otroUsuarioId);
         mensajesRef.addValueEventListener(new ValueEventListener() {
@@ -103,11 +121,39 @@ public class Chat extends AppCompatActivity {
         });
     }
 
+    private void leerMensajesGrupo() {
+        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesEquipos").child(equipoId);
+        mensajesRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chatArrayList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    ModelChat modelChat = dataSnapshot.getValue(ModelChat.class);
+                    if (modelChat != null) {
+                        chatArrayList.add(modelChat);
+                    }
+                }
+                adapterChat.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Chat.this, "Error al cargar mensajes", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void enviarMensaje(String mensaje) {
-        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
-                .child(firebaseUser.getUid()).child(otroUsuarioId);
+        DatabaseReference mensajesRef;
+        if (isGroupChat) {
+            mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesEquipos").child(equipoId);
+        } else {
+            mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
+                    .child(firebaseUser.getUid()).child(otroUsuarioId);
+        }
+
         String messageId = mensajesRef.push().getKey();
-        ModelChat modelChat = new ModelChat(mensaje, firebaseUser.getUid(), otroUsuarioId, String.valueOf(System.currentTimeMillis()));
+        ModelChat modelChat = new ModelChat(mensaje, firebaseUser.getUid(), isGroupChat ? equipoId : otroUsuarioId, String.valueOf(System.currentTimeMillis()));
 
         if (messageId != null) {
             mensajesRef.child(messageId).setValue(modelChat)
@@ -125,5 +171,45 @@ public class Chat extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    private void cargarFotoPerfil() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(otroUsuarioId);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String fotoPerfilUrl = snapshot.child("fotoPerfil").getValue(String.class);
+                if (fotoPerfilUrl != null && !fotoPerfilUrl.isEmpty()) {
+                    Glide.with(Chat.this).load(fotoPerfilUrl).into(binding.fotoPerfil);
+                } else {
+                    binding.fotoPerfil.setImageResource(R.drawable.perfil_predeterminado);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                binding.fotoPerfil.setImageResource(R.drawable.perfil_predeterminado);
+            }
+        });
+    }
+
+    private void obtenerNombreEquipo() {
+        DatabaseReference equipoRef = FirebaseDatabase.getInstance().getReference("Equipos").child(equipoId);
+        equipoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String nombreEquipo = snapshot.child("nombre").getValue(String.class);
+                if (nombreEquipo != null) {
+                    binding.nombreEquipo.setText(nombreEquipo);
+                } else {
+                    binding.nombreEquipo.setText("Nombre no disponible");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Chat.this, "Error al obtener el nombre del equipo", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

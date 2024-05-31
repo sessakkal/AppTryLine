@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +26,7 @@ public class MainEntrenos extends AppCompatActivity {
 
     private RecyclerView entrenosRecyclerView;
     private EntrenoAdapter entrenoAdapter;
-    private List<String> entrenosIds = new ArrayList<>();
+    private List<EntrenoDatos> entrenosList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class MainEntrenos extends AppCompatActivity {
     }
 
     private void checkAdminStatus() {
-        Button boton1 = findViewById(R.id.boton1);
+        ImageView anadir = findViewById(R.id.anadir);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -50,12 +50,12 @@ public class MainEntrenos extends AppCompatActivity {
                     if (snapshot.exists()) {
                         Boolean isAdmin = snapshot.child("admin").getValue(Boolean.class);
                         if (isAdmin != null && isAdmin) {
-                            boton1.setVisibility(View.VISIBLE);
+                            anadir.setVisibility(View.VISIBLE);
                         } else {
-                            boton1.setVisibility(View.GONE);
+                            anadir.setVisibility(View.GONE);
                         }
                     } else {
-                        boton1.setVisibility(View.GONE);
+                        anadir.setVisibility(View.GONE);
                     }
                     setUpButtons();
                 }
@@ -63,19 +63,19 @@ public class MainEntrenos extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                     Toast.makeText(MainEntrenos.this, "Error al verificar el estado de administrador", Toast.LENGTH_SHORT).show();
-                    boton1.setVisibility(View.GONE);
+                    anadir.setVisibility(View.GONE);
                     setUpButtons();
                 }
             });
         } else {
-            boton1.setVisibility(View.GONE);
+            anadir.setVisibility(View.GONE);
             setUpButtons();
         }
     }
 
     private void setUpButtons() {
-        Button boton1 = findViewById(R.id.boton1);
-        boton1.setOnClickListener(new View.OnClickListener() {
+        ImageView anadir = findViewById(R.id.anadir);
+        anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainEntrenos.this, CrearEntreno.class));
@@ -86,8 +86,81 @@ public class MainEntrenos extends AppCompatActivity {
     private void initWidgets() {
         entrenosRecyclerView = findViewById(R.id.entrenosRecyclerView);
         entrenosRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        entrenoAdapter = new EntrenoAdapter(entrenosIds, "", this);
+        entrenoAdapter = new EntrenoAdapter(entrenosList, this);
         entrenosRecyclerView.setAdapter(entrenoAdapter);
+    }
+
+    public void irPartidos(View view) {
+        Intent intent = new Intent(this, MainPartidos.class);
+        startActivity(intent);
+    }
+
+    public void irEntrenos(View view) {
+        Intent intent = new Intent(this, MainEntrenos.class);
+        startActivity(intent);
+    }
+
+    public void irPerfil(View view) {
+        Intent intent = new Intent(this, EditarPerfil.class);
+        startActivity(intent);
+    }
+
+    public void irConversaciones(View view) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), Conversaciones.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void irGlobal(View view) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), General.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void cargarEntrenosDesdeFirebase() {
@@ -126,10 +199,10 @@ public class MainEntrenos extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    entrenosIds.clear();
+                    entrenosList.clear();
                     for (DataSnapshot entrenoSnapshot : snapshot.getChildren()) {
-                        String entrenoId = entrenoSnapshot.getKey();
-                        entrenosIds.add(entrenoId);
+                        EntrenoDatos entreno = entrenoSnapshot.getValue(EntrenoDatos.class);
+                        entrenosList.add(entreno);
                     }
                     entrenoAdapter.notifyDataSetChanged();
                 } else {

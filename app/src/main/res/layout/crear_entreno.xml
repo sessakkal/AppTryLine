@@ -58,10 +58,10 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/nombre"
+                android:id="@+id/descripcion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Nombre"
+                android:hint="Descripcion"
                 android:textColorHint="@color/gris_flojo"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"
@@ -79,7 +79,7 @@
                 android:textColorHint="@color/gris_flojo"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"
-                app:layout_constraintTop_toBottomOf="@id/nombre"
+                app:layout_constraintTop_toBottomOf="@id/descripcion"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="16dp"

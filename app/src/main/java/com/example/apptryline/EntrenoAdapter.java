@@ -6,21 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class EntrenoAdapter extends RecyclerView.Adapter<EntrenoAdapter.EntrenoViewHolder> {
 
-    private List<String> entrenosIds;
-    private String equipoId;
+    private List<EntrenoDatos> entrenos;
     private Context context;
 
-    public EntrenoAdapter(List<String> entrenosIds, String equipoId, Context context) {
-        this.entrenosIds = entrenosIds;
-        this.equipoId = equipoId;
+    public EntrenoAdapter(List<EntrenoDatos> entrenos, Context context) {
+        this.entrenos = entrenos;
         this.context = context;
     }
 
@@ -33,32 +31,44 @@ public class EntrenoAdapter extends RecyclerView.Adapter<EntrenoAdapter.EntrenoV
 
     @Override
     public void onBindViewHolder(@NonNull EntrenoViewHolder holder, int position) {
-        String entrenoId = entrenosIds.get(position);
-        holder.textViewEntreno.setText(entrenoId);
+        EntrenoDatos entreno = entrenos.get(position);
+        holder.descripcion.setText(entreno.getDescripcion());
+        holder.fecha.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(entreno.getFecha()));
+        holder.horaInicio.setText(entreno.getHoraInicio());
+        holder.horaFin.setText(entreno.getHoraFin());
+        holder.ubicacion.setText(entreno.getLugar());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Entreno.class);
-            intent.putExtra("entrenoId", entrenoId);
+            intent.putExtra("entrenoId", entreno.getId());
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return entrenosIds.size();
+        return entrenos.size();
     }
 
-    public void updateEntrenos(List<String> nuevosEntrenos) {
-        this.entrenosIds = nuevosEntrenos;
+    public void updateEntrenos(List<EntrenoDatos> nuevosEntrenos) {
+        this.entrenos = nuevosEntrenos;
         notifyDataSetChanged();
     }
 
     public static class EntrenoViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewEntreno;
+        TextView descripcion;
+        TextView fecha;
+        TextView horaInicio;
+        TextView horaFin;
+        TextView ubicacion;
 
         public EntrenoViewHolder(View itemView) {
             super(itemView);
-            textViewEntreno = itemView.findViewById(R.id.textViewEntreno);
+            descripcion = itemView.findViewById(R.id.descripcion);
+            fecha = itemView.findViewById(R.id.fecha);
+            horaInicio = itemView.findViewById(R.id.horaInicio);
+            horaFin = itemView.findViewById(R.id.horaFin);
+            ubicacion = itemView.findViewById(R.id.ubicacion);
         }
     }
 }

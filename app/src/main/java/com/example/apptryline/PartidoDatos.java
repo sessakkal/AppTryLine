@@ -1,6 +1,9 @@
 package com.example.apptryline;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+
 public class PartidoDatos {
 
     private String id;
@@ -34,6 +37,11 @@ public class PartidoDatos {
         this.triesEnContra = triesEnContra;
     }
 
+    public String getDescripcion() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String fechaString = dateFormat.format(fecha);
+        return equipoLocal + " vs " + equipoVisitante + " - " + fechaString + " " + horaInicio;
+    }
 
     // Getters y setters
     public String getId() {
@@ -119,6 +127,7 @@ public class PartidoDatos {
     public int getTriesAFavor() {
         return triesAFavor;
     }
+
     public void setTriesAFavor(int triesAFavor) {
         this.triesAFavor = triesAFavor;
     }

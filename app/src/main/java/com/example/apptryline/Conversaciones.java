@@ -132,6 +132,78 @@ public class Conversaciones extends AppCompatActivity {
             }
         });
     }
+    public void irPartidos(View view) {
+        Intent intent = new Intent(this, MainPartidos.class);
+        startActivity(intent);
+    }
+
+    public void irEntrenos(View view) {
+        Intent intent = new Intent(this, MainEntrenos.class);
+        startActivity(intent);
+    }
+
+    public void irPerfil(View view) {
+        Intent intent = new Intent(this, EditarPerfil.class);
+        startActivity(intent);
+    }
+
+    public void irConversaciones(View view) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), Conversaciones.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void irGlobal(View view) {
+        DatabaseReference usuariosRef = FirebaseDatabase.getInstance().getReference("Usuarios");
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference usuarioActualRef = usuariosRef.child(userId);
+
+        usuarioActualRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("equipoId")) {
+                    String equipoId = dataSnapshot.child("equipoId").getValue(String.class);
+                    if (equipoId != null && !equipoId.isEmpty()) {
+                        Intent intent = new Intent(getApplicationContext(), General.class);
+                        intent.putExtra("equipoId", equipoId);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "ID de equipo no encontrado", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(), "Error al obtener el ID del equipo: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     public void goBack(View view) {
         onBackPressed();

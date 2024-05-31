@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class CrearEntreno extends AppCompatActivity {
 
-    private EditText nombreEditText, fechaEditText, horaInicioEditText, horaFinEditText, lugarEditText;
+    private EditText descripcionEditText, fechaEditText, horaInicioEditText, horaFinEditText, lugarEditText;
     private Button anadirEntrenoButton;
     private FirebaseAuth mAuth;
     private DatabaseReference equiposRef;
@@ -37,7 +37,7 @@ public class CrearEntreno extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         equiposRef = FirebaseDatabase.getInstance().getReference().child("Equipos");
 
-        nombreEditText = findViewById(R.id.nombre);
+        descripcionEditText = findViewById(R.id.descripcion);
         fechaEditText = findViewById(R.id.fecha);
         horaInicioEditText = findViewById(R.id.hora_inicio);
         horaFinEditText = findViewById(R.id.hora_fin);
@@ -81,14 +81,14 @@ public class CrearEntreno extends AppCompatActivity {
     }
 
     private void crearEntreno(String equipoId) {
-        String nombre = nombreEditText.getText().toString().trim();
+        String descripcion = descripcionEditText.getText().toString().trim();
         String fechaString = fechaEditText.getText().toString().trim();
         String horaInicio = horaInicioEditText.getText().toString().trim();
         String horaFin = horaFinEditText.getText().toString().trim();
         String lugar = lugarEditText.getText().toString().trim();
 
         // Validar que se ingresen todos los campos
-        if (nombre.isEmpty() || fechaString.isEmpty() || horaInicio.isEmpty() || horaFin.isEmpty() || lugar.isEmpty()) {
+        if (descripcion.isEmpty() || fechaString.isEmpty() || horaInicio.isEmpty() || horaFin.isEmpty() || lugar.isEmpty()) {
             Toast.makeText(CrearEntreno.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -105,7 +105,7 @@ public class CrearEntreno extends AppCompatActivity {
         }
 
         // Crear un objeto EntrenoDatos con los datos proporcionados
-        EntrenoDatos entreno = new EntrenoDatos(null, nombre, fecha, horaInicio, horaFin, lugar, false, "");
+        EntrenoDatos entreno = new EntrenoDatos(null, descripcion, fecha, horaInicio, horaFin, lugar, false, "");
 
         // Guardar el entreno en la base de datos dentro del equipo
         DatabaseReference entrenoRef = equiposRef.child(equipoId).child("Entrenos").push();

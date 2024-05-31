@@ -4,15 +4,125 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:background="?attr/selectableItemBackground"
+    android:padding="16dp">
 
     <TextView
-        android:id="@+id/textViewPartido"
+        android:id="@+id/textViewEquipoLocalLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Partido ID"
-        android:textColor="@color/green"
+        android:text="Equipo local:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/equipoLocal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre del equipo local"
+        android:textColor="@android:color/black"
         android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/textViewEquipoLocalLabel"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewEquipoVisitanteLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Equipo visitante:"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipoLocal"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/equipoVisitante"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Nombre del equipo visitante"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/textViewEquipoVisitanteLabel"
+        app:layout_constraintTop_toBottomOf="@id/equipoLocal"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewHorarioLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Horario:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/equipoVisitante"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fecha"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/textViewHorarioLabel"
+        app:layout_constraintTop_toBottomOf="@id/equipoVisitante"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hora"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/fecha"
+        app:layout_constraintTop_toBottomOf="@id/equipoVisitante"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/textViewUbicacionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ubicación:"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewHorarioLabel"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/ubicacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Ubicación del partido"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/textViewUbicacionLabel"
+        app:layout_constraintTop_toBottomOf="@id/textViewHorarioLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/ubicacion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

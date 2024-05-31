@@ -17,7 +17,8 @@ public class ListaEntrenos extends AppCompatActivity {
 
     private RecyclerView recyclerViewEntrenos;
     private EntrenoAdapter entrenoAdapter;
-    private String equipoId = "equipoId";
+    private List<EntrenoDatos> entrenos;
+    private String equipoId = "equipoId"; // Supongamos que el equipoId es conocido por ahora
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,24 +28,29 @@ public class ListaEntrenos extends AppCompatActivity {
         recyclerViewEntrenos = findViewById(R.id.recyclerViewEntrenos);
         recyclerViewEntrenos.setLayoutManager(new LinearLayoutManager(this));
 
-        entrenoAdapter = new EntrenoAdapter(new ArrayList<>(), equipoId, this);
+        entrenos = new ArrayList<>();
+        entrenoAdapter = new EntrenoAdapter(entrenos, this);
         recyclerViewEntrenos.setAdapter(entrenoAdapter);
 
+        cargarEntrenosDesdeFirebase();
+    }
+
+    private void cargarEntrenosDesdeFirebase() {
         DatabaseReference entrenosRef = FirebaseDatabase.getInstance().getReference("Equipos").child(equipoId).child("Entrenos");
         entrenosRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<String> entrenos = new ArrayList<>();
+                entrenos.clear();
                 for (DataSnapshot entrenoSnapshot : dataSnapshot.getChildren()) {
-                    String entrenoId = entrenoSnapshot.getKey();
-                    entrenos.add(entrenoId);
+                    EntrenoDatos entreno = entrenoSnapshot.getValue(EntrenoDatos.class);
+                    entrenos.add(entreno);
                 }
                 entrenoAdapter.updateEntrenos(entrenos);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                // Manejar error de la base de datos
             }
         });
     }

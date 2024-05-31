@@ -8,17 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PartidoAdapter extends RecyclerView.Adapter<PartidoAdapter.PartidoViewHolder> {
 
-    private List<String> partidosIds;
-    private String equipoId;
+    private List<PartidoDatos> partidos;
     private Context context;
 
-    public PartidoAdapter(List<String> partidosIds, String equipoId, Context context) {
-        this.partidosIds = partidosIds;
-        this.equipoId = equipoId;
+    public PartidoAdapter(List<PartidoDatos> partidos, Context context) {
+        this.partidos = partidos;
         this.context = context;
     }
 
@@ -31,32 +31,44 @@ public class PartidoAdapter extends RecyclerView.Adapter<PartidoAdapter.PartidoV
 
     @Override
     public void onBindViewHolder(@NonNull PartidoViewHolder holder, int position) {
-        String partidoId = partidosIds.get(position);
-        holder.textViewPartido.setText(partidoId);
+        PartidoDatos partido = partidos.get(position);
+        holder.equipoLocal.setText(partido.getEquipoLocal());
+        holder.equipoVisitante.setText(partido.getEquipoVisitante());
+        holder.fecha.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(partido.getFecha()));
+        holder.hora.setText(partido.getHoraInicio());
+        holder.ubicacion.setText(partido.getUbicacionTexto());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, Partido.class);
-            intent.putExtra("partidoId", partidoId);
+            intent.putExtra("partidoId", partido.getId());
             context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return partidosIds.size();
+        return partidos.size();
     }
 
-    public void updatePartidos(List<String> nuevosPartidos) {
-        this.partidosIds = nuevosPartidos;
+    public void updatePartidos(List<PartidoDatos> nuevosPartidos) {
+        this.partidos = nuevosPartidos;
         notifyDataSetChanged();
     }
 
     public static class PartidoViewHolder extends RecyclerView.ViewHolder {
-        TextView textViewPartido;
+        TextView equipoLocal;
+        TextView equipoVisitante;
+        TextView fecha;
+        TextView hora;
+        TextView ubicacion;
 
         public PartidoViewHolder(View itemView) {
             super(itemView);
-            textViewPartido = itemView.findViewById(R.id.textViewPartido);
+            equipoLocal = itemView.findViewById(R.id.equipoLocal);
+            equipoVisitante = itemView.findViewById(R.id.equipoVisitante);
+            fecha = itemView.findViewById(R.id.fecha);
+            hora = itemView.findViewById(R.id.hora);
+            ubicacion = itemView.findViewById(R.id.ubicacion);
         }
     }
 }
