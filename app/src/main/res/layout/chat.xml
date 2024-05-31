@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/negro"
+    android:background="@color/blanco"
     android:padding="16dp"
     tools:context=".Chat">
 
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Nombre del Jugador"
         android:textSize="20sp"
-        android:textColor="@color/blanco"
+        android:textColor="@color/negro"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@
             android:inputType="textMultiLine"
             android:maxLines="5"
             android:textColor="@color/negro"
-            android:background="@color/blanco"
+            android:background="@color/gris_flojo"
             android:padding="8dp"/>
 
         <Button

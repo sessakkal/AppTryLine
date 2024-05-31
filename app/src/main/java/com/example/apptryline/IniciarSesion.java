@@ -72,7 +72,7 @@ public class IniciarSesion extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(IniciarSesion.this, Calendario.class));
+                            startActivity(new Intent(IniciarSesion.this, MainPartidos.class));
                             finish();
                         } else {
                             Toast.makeText(IniciarSesion.this, "Error al iniciar sesión: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();

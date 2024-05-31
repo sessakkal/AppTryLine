@@ -135,7 +135,7 @@ public class CrearPartido extends AppCompatActivity {
                     Toast.makeText(CrearPartido.this, "Partido creado exitosamente", Toast.LENGTH_SHORT).show();
                     guardarAlineacion(equipoId, partidoId); // Guardar alineación después de crear el partido
                     // Redirigir al usuario a la pantalla de calendario después de crear el partido
-                    Intent intent = new Intent(CrearPartido.this, Calendario.class);
+                    Intent intent = new Intent(CrearPartido.this, MainPartidos.class);
                     startActivity(intent);
                     finish(); // Esto evita que el usuario pueda volver atrás con el botón de retroceso y volver a la pantalla de creación de partido
                 } else {

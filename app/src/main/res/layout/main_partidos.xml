@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/negro"
-    tools:context=".Calendario">
+    android:background="@color/blanco"
+    tools:context=".MainPartidos">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -24,24 +24,13 @@
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Partidos y Entrenos"
+            android:text="Partidos"
             android:textColor="@android:color/white"
             android:layout_marginStart="30dp"
             android:textSize="20sp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.Toolbar>
-    <TextView
-        android:id="@+id/textViewPartidos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Partidos"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/partidosRecyclerView"
         android:layout_width="0dp"
@@ -49,30 +38,8 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/entrenosRecyclerView"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
-    <TextView
-        android:id="@+id/textViewEntrenos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Entrenos"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/partidosRecyclerView"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="16dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/entrenosRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/partidosRecyclerView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/botonLayout"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp" />
 
     <LinearLayout
@@ -93,13 +60,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Añadir partido" />
-
-        <Button
-            android:id="@+id/boton1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Añadir entreno" />
     </LinearLayout>
 
     <LinearLayout
@@ -121,7 +81,7 @@
             android:clickable="true"
             android:onClick="onOption1Click"
             android:padding="2dp"
-            android:src="@drawable/global_blanco" />
+            android:src="@drawable/global_negro" />
 
         <ImageView
             android:id="@+id/conversaciones"
@@ -131,7 +91,7 @@
             android:clickable="true"
             android:onClick="onOption2Click"
             android:padding="2dp"
-            android:src="@drawable/conversacion_blanco" />
+            android:src="@drawable/conversacion_negro" />
 
         <ImageView
             android:id="@+id/calendario"
@@ -141,7 +101,7 @@
             android:clickable="true"
             android:onClick="onOption3Click"
             android:padding="2dp"
-            android:src="@drawable/calendario_verde" />
+            android:src="@drawable/icono_negro" />
 
         <ImageView
             android:id="@+id/perfil"
@@ -151,7 +111,7 @@
             android:clickable="true"
             android:onClick="onOption4Click"
             android:padding="2dp"
-            android:src="@drawable/perfil_blanco" />
+            android:src="@drawable/perfil_negro" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

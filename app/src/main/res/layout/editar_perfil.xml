@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/negro"
+    android:background="@color/blanco"
     tools:context=".EditarPerfil">
 
     <androidx.appcompat.widget.Toolbar
@@ -69,7 +69,7 @@
         android:contentDescription="Cambiar Foto"
         android:padding="12dp"
         android:src="@drawable/icono_galeria"
-        app:tint="@color/white"
+        app:tint="@color/negro"
         app:layout_constraintTop_toBottomOf="@id/photoImageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="EMAIL:"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/changePhotoButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,7 @@
         android:id="@+id/emailTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/emailLabel"
@@ -109,8 +109,8 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="USERNAME:"
-        android:textColor="@color/white"
+        android:text="Nombre de usuario:"
+        android:textColor="@color/negro"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -121,7 +121,7 @@
         android:id="@+id/displayNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/negro"
         android:layout_marginTop="4dp"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/usernameLabel"
@@ -138,8 +138,8 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="Cambiar nombre"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
+        android:textColor="@color/negro"
+        android:textColorHint="@color/negro"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -193,7 +193,7 @@
             android:clickable="true"
             android:onClick="onOption1Click"
             android:padding="2dp"
-            android:src="@drawable/global_blanco" />
+            android:src="@drawable/global_negro" />
 
         <ImageView
             android:id="@+id/conversaciones"
@@ -203,7 +203,7 @@
             android:clickable="true"
             android:onClick="onOption2Click"
             android:padding="2dp"
-            android:src="@drawable/conversacion_blanco" />
+            android:src="@drawable/conversacion_negro" />
 
         <ImageView
             android:id="@+id/calendario"
@@ -213,7 +213,7 @@
             android:clickable="true"
             android:onClick="onOption3Click"
             android:padding="2dp"
-            android:src="@drawable/calendario_verde" />
+            android:src="@drawable/icono_negro" />
 
         <ImageView
             android:id="@+id/perfil"
@@ -223,7 +223,7 @@
             android:clickable="true"
             android:onClick="onOption4Click"
             android:padding="2dp"
-            android:src="@drawable/perfil_blanco" />
+            android:src="@drawable/perfil_negro" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

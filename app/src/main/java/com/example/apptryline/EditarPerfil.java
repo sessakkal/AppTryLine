@@ -220,7 +220,7 @@ public class EditarPerfil extends AppCompatActivity {
                         } else if (photoUrl != null) {
                             updatePosts(user.getUid(), null, photoUrl);
                         }
-                        Intent intent = new Intent(EditarPerfil.this, Calendario.class);
+                        Intent intent = new Intent(EditarPerfil.this, MainPartidos.class);
                         startActivity(intent);
                         Toast.makeText(EditarPerfil.this, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show();
                     } else {
@@ -364,7 +364,7 @@ public class EditarPerfil extends AppCompatActivity {
     }
 
     public void onOption3Click(View view) {
-        Intent intent = new Intent(this, Calendario.class);
+        Intent intent = new Intent(this, MainPartidos.class);
         startActivity(intent);
     }
 

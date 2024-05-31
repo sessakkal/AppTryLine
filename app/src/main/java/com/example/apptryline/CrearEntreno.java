@@ -118,7 +118,7 @@ public class CrearEntreno extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(CrearEntreno.this, "Entreno creado exitosamente", Toast.LENGTH_SHORT).show();
                     // Redirigir al usuario a la pantalla de calendario después de crear el entreno
-                    Intent intent = new Intent(CrearEntreno.this, Calendario.class);
+                    Intent intent = new Intent(CrearEntreno.this, MainPartidos.class);
                     startActivity(intent);
                     finish(); // Esto evita que el usuario pueda volver atrás con el botón de retroceso y volver a la pantalla de creación de entreno
                 } else {

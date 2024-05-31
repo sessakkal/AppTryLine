@@ -43,9 +43,7 @@
         <activity
             android:name=".IniciarSesion"
             android:exported="true" />
-        <activity
-            android:name=".Calendario"
-            android:exported="true" />
+
         <activity
             android:name=".ContraOlvidada"
             android:exported="true" />
@@ -87,6 +85,12 @@
             android:exported="true" />
         <activity
             android:name=".ConsultarAlineacion"
+            android:exported="true" />
+        <activity
+            android:name=".MainEntrenos"
+            android:exported="true" />
+        <activity
+            android:name=".MainPartidos"
             android:exported="true" />
     </application>
 

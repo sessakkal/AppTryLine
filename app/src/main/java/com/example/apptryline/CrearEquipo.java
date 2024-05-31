@@ -89,8 +89,7 @@ public class CrearEquipo extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                // Inicio de sesión exitoso, redirigir al usuario a la actividad Calendario
-                                                startActivity(new Intent(CrearEquipo.this, Calendario.class));
+                                                startActivity(new Intent(CrearEquipo.this, MainPartidos.class));
                                                 finish();
                                             } else {
                                                 // Error al iniciar sesión automáticamente
@@ -152,8 +151,7 @@ public class CrearEquipo extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<AuthResult> task) {
                                                                 if (task.isSuccessful()) {
-                                                                    // Inicio de sesión exitoso, redirigir al usuario a la actividad Calendario
-                                                                    startActivity(new Intent(CrearEquipo.this, Calendario.class));
+                                                                    startActivity(new Intent(CrearEquipo.this, MainPartidos.class));
                                                                     finish();
                                                                 } else {
                                                                     // Error al iniciar sesión automáticamente

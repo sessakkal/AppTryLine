@@ -182,7 +182,7 @@ public class EditarPartido extends AppCompatActivity {
         }
         Toast.makeText(EditarPartido.this, "Partido y alineación actualizados exitosamente", Toast.LENGTH_SHORT).show();
         // Redirigir al usuario a la pantalla de calendario después de actualizar el partido
-        Intent intent = new Intent(EditarPartido.this, Calendario.class);
+        Intent intent = new Intent(EditarPartido.this, MainPartidos.class);
         startActivity(intent);
         finish(); // Esto evita que el usuario pueda volver atrás con el botón de retroceso y volver a la pantalla de edición de partido
     }

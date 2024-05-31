@@ -84,8 +84,7 @@ public class UnirseEquipo extends AppCompatActivity {
 
                                                 Toast.makeText(UnirseEquipo.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
 
-                                                // Acceder a la actividad Calendario
-                                                startActivity(new Intent(UnirseEquipo.this, Calendario.class));
+                                                startActivity(new Intent(UnirseEquipo.this, MainPartidos.class));
                                                 finish();
                                             } else {
                                                 Toast.makeText(UnirseEquipo.this, "Error al registrar usuario: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
