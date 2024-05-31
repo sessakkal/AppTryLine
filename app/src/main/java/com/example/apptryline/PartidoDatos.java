@@ -9,32 +9,41 @@ public class PartidoDatos {
     private String id;
     private Date fecha;
     private String horaInicio;
-    private String coordenadas;
     private String ubicacionTexto;
     private String equipoLocal;
     private String equipoVisitante;
-    private String resultado;
-    private int melesAFavor;
-    private int melesEnContra;
-    private int triesAFavor;
-    private int triesEnContra;
+    private String resultadolocal;
+    private String resultadovisitante;
 
     // Constructor vacío necesario para Firebase
     public PartidoDatos() {}
 
     // Constructor con parámetros
-    public PartidoDatos(String id, Date fecha, String horaInicio, String ubicacionTexto, String equipoLocal, String equipoVisitante, String resultado, int melesAFavor, int melesEnContra, int triesAFavor, int triesEnContra) {
+    public PartidoDatos(String id, Date fecha, String horaInicio, String ubicacionTexto, String equipoLocal, String equipoVisitante, String resultadoLocal, String resultadoVisitante) {
         this.id = id;
         this.fecha = fecha;
         this.horaInicio = horaInicio;
         this.ubicacionTexto = ubicacionTexto;
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
-        this.resultado = resultado;
-        this.melesAFavor = melesAFavor;
-        this.melesEnContra = melesEnContra;
-        this.triesAFavor = triesAFavor;
-        this.triesEnContra = triesEnContra;
+        this.resultadolocal = resultadoLocal;
+        this.resultadovisitante = resultadoVisitante;
+    }
+
+    public String getResultadolocal() {
+        return resultadolocal;
+    }
+
+    public void setResultadolocal(String resultadolocal) {
+        this.resultadolocal = resultadolocal;
+    }
+
+    public String getResultadovisitante() {
+        return resultadovisitante;
+    }
+
+    public void setResultadovisitante(String resultadovisitante) {
+        this.resultadovisitante = resultadovisitante;
     }
 
     public String getDescripcion() {
@@ -68,14 +77,6 @@ public class PartidoDatos {
         this.horaInicio = horaInicio;
     }
 
-    public String getCoordenadas() {
-        return coordenadas;
-    }
-
-    public void setCoordenadas(String coordenadas) {
-        this.coordenadas = coordenadas;
-    }
-
     public String getUbicacionTexto() {
         return ubicacionTexto;
     }
@@ -98,45 +99,5 @@ public class PartidoDatos {
 
     public void setEquipoVisitante(String equipoVisitante) {
         this.equipoVisitante = equipoVisitante;
-    }
-
-    public String getResultado() {
-        return resultado;
-    }
-
-    public void setResultado(String resultado) {
-        this.resultado = resultado;
-    }
-
-    public int getMelesAFavor() {
-        return melesAFavor;
-    }
-
-    public void setMelesAFavor(int melesAFavor) {
-        this.melesAFavor = melesAFavor;
-    }
-
-    public int getMelesEnContra() {
-        return melesEnContra;
-    }
-
-    public void setMelesEnContra(int melesEnContra) {
-        this.melesEnContra = melesEnContra;
-    }
-
-    public int getTriesAFavor() {
-        return triesAFavor;
-    }
-
-    public void setTriesAFavor(int triesAFavor) {
-        this.triesAFavor = triesAFavor;
-    }
-
-    public int getTriesEnContra() {
-        return triesEnContra;
-    }
-
-    public void setTriesEnContra(int triesEnContra) {
-        this.triesEnContra = triesEnContra;
     }
 }

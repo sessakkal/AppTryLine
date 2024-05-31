@@ -1,10 +1,11 @@
 package com.example.apptryline;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,17 +18,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class CrearPartido extends AppCompatActivity {
 
-    private EditText fechaEditText, horaInicioEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText, resultEditText, melesAFavorEditText, melesEnContraEditText, triesAFavorEditText, triesEnContraEditText;
-    private Button anadirPartidoButton;
+    private EditText fechaEditText, horaInicioEditText, ubicacionTextoEditText, equipoLocalEditText, equipoVisitanteEditText, resultadoLocalEditText, resultadoVisitanteEditText;
+    private Button anadirPartidoButton, addStatButton;
+    private LinearLayout statisticsContainer;
     private FirebaseAuth mAuth;
     private DatabaseReference equiposRef;
+    private int statCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +48,11 @@ public class CrearPartido extends AppCompatActivity {
         ubicacionTextoEditText = findViewById(R.id.ubi_texto);
         equipoLocalEditText = findViewById(R.id.equipolocal);
         equipoVisitanteEditText = findViewById(R.id.equipovisitante);
+        resultadoLocalEditText = findViewById(R.id.resultado_local);
+        resultadoVisitanteEditText = findViewById(R.id.resultado_visitante);
         anadirPartidoButton = findViewById(R.id.anadirpartido);
-        resultEditText = findViewById(R.id.result);
-        melesAFavorEditText = findViewById(R.id.meles_a_favor);
-        melesEnContraEditText = findViewById(R.id.meles_en_contra);
-        triesAFavorEditText = findViewById(R.id.tries_a_favor);
-        triesEnContraEditText = findViewById(R.id.tries_en_contra);
+        addStatButton = findViewById(R.id.add_stat_button);
+        statisticsContainer = findViewById(R.id.statistics_container);
 
         anadirPartidoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +60,50 @@ public class CrearPartido extends AppCompatActivity {
                 obtenerEquipoId();
             }
         });
+
+        addStatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addStatField();
+            }
+        });
+    }
+
+    private void addStatField() {
+        statCount++;
+
+        LinearLayout statLayout = new LinearLayout(this);
+        statLayout.setOrientation(LinearLayout.HORIZONTAL);
+        statLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        EditText statTitle = new EditText(this);
+        statTitle.setHint("Dato " + statCount);
+        statTitle.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        statTitle.setTextColor(getResources().getColor(R.color.white));
+        statTitle.setHintTextColor(getResources().getColor(R.color.gris_flojo));
+        statTitle.setBackgroundTintList(getResources().getColorStateList(R.color.green));
+
+        EditText statLocal = new EditText(this);
+        statLocal.setHint("Local");
+        statLocal.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        statLocal.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        statLocal.setTextColor(getResources().getColor(R.color.white));
+        statLocal.setHintTextColor(getResources().getColor(R.color.gris_flojo));
+        statLocal.setBackgroundTintList(getResources().getColorStateList(R.color.green));
+
+        EditText statVisit = new EditText(this);
+        statVisit.setHint("Visitante");
+        statVisit.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
+        statVisit.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        statVisit.setTextColor(getResources().getColor(R.color.white));
+        statVisit.setHintTextColor(getResources().getColor(R.color.gris_flojo));
+        statVisit.setBackgroundTintList(getResources().getColorStateList(R.color.green));
+
+        statLayout.addView(statTitle);
+        statLayout.addView(statLocal);
+        statLayout.addView(statVisit);
+
+        statisticsContainer.addView(statLayout);
     }
 
     private void obtenerEquipoId() {
@@ -86,105 +135,69 @@ public class CrearPartido extends AppCompatActivity {
     }
 
     private void crearPartido(String equipoId) {
-        String fechaString = fechaEditText.getText().toString().trim();
+        String fecha = fechaEditText.getText().toString().trim();
         String horaInicio = horaInicioEditText.getText().toString().trim();
         String ubicacionTexto = ubicacionTextoEditText.getText().toString().trim();
         String equipoLocal = equipoLocalEditText.getText().toString().trim();
         String equipoVisitante = equipoVisitanteEditText.getText().toString().trim();
-        String result = resultEditText.getText().toString().trim();
-        String melesAFavor = melesAFavorEditText.getText().toString().trim();
-        String melesEnContra = melesEnContraEditText.getText().toString().trim();
-        String triesAFavor = triesAFavorEditText.getText().toString().trim();
-        String triesEnContra = triesEnContraEditText.getText().toString().trim();
+        String resultadoLocal = resultadoLocalEditText.getText().toString().trim();
+        String resultadoVisitante = resultadoVisitanteEditText.getText().toString().trim();
 
-        // Validar que se ingresen todos los campos
-        if (fechaString.isEmpty() || horaInicio.isEmpty() || ubicacionTexto.isEmpty() || equipoLocal.isEmpty() || equipoVisitante.isEmpty()) {
-            Toast.makeText(CrearPartido.this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(fecha) || TextUtils.isEmpty(horaInicio) || TextUtils.isEmpty(ubicacionTexto) || TextUtils.isEmpty(equipoLocal) || TextUtils.isEmpty(equipoVisitante)) {
+            Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Convertir la cadena de fecha a formato Date
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        Date fecha = null;
-        try {
-            fecha = dateFormat.parse(fechaString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Toast.makeText(CrearPartido.this, "Error al convertir la fecha", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        DatabaseReference partidosRef = equiposRef.child(equipoId).child("Partidos");
+        String partidoId = partidosRef.push().getKey();
 
-        // Validar campos numéricos
-        int melesAFavorInt = !melesAFavor.isEmpty() ? Integer.parseInt(melesAFavor) : 0;
-        int melesEnContraInt = !melesEnContra.isEmpty() ? Integer.parseInt(melesEnContra) : 0;
-        int triesAFavorInt = !triesAFavor.isEmpty() ? Integer.parseInt(triesAFavor) : 0;
-        int triesEnContraInt = !triesEnContra.isEmpty() ? Integer.parseInt(triesEnContra) : 0;
+        PartidoDatos partido = new PartidoDatos(partidoId, parseDate(fecha), horaInicio, ubicacionTexto, equipoLocal, equipoVisitante, resultadoLocal, resultadoVisitante);
 
-        // Crear un objeto PartidoDatos con los datos proporcionados
-        PartidoDatos partido = new PartidoDatos(null, fecha, horaInicio, ubicacionTexto, equipoLocal, equipoVisitante, result, melesAFavorInt, melesEnContraInt, triesEnContraInt, triesAFavorInt);
+        partidosRef.child(partidoId).setValue(partido)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            guardarEstadisticas(equipoId, partidoId);
+                        } else {
+                            Toast.makeText(CrearPartido.this, "Error al crear el partido: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
-        // Guardar el partido en la base de datos
-        DatabaseReference partidoRef = equiposRef.child(equipoId).child("Partidos").push();
-        String partidoId = partidoRef.getKey();
-        partido.setId(partidoId); // Asignar el ID generado al objeto PartidoDatos
+    private void guardarEstadisticas(String equipoId, String partidoId) {
+        DatabaseReference estadisticasRef = equiposRef.child(equipoId).child("Partidos").child(partidoId).child("Estadisticas");
 
-        partidoRef.setValue(partido).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(CrearPartido.this, "Partido creado exitosamente", Toast.LENGTH_SHORT).show();
-                    guardarAlineacion(equipoId, partidoId); // Guardar alineación después de crear el partido
-                    // Redirigir al usuario a la pantalla de calendario después de crear el partido
-                    Intent intent = new Intent(CrearPartido.this, MainPartidos.class);
-                    startActivity(intent);
-                    finish(); // Esto evita que el usuario pueda volver atrás con el botón de retroceso y volver a la pantalla de creación de partido
-                } else {
-                    Toast.makeText(CrearPartido.this, "Error al crear el partido", Toast.LENGTH_SHORT).show();
-                }
+        for (int i = 0; i < statisticsContainer.getChildCount(); i++) {
+            View statLayout = statisticsContainer.getChildAt(i);
+
+            if (statLayout instanceof LinearLayout) {
+                LinearLayout linearLayout = (LinearLayout) statLayout;
+                EditText statTitle = (EditText) linearLayout.getChildAt(0);
+                EditText statLocal = (EditText) linearLayout.getChildAt(1);
+                EditText statVisit = (EditText) linearLayout.getChildAt(2);
+
+                String titulo = statTitle.getText().toString().trim();
+                int local = Integer.parseInt(statLocal.getText().toString().trim());
+                int visitante = Integer.parseInt(statVisit.getText().toString().trim());
+
+                Estadistica estadistica = new Estadistica(titulo, local, visitante, 100, 0); // El valor de max y progreso puede ser ajustado según la necesidad
+                estadisticasRef.push().setValue(estadistica);
             }
-        });
+        }
+
+        Toast.makeText(CrearPartido.this, "Partido y estadísticas creados exitosamente", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
-    private void guardarAlineacion(String equipoId, String partidoId) {
-        DatabaseReference alineacionRef = equiposRef.child(equipoId).child("Partidos").child(partidoId).child("Alineacion");
-        guardarJugadorCoordenadas(alineacionRef, "Jugador1", R.id.player1);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador2", R.id.player2);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador3", R.id.player3);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador4", R.id.player4);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador5", R.id.player5);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador6", R.id.player6);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador7", R.id.player7);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador8", R.id.player8);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador9", R.id.player9);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador10", R.id.player10);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador11", R.id.player11);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador12", R.id.player12);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador13", R.id.player13);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador14", R.id.player14);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador15", R.id.player15);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador16", R.id.player16);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador17", R.id.player17);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador18", R.id.player18);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador19", R.id.player19);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador20", R.id.player20);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador21", R.id.player21);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador22", R.id.player22);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador23", R.id.player23);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador24", R.id.player24);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador25", R.id.player25);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador26", R.id.player26);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador27", R.id.player27);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador28", R.id.player28);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador29", R.id.player29);
-        guardarJugadorCoordenadas(alineacionRef, "Jugador30", R.id.player30);
-    }
-
-    private void guardarJugadorCoordenadas(DatabaseReference alineacionRef, String nombreJugador, int editTextId) {
-        EditText jugadorEditText = findViewById(editTextId);
-        String nombre = jugadorEditText.getText().toString();
-
-        // Guardar en Firebase bajo el ID del partido
-        alineacionRef.child(nombreJugador).child("nombre").setValue(nombre);
+    private Date parseDate(String fecha) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            return dateFormat.parse(fecha);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     public void goBack(View view) {

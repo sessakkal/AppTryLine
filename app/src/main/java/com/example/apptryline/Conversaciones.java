@@ -28,6 +28,7 @@ public class Conversaciones extends AppCompatActivity {
     private ArrayList<String> usuarios;
     private ArrayAdapter<String> adapter;
     private String equipoIdActual;
+    private TextView noDataMessage;  // Añadir esta línea
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,8 @@ public class Conversaciones extends AppCompatActivity {
         toolbarTitle.setTextColor(getResources().getColor(android.R.color.white));
 
         ListView listView = findViewById(R.id.listViewUsuarios);
+        noDataMessage = findViewById(R.id.no_data_message);  // Añadir esta línea
+
         usuarios = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, R.layout.lista_conversaciones, R.id.text1, usuarios);
         listView.setAdapter(adapter);
@@ -98,6 +101,12 @@ public class Conversaciones extends AppCompatActivity {
                     }
                 }
                 adapter.notifyDataSetChanged();
+
+                if (usuarios.isEmpty()) {
+                    noDataMessage.setVisibility(View.VISIBLE);
+                } else {
+                    noDataMessage.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -132,6 +141,7 @@ public class Conversaciones extends AppCompatActivity {
             }
         });
     }
+
     public void irPartidos(View view) {
         Intent intent = new Intent(this, MainPartidos.class);
         startActivity(intent);

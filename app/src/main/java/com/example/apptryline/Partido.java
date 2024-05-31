@@ -3,15 +3,14 @@ package com.example.apptryline;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,16 +21,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class Partido extends AppCompatActivity {
 
-    private TextView textViewFecha, textViewHoraInicio, textViewUbicacionTexto, textViewEquipoLocal, textViewEquipoVisitante, textViewResultado, textViewMelesAFavor, textViewMelesEnContra, textViewTriesAFavor, textViewTriesEnContra;
-    private ProgressBar progressBarMeles, progressBarTries;
-    private TextView[] playerTextViews = new TextView[30];
+    private TextView textViewFecha, textViewHoraInicio, textViewUbicacionTexto, textViewEquipoLocal, textViewEquipoVisitante, resultadoVisitanteTextView, resultadoLocalTextView;
     private ImageView editarIcono, eliminarIcono;
     private FirebaseAuth mAuth;
     private String equipoId;
+    private RecyclerView recyclerViewEstadisticas;
+    private EstadisticasAdapter estadisticasAdapter;
+    private List<Estadistica> estadisticasList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,34 +48,24 @@ public class Partido extends AppCompatActivity {
             loadPartidoDetails(partidoId);
             checkIfAdmin();
         }
-
-        Button consultarAlineacionButton = findViewById(R.id.alineacion);
-        consultarAlineacionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Partido.this, ConsultarAlineacion.class);
-                intent.putExtra("equipoId", equipoId);
-                intent.putExtra("partidoId", partidoId);
-                startActivity(intent);
-            }
-        });
     }
 
     private void initViews() {
-        textViewFecha = findViewById(R.id.fecha_partido);
+        textViewFecha = findViewById(R.id.fecha_partido_cabecera);
         textViewHoraInicio = findViewById(R.id.hora_inicio_partido);
         textViewUbicacionTexto = findViewById(R.id.ubicacion_texto_partido);
         textViewEquipoLocal = findViewById(R.id.equipo_local_partido);
         textViewEquipoVisitante = findViewById(R.id.equipo_visitante_partido);
-        textViewResultado = findViewById(R.id.resultado_partido);
-        textViewMelesAFavor = findViewById(R.id.meles_a_favor_partido);
-        textViewMelesEnContra = findViewById(R.id.meles_en_contra_partido);
-        textViewTriesAFavor = findViewById(R.id.tries_a_favor_partido);
-        textViewTriesEnContra = findViewById(R.id.tries_en_contra_partido);
-        progressBarMeles = findViewById(R.id.progress_meles);
-        progressBarTries = findViewById(R.id.progress_tries);
+        resultadoLocalTextView = findViewById(R.id.resultado_local);
+        resultadoVisitanteTextView = findViewById(R.id.resultado_visitante);
         editarIcono = findViewById(R.id.editar);
         eliminarIcono = findViewById(R.id.eliminar);
+
+        recyclerViewEstadisticas = findViewById(R.id.recycler_view_estadisticas);
+        recyclerViewEstadisticas.setLayoutManager(new LinearLayoutManager(this));
+        estadisticasList = new ArrayList<>();
+        estadisticasAdapter = new EstadisticasAdapter(this, estadisticasList);
+        recyclerViewEstadisticas.setAdapter(estadisticasAdapter);
     }
 
     private void checkIfAdmin() {
@@ -124,27 +116,12 @@ public class Partido extends AppCompatActivity {
                                 textViewUbicacionTexto.setText(partido.getUbicacionTexto());
                                 textViewEquipoLocal.setText(partido.getEquipoLocal());
                                 textViewEquipoVisitante.setText(partido.getEquipoVisitante());
-                                textViewResultado.setText(partido.getResultado());
-                                textViewMelesAFavor.setText(String.valueOf(partido.getMelesAFavor()));
-                                textViewMelesEnContra.setText(String.valueOf(partido.getMelesEnContra()));
-                                textViewTriesAFavor.setText(String.valueOf(partido.getTriesAFavor()));
-                                textViewTriesEnContra.setText(String.valueOf(partido.getTriesEnContra()));
+                                resultadoVisitanteTextView.setText(partido.getResultadovisitante());
+                                resultadoLocalTextView.setText(partido.getResultadolocal());
 
-                                int totalMeles = partido.getMelesAFavor() + partido.getMelesEnContra();
-                                if (totalMeles > 0) {
-                                    int porcentajeMelesAFavor = (partido.getMelesAFavor() * 100) / totalMeles;
-                                    progressBarMeles.setProgress(porcentajeMelesAFavor);
-                                } else {
-                                    progressBarMeles.setProgress(0);
-                                }
-
-                                int totalTries = partido.getTriesAFavor() + partido.getTriesEnContra();
-                                if (totalTries > 0) {
-                                    int porcentajeTriesAFavor = (partido.getTriesAFavor() * 100) / totalTries;
-                                    progressBarTries.setProgress(porcentajeTriesAFavor);
-                                } else {
-                                    progressBarTries.setProgress(0);
-                                }
+                                // Cargar estadísticas
+                                DatabaseReference estadisticasRef = equipoSnapshot.child("Partidos").child(partidoId).child("Estadisticas").getRef();
+                                cargarEstadisticas(estadisticasRef);
                             }
 
                             break;
@@ -155,7 +132,35 @@ public class Partido extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar error de la base de datos
+                Toast.makeText(Partido.this, "Error al cargar los detalles del partido", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void cargarEstadisticas(DatabaseReference estadisticasRef) {
+        estadisticasRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                estadisticasList.clear();
+                for (DataSnapshot statSnapshot : dataSnapshot.getChildren()) {
+                    Estadistica estadistica = statSnapshot.getValue(Estadistica.class);
+                    if (estadistica != null) {
+                        int totalDato = estadistica.getDatoFavor() + estadistica.getDatoContra();
+                        if (totalDato > 0) {
+                            int porcentajeDatoAFavor = (estadistica.getDatoFavor() * 100) / totalDato;
+                            estadistica.setProgreso(porcentajeDatoAFavor);
+                        } else {
+                            estadistica.setProgreso(0);
+                        }
+                        estadisticasList.add(estadistica);
+                    }
+                }
+                estadisticasAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Partido.this, "Error al cargar las estadísticas", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,7 +203,7 @@ public class Partido extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Manejar error de la base de datos
+                Toast.makeText(Partido.this, "Error al eliminar el partido", Toast.LENGTH_SHORT).show();
             }
         });
     }

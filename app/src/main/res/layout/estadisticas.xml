@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Título"
+        android:textColor="@color/negro"
+        android:textSize="18sp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/dato_favor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dato a favor"
+        android:textColor="@color/negro"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/dato_contra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dato en contra"
+        android:textColor="@color/negro"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/green"
+        android:progressBackgroundTint="@color/gray_602"
+        app:layout_constraintTop_toBottomOf="@id/dato_contra"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

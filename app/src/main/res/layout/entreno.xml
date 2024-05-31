@@ -31,9 +31,9 @@
 
             <ImageView
                 android:id="@+id/eliminar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icono_eliminar_blanco"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/papelera"
                 android:onClick="eliminarEntreno"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,8 +42,8 @@
 
             <ImageView
                 android:id="@+id/lista"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_marginEnd="16dp"
                 android:onClick="mostrarLista"
                 android:visibility="gone"
