@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -44,6 +48,25 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
     public void onBindViewHolder(@NonNull HolderChat holder, int position) {
         ModelChat modelChat = chatArrayList.get(position);
         holder.mensaje.setText(modelChat.getMensaje());
+
+        String senderId = modelChat.getIdUsuarioEnvia();
+        FirebaseDatabase.getInstance().getReference("Usuarios").child(senderId).child("nombreUsuario")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            String username = snapshot.getValue(String.class);
+                            holder.userNameTv.setText(username);
+                        } else {
+                            holder.userNameTv.setText("Usuario desconocido");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        holder.userNameTv.setText("Error al cargar usuario");
+                    }
+                });
     }
 
     @Override
@@ -61,11 +84,12 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.HolderChat> {
     }
 
     class HolderChat extends RecyclerView.ViewHolder {
-        TextView mensaje;
+        TextView mensaje, userNameTv;
 
         public HolderChat(@NonNull View itemView) {
             super(itemView);
             mensaje = itemView.findViewById(R.id.mensaje);
+            userNameTv = itemView.findViewById(R.id.user_name);
         }
     }
 }

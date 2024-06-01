@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Chat extends AppCompatActivity {
 
@@ -36,8 +37,8 @@ public class Chat extends AppCompatActivity {
     private String otroUsuarioId;
     private String equipoId;
     private boolean isGroupChat;
-    private ImageView fotoPerfil; // Añadir esta línea
-    private TextView nombreTextView; // Cambiar el nombre de esta línea
+    private ImageView fotoPerfil;
+    private TextView nombreTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +52,8 @@ public class Chat extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Inicializar la foto de perfil y nombre del equipo
-        fotoPerfil = findViewById(R.id.fotoPerfil); // Añadir esta línea
-        nombreTextView = findViewById(R.id.nombreEquipo); // Cambiar el nombre de esta línea
+        fotoPerfil = findViewById(R.id.fotoPerfil);
+        nombreTextView = findViewById(R.id.nombreEquipo);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -69,7 +70,7 @@ public class Chat extends AppCompatActivity {
         // Verificar si los datos son nulos
         if (otroUsuarioId == null && equipoId == null) {
             Toast.makeText(this, "Datos no proporcionados", Toast.LENGTH_SHORT).show();
-            finish(); // Cierra la actividad si los datos son nulos
+            finish();
             return;
         }
 
@@ -101,15 +102,20 @@ public class Chat extends AppCompatActivity {
             leerMensajesGrupo();
         } else {
             cargarFotoPerfil();
-            obtenerNombreUsuario(); // Añadir esta línea
+            obtenerNombreUsuario();
             leerMensajesIndividuales();
         }
     }
 
     private void leerMensajesIndividuales() {
-        DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
+        DatabaseReference mensajesRef1 = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
                 .child(firebaseUser.getUid()).child(otroUsuarioId);
-        mensajesRef.addValueEventListener(new ValueEventListener() {
+
+        DatabaseReference mensajesRef2 = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
+                .child(otroUsuarioId).child(firebaseUser.getUid());
+
+        // Listener para cargar mensajes de ambas referencias
+        ValueEventListener mensajesListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 chatArrayList.clear();
@@ -119,15 +125,23 @@ public class Chat extends AppCompatActivity {
                         chatArrayList.add(modelChat);
                     }
                 }
-                adapterChat.notifyDataSetChanged();
+                // Ordenar los mensajes por timestamp si es necesario
+                chatArrayList.sort(Comparator.comparing(ModelChat::getTimestamp));
+                // Notificar al adaptador en el hilo principal
+                runOnUiThread(() -> adapterChat.notifyDataSetChanged());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(Chat.this, "Error al cargar mensajes", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        mensajesRef1.addValueEventListener(mensajesListener);
+        mensajesRef2.addValueEventListener(mensajesListener);
     }
+
+
 
     private void leerMensajesGrupo() {
         DatabaseReference mensajesRef = FirebaseDatabase.getInstance().getReference("MensajesEquipos").child(equipoId);
@@ -165,21 +179,23 @@ public class Chat extends AppCompatActivity {
 
         if (messageId != null) {
             mensajesRef.child(messageId).setValue(modelChat)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(Chat.this, "Mensaje enviado", Toast.LENGTH_SHORT).show();
-                            binding.mensajeAEnviar.setText("");
-                        }
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(Chat.this, "Mensaje enviado", Toast.LENGTH_SHORT).show();
+                        binding.mensajeAEnviar.setText("");
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Chat.this, "Error al enviar el mensaje: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(Chat.this, "Error al enviar el mensaje: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+
+            // Si es chat individual, también agregar el mensaje en el otro nodo
+            if (!isGroupChat) {
+                DatabaseReference mensajesRefOtroUsuario = FirebaseDatabase.getInstance().getReference("MensajesIndividuales")
+                        .child(otroUsuarioId).child(firebaseUser.getUid());
+
+                mensajesRefOtroUsuario.child(messageId).setValue(modelChat);
+            }
         }
     }
+
+
 
     private void cargarFotoPerfil() {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Usuarios").child(otroUsuarioId);
@@ -188,15 +204,15 @@ public class Chat extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String fotoPerfilUrl = snapshot.child("fotoPerfil").getValue(String.class);
                 if (fotoPerfilUrl != null && !fotoPerfilUrl.isEmpty()) {
-                    Glide.with(Chat.this).load(fotoPerfilUrl).into(fotoPerfil); // Modificar esta línea
+                    Glide.with(Chat.this).load(fotoPerfilUrl).into(fotoPerfil);
                 } else {
-                    fotoPerfil.setImageResource(R.drawable.perfil_predeterminado); // Modificar esta línea
+                    fotoPerfil.setImageResource(R.drawable.perfil_predeterminado);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                fotoPerfil.setImageResource(R.drawable.perfil_predeterminado); // Modificar esta línea
+                fotoPerfil.setImageResource(R.drawable.perfil_predeterminado);
             }
         });
     }
@@ -206,11 +222,11 @@ public class Chat extends AppCompatActivity {
         equipoRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nombreEquipoString = snapshot.child("nombre").getValue(String.class); // Cambiar el nombre de esta línea
+                String nombreEquipoString = snapshot.child("nombre").getValue(String.class);
                 if (nombreEquipoString != null) {
-                    nombreTextView.setText(nombreEquipoString); // Cambiar el nombre de esta línea
+                    nombreTextView.setText(nombreEquipoString);
                 } else {
-                    nombreTextView.setText("Nombre no disponible"); // Cambiar el nombre de esta línea
+                    nombreTextView.setText("Nombre no disponible");
                 }
             }
 
@@ -228,9 +244,9 @@ public class Chat extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String nombreUsuario = snapshot.child("nombreUsuario").getValue(String.class);
                 if (nombreUsuario != null) {
-                    nombreTextView.setText(nombreUsuario); // Cambiar el nombre de esta línea
+                    nombreTextView.setText(nombreUsuario);
                 } else {
-                    nombreTextView.setText("Nombre no disponible"); // Cambiar el nombre de esta línea
+                    nombreTextView.setText("Nombre no disponible");
                 }
             }
 
